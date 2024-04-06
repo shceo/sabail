@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sabail/provider/nav_bar_provider.dart';
 import 'package:sabail/ui/pages/navbar_pages/main_page.dart';
@@ -28,7 +29,7 @@ class SabailHome extends StatelessWidget {
             children: screens,
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height - 90,
+            top: MediaQuery.of(context).size.height - 105,
             left: 0,
             right: 0,
             bottom: 15,
@@ -54,10 +55,12 @@ class SabailHome extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildNavItem(context, 0, Icons.home),
-                      _buildNavItem(context, 1, Icons.access_time),
-                      _buildNavItem(context, 2, Icons.menu_book),
-                      _buildNavItem(context, 3, Icons.account_circle),
+                      _buildNavItem(context, 0, "assets/icons/moon.svg", 'Home'),
+                      _buildNavItem(
+                          context, 1, "assets/icons/mosque.svg", 'Prayer time'),
+                      _buildNavItem(context, 2, "assets/icons/quran.svg", 'Al-Quran'),
+                      _buildNavItem(
+                          context, 3, "assets/icons/profile.svg", 'Profile'), // Замените "profile.svg" на соответствующий SVG файл иконки профиля
                     ],
                   ),
                 ),
@@ -69,16 +72,36 @@ class SabailHome extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(BuildContext context, int index, IconData icon) {
+  Widget _buildNavItem(
+      BuildContext context, int index, String icon, String label) {
     final navBarProvider = Provider.of<NavBarProvider>(context);
-    final color = navBarProvider.currentIndex == index ? Colors.blue : Colors.grey;
+    final color = navBarProvider.currentIndex == index
+        ? Colors.purple.shade700
+        : Colors.grey;
 
-    return IconButton(
-      icon: Icon(icon),
-      color: color,
-      onPressed: () {
-        navBarProvider.changeIndex(index);
-      },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontSize: 11,
+              ),
+            ),
+          ],
+        ),
+        IconButton(
+          icon: SvgPicture.asset(icon, width: 26, height: 24,),
+          color: color,
+          onPressed: () {
+            navBarProvider.changeIndex(index);
+          },
+        ),
+      ],
     );
   }
 }
