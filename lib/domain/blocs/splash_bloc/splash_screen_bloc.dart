@@ -7,7 +7,7 @@ part 'splash_screen_state.dart';
 class SplashBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
   SplashBloc() : super(SplashScreenInitial()) {
     on<AppStarted>((event, emit) async {
-      await Future.delayed(const Duration(seconds: 4));
+      await Future.delayed(const Duration(seconds: 1));
       emit(AppLoaded());
     });
   }
