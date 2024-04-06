@@ -5,6 +5,14 @@ class PrayTimes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        Container(
+          width: 10,
+          height: 19,
+          color: Colors.amber,
+        )
+      ],
+    );
   }
 }

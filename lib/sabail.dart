@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sabail/domain/blocs/splash_bloc/splash_screen_bloc.dart';
+
+import 'package:provider/provider.dart';
+
+import 'package:sabail/provider/nav_bar_provider.dart';
 import 'package:sabail/ui/routes/app_navigator.dart';
 
 class Sabail extends StatelessWidget {
@@ -8,10 +10,10 @@ class Sabail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiProvider(
       providers: [
-        BlocProvider(
-          create: (context) => SplashBloc()..add(AppStarted()),
+        ChangeNotifierProvider(
+          create: (context) => NavBarProvider(),
         ),
       ],
       child: MaterialApp.router(
