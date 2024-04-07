@@ -8,7 +8,7 @@ import 'package:sabail/ui/pages/navbar_pages/profile.dart';
 import 'package:sabail/ui/pages/navbar_pages/quran_page.dart';
 
 class SabailHome extends StatelessWidget {
-  const SabailHome({Key? key}) : super(key: key);
+  const SabailHome({super.key});
 
   static List<Widget> screens = const [
     MainPage(),
@@ -55,12 +55,14 @@ class SabailHome extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildNavItem(context, 0, "assets/icons/moon.svg", 'Home'),
                       _buildNavItem(
-                          context, 1, "assets/icons/mosque.svg", 'Prayer time'),
-                      _buildNavItem(context, 2, "assets/icons/quran.svg", 'Al-Quran'),
+                          context, 0, "assets/icons/moon.svg", 'Главная'),
+                      _buildNavItem(context, 1, "assets/icons/mosque.svg",
+                          'Времена молитв'),
                       _buildNavItem(
-                          context, 3, "assets/icons/profile.svg", 'Profile'), // Замените "profile.svg" на соответствующий SVG файл иконки профиля
+                          context, 2, "assets/icons/quran.svg", 'Аль Коран'),
+                      _buildNavItem(
+                          context, 3, "assets/icons/profile.svg", 'Профиль'),
                     ],
                   ),
                 ),
@@ -95,7 +97,11 @@ class SabailHome extends StatelessWidget {
           ],
         ),
         IconButton(
-          icon: SvgPicture.asset(icon, width: 26, height: 24,),
+          icon: SvgPicture.asset(
+            icon,
+            width: 26,
+            height: 24,
+          ),
           color: color,
           onPressed: () {
             navBarProvider.changeIndex(index);

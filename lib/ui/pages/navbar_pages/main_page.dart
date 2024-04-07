@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sabail/domain/api/api.dart'; // Импортируем класс для работы с API
+import 'package:sabail/domain/api/api.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key});
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,19 +13,24 @@ class MainPage extends StatelessWidget {
         backgroundColor: SabailColors.notwhite,
         centerTitle: true,
       ),
-      body: FutureBuilder<String>(
-        future: HijriApi().getCurrentHijriDate(), 
+      body: StreamBuilder<String>(
+        stream: HijriApi().getCurrentHijriDateStream(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (snapshot.hasError) { 
+          } else if (snapshot.hasError) {
             return Center(
               child: Text('Ошибка при загрузке данных: ${snapshot.error}'),
             );
           } else {
-            return BodySab(hijriDate: snapshot.data!); 
+            final hijriDate = snapshot.data!;
+            final monthNumber = int.parse(hijriDate.split('')[1]);
+            return BodySab(
+              hijriDate: hijriDate,
+              monthNumber: monthNumber,
+            );
           }
         },
       ),
@@ -34,9 +39,17 @@ class MainPage extends StatelessWidget {
 }
 
 class BodySab extends StatelessWidget {
-  final String hijriDate; 
+  final String hijriDate;
+  final int monthNumber;
+  final String monthName;
 
-  const BodySab({Key? key, required this.hijriDate}) : super(key: key);
+   BodySab({
+    Key? key,
+    required this.hijriDate,
+    required this.monthNumber,
+  }) : 
+      monthName = HijriApi().getHijriMonthName(monthNumber),
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +58,22 @@ class BodySab extends StatelessWidget {
         Align(
           alignment: Alignment.topCenter,
           child: Container(
-            margin: EdgeInsets.only(top: 50),
+            margin: const EdgeInsets.only(top: 50),
             decoration: BoxDecoration(
               color: Colors.blue,
               borderRadius: BorderRadius.circular(15),
             ),
-            height: 100,
-            width: 100,
-            child: Text(hijriDate),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(15),
+            height: 150,
+            width: 200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '$hijriDate',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            height: 100,
-            width: 100,
           ),
         ),
       ],
