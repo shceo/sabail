@@ -3,15 +3,18 @@ import 'package:sabail/domain/api/api.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SabailColors.notwhite,
       appBar: AppBar(
+        // leading: ,
         backgroundColor: SabailColors.notwhite,
         centerTitle: true,
+        toolbarHeight: 25,
+        // title: Text(),
       ),
       body: StreamBuilder<String>(
         stream: HijriApi().getCurrentHijriDateStream(),
@@ -39,44 +42,41 @@ class MainPage extends StatelessWidget {
 }
 
 class BodySab extends StatelessWidget {
+  
   final String hijriDate;
   final int monthNumber;
   final String monthName;
 
    BodySab({
-    Key? key,
+    super.key,
     required this.hijriDate,
     required this.monthNumber,
   }) : 
-      monthName = HijriApi().getHijriMonthName(monthNumber),
-      super(key: key);
+      monthName = HijriApi().getHijriMonthName(monthNumber);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            margin: const EdgeInsets.only(top: 50),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            height: 150,
-            width: 200,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '$hijriDate',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
+    final myWidth = MediaQuery.of(context).size.width;
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        margin: const EdgeInsets.only(top: 50),
+        decoration: BoxDecoration(
+          color: Colors.purple,
+          borderRadius: BorderRadius.circular(15),
         ),
-      ],
+        height: 240,
+        width: myWidth -30,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              hijriDate,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

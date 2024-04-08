@@ -53,7 +53,7 @@ class HijriApi {
       case 4:
         return 'Раби-уль-Ахир';
       case 5:
-        return 'Джумад-уль-Авваль';
+        return 'Джумад-уль-Авваль'; 
       case 6:
         return 'Джумад-уль-Ахир';
       case 7:
@@ -69,7 +69,7 @@ class HijriApi {
       case 12:
         return 'Дуль-Хиджа';
       default:
-        throw Exception('Invalid month number: $monthNumber');
+        return '';
     }
   }
 }

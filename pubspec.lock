@@ -400,6 +400,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+  quran:
+    dependency: "direct main"
+    description:
+      name: quran
+      sha256: ec215df985bede594ce863dc23cc0238aabdaf193bed7c04fd25ae627f3a5941
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.5"
   rxdart:
     dependency: transitive
     description:
