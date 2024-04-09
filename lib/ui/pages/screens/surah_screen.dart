@@ -4,7 +4,7 @@ import 'package:quran/quran.dart' as Quran;
 class SurahScreen extends StatelessWidget {
   final int surahNumber;
 
-  const SurahScreen({Key? key, required this.surahNumber}) : super(key: key);
+  const SurahScreen({super.key, required this.surahNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,8 @@ class SurahScreen extends StatelessWidget {
         itemCount: verseCount,
         itemBuilder: (context, index) {
           final verseText = Quran.getVerse(surahNumber, index + 1);
-          final verseNumber = Quran.getVerseEndSymbol(index + 1, arabicNumeral: true); // номер аята на арабском и внутри круглого знака
-          final englishTranslation = Quran.getVerseTranslation(surahNumber, index + 1, translation: Quran.Translation.enSaheeh); // английский перевод аята
+          final verseNumber = Quran.getVerseEndSymbol(index + 1, arabicNumeral: true); 
+          final englishTranslation = Quran.getVerseTranslation(surahNumber, index + 1, translation: Quran.Translation.enSaheeh);
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -30,28 +30,21 @@ class SurahScreen extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 40, // ширина контейнера для номера аята
-                      alignment: Alignment.center,
-                      child: Text(
-                        verseNumber,
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        verseText,
-                        style: TextStyle(fontSize: 20),
+                        verseText + '' + verseNumber,
+                        style:const TextStyle(fontSize: 30),
+                        textDirection: TextDirection.rtl, 
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+               const SizedBox(height: 8),
                 Text(
                   englishTranslation,
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: const TextStyle(fontSize: 18, color: Colors.grey),
                 ),
+                Divider(color: Colors.grey), // Добавляем небольшую линию после каждого английского перевода аята
               ],
             ),
           );

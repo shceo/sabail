@@ -10,7 +10,7 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: SabailColors.notwhite,
       appBar: AppBar(
-        // leading: ,
+        
         backgroundColor: SabailColors.notwhite,
         centerTitle: true,
         toolbarHeight: 25,
