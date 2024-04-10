@@ -1,24 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
 class LastReadSurah with ChangeNotifier {
   String _surahName = '';
-  int _ayahNumber = 0; // Add this line
+  int _surahNumber = 1;
 
   String get surahName => _surahName;
-  int get ayahNumber => _ayahNumber; // Add this line
+  int get surahNumber => _surahNumber;
 
-  void setLastReadSurah(String surahName) {
-    _surahName = surahName;
+  LastReadSurah() {
+    loadLastRead();
+  }
+
+  void saveLastRead() async {
+    final box = await Hive.openBox('lastReadSurah');
+    box.put('name', _surahName);
+    box.put('number', _surahNumber);
     notifyListeners();
   }
 
-  void setLastReadAyah(int ayahNumber) { // Add this method
-    _ayahNumber = ayahNumber;
+  void loadLastRead() async {
+    final box = await Hive.openBox('lastReadSurah');
+    _surahName = box.get('name', defaultValue: '');
+    _surahNumber = box.get('number', defaultValue: 1);
     notifyListeners();
+  }
+
+  void setLastReadSurah(String surahName) async {
+    _surahName = surahName;
+    saveLastRead();
+  }
+
+  void setLastReadSurahNumber(int surahNumber) async {
+    _surahNumber = surahNumber;
+    saveLastRead();
   }
 }
-
-
-
 
 class LastReadSurahProvider extends InheritedNotifier {
   final LastReadSurah lastReadSurah;
@@ -40,4 +57,3 @@ class LastReadSurahProvider extends InheritedNotifier {
     return widget is LastReadSurahProvider ? widget : null;
   }
 }
-

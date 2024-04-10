@@ -17,7 +17,7 @@ class AlQuranPage extends StatelessWidget {
       ),
       body: LastReadSurahProvider(
         lastReadSurah: LastReadSurah(),
-        child: BodyAl(),
+        child: const BodyAl(),
       ),
     );
   }
@@ -30,26 +30,40 @@ class BodyAl extends StatelessWidget {
   Widget build(BuildContext context) {
     final lastReadSurahProvider = LastReadSurahProvider.watch(context);
     final lastReadSurah = lastReadSurahProvider?.lastReadSurah;
-    final lastReadAyah = lastReadSurah?.ayahNumber;
-final myWidth = MediaQuery.of(context).size.width;
+    final myWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.only(left: 16),
           decoration: BoxDecoration(
-            color: SabailColors.darkpurple.withOpacity(0.9),
+            color: SabailColors.maketPurple,
             borderRadius: BorderRadius.circular(15),
           ),
           height: 120,
           width: myWidth - 50,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Последнее чтение \n\n${lastReadSurah?.surahName ?? ''} \nАят: ${lastReadAyah ?? ''}', // Display the last read Surah and Ayah
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                'Последнее чтение \n\n${lastReadSurah?.surahName ?? ''}',
+                style:  TextStyle(color: SabailColors.notwhite, fontWeight: FontWeight.bold),
               ),
-
+              TextButton(
+               onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SurahScreen(surahNumber: lastReadSurah?.surahNumber ?? 1), // Open the last read Surah
+                    ),
+                  );
+                },
+                child:  const Text(
+                  'Продолжить чтение',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
             ],
           ),
         ),
@@ -88,6 +102,7 @@ final myWidth = MediaQuery.of(context).size.width;
                 ),
                 onTap: () {
                   lastReadSurah?.setLastReadSurah(surahName); 
+                  lastReadSurah?.setLastReadSurahNumber(surahNumber); 
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -23,6 +23,8 @@ dependencies:
   dio: ^5.4.2+1
   intl: ^0.19.0
   quran: ^1.2.5
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
