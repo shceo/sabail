@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
             Container(
               decoration:const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/splash.jpg'),
+                  image: AssetImage('assets/images/splash.jpeg'),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -36,7 +36,7 @@ class SplashScreen extends StatelessWidget {
               child: Center(
                 child: SpinKitWaveSpinner(
                   color: Color.fromARGB(255, 87, 30, 111),
-                  size: 30.0,
+                  size: 40.0,
                 ),
               ),
             ),

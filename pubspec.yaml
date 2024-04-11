@@ -25,10 +25,15 @@ dependencies:
   quran: ^1.2.5
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/appla.png"
 
   flutter_lints: ^3.0.0
 
@@ -37,7 +42,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
     - assets/images/
     - assets/icons/
     
