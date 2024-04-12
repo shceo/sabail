@@ -47,11 +47,16 @@ class MainPage extends StatelessWidget {
 
 
 
+/// A widget that displays the Hijri date and prayer times.
 class BodySab extends StatelessWidget {
   final String hijriDate;
   final int monthNumber;
   final String monthName;
 
+  /// Constructs a new BodySab widget.
+  ///
+  /// The [hijriDate] parameter is the Hijri date to display.
+  /// The [monthNumber] parameter is the Hijri month number.
   BodySab({
     super.key,
     required this.hijriDate,
@@ -60,121 +65,134 @@ class BodySab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          flex: 0,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(50.0),
-              bottomRight: Radius.circular(50.0),
-            ),
-            child: Container(
-              color: SabailColors.lightpurple.withOpacity(0.7),
-              child: Column(
-                children: [
-                  const SizedBox(height: 60,),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 18),
-                      child: Text(
-                        hijriDate,
-                        style: GoogleFonts.oswald(fontWeight: FontWeight.bold),
+    return FutureBuilder<String>(
+      future: PrayerTimes().getPrayerTime('Tashkent', DateTime.now(), 2), 
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        // Use initial values for prayer times if data is not yet available
+        final prayerTimes = snapshot.data != null ? snapshot.data!.split(', ') : ['Fajr: --:--', 'Dhuhr: --:--', 'Asr: --:--', 'Maghrib: --:--', 'Isha: --:--'];
+        final fajrTime = prayerTimes[0].split(': ')[1];
+        final dhuhrTime = prayerTimes[1].split(': ')[1];
+        final asrTime = prayerTimes[2].split(': ')[1];
+        final maghribTime = prayerTimes[3].split(': ')[1];
+        final ishaTime = prayerTimes[4].split(': ')[1];
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 0,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(50.0),
+                  bottomRight: Radius.circular(50.0),
+                ),
+                child: Container(
+                  color: SabailColors.lightpurple.withOpacity(0.7),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 60,),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 18),
+                          child: Text(
+                            hijriDate,
+                            style: GoogleFonts.oswald(fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 30),
+                      Consumer<TimeProvider>(
+                        builder: (context, timeProvider, child) {
+                          final timeParts = timeProvider.currentTime.split(':');
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${timeParts[0]}:${timeParts[1]}',
+                                style: const TextStyle(fontSize: 65),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                timeParts[2],
+                                style: const TextStyle(fontSize: 30),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 30),
-                  Consumer<TimeProvider>(
-                    builder: (context, timeProvider, child) {
-                      final timeParts = timeProvider.currentTime.split(':');
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                height: 5,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
                         children: [
-                          Text(
-                            '${timeParts[0]}:${timeParts[1]}',
-                            style: const TextStyle(fontSize: 65),
+                          Text('Фаджр', style: GoogleFonts.oswald()),
+                          const CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage('assets/images/fajr.jpg'),
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            timeParts[2],
-                            style: const TextStyle(fontSize: 30),
-                          ),
+                          Text(fajrTime, style: GoogleFonts.oswald()),
                         ],
-                      );
-                    },
+                      ),
+                      Column(
+                        children: [
+                          Text('Зухр', style: GoogleFonts.oswald()),
+                          const CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage('assets/images/sunrise.jpg'),
+                          ),
+                          Text(dhuhrTime, style: GoogleFonts.oswald()),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('Аср', style: GoogleFonts.oswald()),
+                          const CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage('assets/images/asr.jpg'),
+                          ),
+                          Text(asrTime, style: GoogleFonts.oswald()),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('Магриб', style: GoogleFonts.oswald()),
+                          const CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage('assets/images/magrib.jpg'),
+                          ),
+                          Text(maghribTime, style: GoogleFonts.oswald()),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text('Иша', style: GoogleFonts.oswald()),
+                          const CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage('assets/images/isha.jpg'),
+                          ),
+                          Text(ishaTime, style: GoogleFonts.oswald()),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: SizedBox(
-            height: 5,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      Text('Фаджр', style: GoogleFonts.oswald()),
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/images/fajr.jpg'),
-                      ),
-                      Text('Первый', style: GoogleFonts.oswald()),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text('Зухр', style: GoogleFonts.oswald()),
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/images/sunrise.jpg'),
-                      ),
-                      Text('Второй', style: GoogleFonts.oswald()),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text('Аср', style: GoogleFonts.oswald()),
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/images/asr.jpg'),
-                      ),
-                      Text('Третий', style: GoogleFonts.oswald()),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text('Магриб', style: GoogleFonts.oswald()),
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/images/magrib.jpg'),
-                      ),
-                      Text('Четвертый', style: GoogleFonts.oswald()),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text('Иша', style: GoogleFonts.oswald()),
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/images/isha.jpg'),
-                      ),
-                      Text('Пятый', style: GoogleFonts.oswald()),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }

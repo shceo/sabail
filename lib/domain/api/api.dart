@@ -75,31 +75,39 @@ class HijriApi {
 }
 
 
+/// A class to fetch prayer times from an API.
 class PrayerTimes {
   final Dio _dio = Dio();
 
-  Future<String> getPrayerTime(String address, DateTime date, int method) async {
-    try {
-      final response = await _dio.get(
-        'https://api.aladhan.com/v1/calendarByAddress',
-        queryParameters: {
-          'address': address,
-          'method': method,
-          'date': DateFormat('yyyy-MM-dd').format(date),
-        },
-      );
+  /// Fetches prayer times for a given address and date.
+  ///
+  /// The [address] parameter is the location to fetch prayer times for.
+  /// The [date] parameter is the date to fetch prayer times for.
+  /// The [method] parameter is the calculation method to use.
+  ///
+  /// Returns a string containing the prayer times.
+ Future<String> getPrayerTime(String address, DateTime date, int method) async {
+  try {
+    final response = await _dio.get(
+      'https://api.aladhan.com/v1/calendarByAddress',
+      queryParameters: {
+        'address': address,
+        'method': method,
+        'date': DateFormat('yyyy-MM-dd').format(date),
+      },
+    );
 
-      final data = response.data;
-      final timings = data['data'][0]['timings'];
-      final fajrTime = timings['Fajr'];
-      final dhuhrTime = timings['Dhuhr'];
-      final asrTime = timings['Asr'];
-      final maghribTime = timings['Maghrib'];
-      final ishaTime = timings['Isha'];
+    final data = response.data;
+    final timings = data['data'][0]['timings'];
+    final fajrTime = timings['Fajr'].replaceAll(' (+05)', '');
+    final dhuhrTime = timings['Dhuhr'].replaceAll(' (+05)', '');
+    final asrTime = timings['Asr'].replaceAll(' (+05)', '');
+    final maghribTime = timings['Maghrib'].replaceAll(' (+05)', '');
+    final ishaTime = timings['Isha'].replaceAll(' (+05)', '');
 
-      return 'Fajr: $fajrTime, Dhuhr: $dhuhrTime, Asr: $asrTime, Maghrib: $maghribTime, Isha: $ishaTime';
-    } catch (error) {
-      throw Exception('Failed to get prayer time: $error');
-    }
+    return 'Fajr: $fajrTime, Dhuhr: $dhuhrTime, Asr: $asrTime, Maghrib: $maghribTime, Isha: $ishaTime';
+  } catch (error) {
+    throw Exception('Failed to get prayer time: $error');
   }
+}
 }
