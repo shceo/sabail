@@ -49,7 +49,7 @@ class SabailHome extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: BottomAppBar(
-                  padding: EdgeInsets.only(top: 0),
+                  padding: const EdgeInsets.only(top: 0),
                   color: Colors.transparent,
                   elevation: 0,
                   child: Row(

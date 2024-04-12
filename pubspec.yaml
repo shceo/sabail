@@ -28,6 +28,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   geolocator: ^11.0.0
   google_fonts: ^6.2.1
+  country_pickers: ^2.0.0
+  flutter_typeahead: ^5.2.0
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +48,8 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/fonts/
+    - assets/cities.json
     
 
   # example:

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart'; 
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:sabail/domain/api/api.dart';
 import 'package:sabail/provider/time_provider.dart';
+import 'package:sabail/ui/pages/countries_page.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -47,29 +49,31 @@ class MainPage extends StatelessWidget {
 
 
 
-/// A widget that displays the Hijri date and prayer times.
 class BodySab extends StatelessWidget {
   final String hijriDate;
   final int monthNumber;
   final String monthName;
 
-  /// Constructs a new BodySab widget.
-  ///
-  /// The [hijriDate] parameter is the Hijri date to display.
-  /// The [monthNumber] parameter is the Hijri month number.
   BodySab({
     super.key,
     required this.hijriDate,
     required this.monthNumber,
-  })  : monthName = HijriApi().getHijriMonthName(monthNumber);
+  }) : monthName = HijriApi().getHijriMonthName(monthNumber);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: PrayerTimes().getPrayerTime('Tashkent', DateTime.now(), 2), 
+      future: PrayerTimes().getPrayerTime('Tashkent', DateTime.now(), 2),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        // Use initial values for prayer times if data is not yet available
-        final prayerTimes = snapshot.data != null ? snapshot.data!.split(', ') : ['Fajr: --:--', 'Dhuhr: --:--', 'Asr: --:--', 'Maghrib: --:--', 'Isha: --:--'];
+        final prayerTimes = snapshot.data != null
+            ? snapshot.data!.split(', ')
+            : [
+                'Fajr: --:--',
+                'Dhuhr: --:--',
+                'Asr: --:--',
+                'Maghrib: --:--',
+                'Isha: --:--'
+              ];
         final fajrTime = prayerTimes[0].split(': ')[1];
         final dhuhrTime = prayerTimes[1].split(': ')[1];
         final asrTime = prayerTimes[2].split(': ')[1];
@@ -90,14 +94,41 @@ class BodySab extends StatelessWidget {
                   color: SabailColors.lightpurple.withOpacity(0.7),
                   child: Column(
                     children: [
-                      const SizedBox(height: 60,),
+                      const SizedBox(
+                        height: 60,
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 18),
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CitiesAndCountriesPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Текущее место',
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.oswald().fontFamily,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       Align(
                         alignment: Alignment.topLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 18),
                           child: Text(
                             hijriDate,
-                            style: GoogleFonts.oswald(fontWeight: FontWeight.bold),
+                            style:
+                                GoogleFonts.oswald(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -129,61 +160,112 @@ class BodySab extends StatelessWidget {
             Expanded(
               flex: 1,
               child: SizedBox(
-                height: 5,
                 child: Align(
                   alignment: Alignment.topCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Column(
                     children: [
-                      Column(
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text('Фаджр', style: GoogleFonts.oswald()),
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/images/fajr.jpg'),
+                          Column(
+                            children: [
+                              Text('Фаджр', style: GoogleFonts.oswald()),
+                              const CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    AssetImage('assets/images/fajr.jpg'),
+                              ),
+                              Text(fajrTime, style: GoogleFonts.oswald()),
+                            ],
                           ),
-                          Text(fajrTime, style: GoogleFonts.oswald()),
+                          Column(
+                            children: [
+                              Text('Зухр', style: GoogleFonts.oswald()),
+                              const CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    AssetImage('assets/images/sunrise.jpg'),
+                              ),
+                              Text(dhuhrTime, style: GoogleFonts.oswald()),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text('Аср', style: GoogleFonts.oswald()),
+                              const CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    AssetImage('assets/images/asr.jpg'),
+                              ),
+                              Text(asrTime, style: GoogleFonts.oswald()),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text('Магриб', style: GoogleFonts.oswald()),
+                              const CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    AssetImage('assets/images/magrib.jpg'),
+                              ),
+                              Text(maghribTime, style: GoogleFonts.oswald()),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text('Иша', style: GoogleFonts.oswald()),
+                              const CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    AssetImage('assets/images/isha.jpg'),
+                              ),
+                              Text(ishaTime, style: GoogleFonts.oswald()),
+                            ],
+                          ),
                         ],
                       ),
-                      Column(
-                        children: [
-                          Text('Зухр', style: GoogleFonts.oswald()),
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/images/sunrise.jpg'),
-                          ),
-                          Text(dhuhrTime, style: GoogleFonts.oswald()),
-                        ],
+                      const SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(
+                            3,
+                            (index) => Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey[300],
+                                  ),
+                                )),
                       ),
-                      Column(
-                        children: [
-                          Text('Аср', style: GoogleFonts.oswald()),
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/images/asr.jpg'),
-                          ),
-                          Text(asrTime, style: GoogleFonts.oswald()),
-                        ],
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(
+                            3,
+                            (index) => Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey[300],
+                                  ),
+                                )),
                       ),
-                      Column(
-                        children: [
-                          Text('Магриб', style: GoogleFonts.oswald()),
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/images/magrib.jpg'),
-                          ),
-                          Text(maghribTime, style: GoogleFonts.oswald()),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text('Иша', style: GoogleFonts.oswald()),
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage('assets/images/isha.jpg'),
-                          ),
-                          Text(ishaTime, style: GoogleFonts.oswald()),
-                        ],
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(
+                            3,
+                            (index) => Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey[300],
+                                  ),
+                                )),
                       ),
                     ],
                   ),

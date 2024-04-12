@@ -4,4 +4,9 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+        <!-- Add location permissions -->
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+        <!-- or -->
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+        <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 </manifest>

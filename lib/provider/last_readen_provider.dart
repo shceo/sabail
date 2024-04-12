@@ -40,13 +40,15 @@ class LastReadSurah with ChangeNotifier {
 class LastReadSurahProvider extends InheritedNotifier {
   final LastReadSurah lastReadSurah;
 
-  LastReadSurahProvider({
-    Key? key,
+  const LastReadSurahProvider({
+    super.key,
     required LastReadSurah lastReadSurah,
-    required Widget child,
+    required super.child,
+  // ignore: unnecessary_null_comparison
   })  : assert(lastReadSurah != null),
-        this.lastReadSurah = lastReadSurah,
-        super(key: key, notifier: lastReadSurah, child: child);
+        // ignore: prefer_initializing_formals
+        lastReadSurah = lastReadSurah,
+        super(notifier: lastReadSurah);
 
   static LastReadSurahProvider? watch(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<LastReadSurahProvider>();

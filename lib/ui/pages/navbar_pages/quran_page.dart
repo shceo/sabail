@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+// ignore: library_prefixes
 import 'package:quran/quran.dart' as Quran;
 import 'package:sabail/provider/last_readen_provider.dart';
 import 'package:sabail/ui/pages/screens/surah_screen.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
 
 class AlQuranPage extends StatelessWidget {
-  const AlQuranPage({Key? key}) : super(key: key);
+  const AlQuranPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class AlQuranPage extends StatelessWidget {
       backgroundColor: SabailColors.notwhite,
       appBar: AppBar(
         backgroundColor: SabailColors.notwhite,
-        title: Text('Аль Коран'),
+        title: const Text('Аль Коран'),
       ),
       body: LastReadSurahProvider(
         lastReadSurah: LastReadSurah(),

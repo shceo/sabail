@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: library_prefixes
 import 'package:quran/quran.dart' as Quran;
 
 class SurahScreen extends StatelessWidget {
@@ -32,7 +33,7 @@ class SurahScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        verseText + '' + verseNumber,
+                        '$verseText$verseNumber',
                         style:const TextStyle(fontSize: 30),
                         textDirection: TextDirection.rtl, 
                       ),
@@ -44,7 +45,7 @@ class SurahScreen extends StatelessWidget {
                   englishTranslation,
                   style: const TextStyle(fontSize: 18, color: Colors.grey),
                 ),
-                Divider(color: Colors.grey), // Добавляем небольшую линию после каждого английского перевода аята
+               const Divider(color: Colors.grey), // Добавляем небольшую линию после каждого английского перевода аята
               ],
             ),
           );

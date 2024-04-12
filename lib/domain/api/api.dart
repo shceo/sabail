@@ -37,7 +37,7 @@ class HijriApi {
         await Future.delayed(const Duration(hours: 1));
       }
     } catch (error) {
-      print('Error fetching hijri date: $error');
+      // print('Error fetching hijri date: $error');
       await Future.delayed(const Duration(minutes: 5));
     }
   }
