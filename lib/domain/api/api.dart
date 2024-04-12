@@ -73,3 +73,33 @@ class HijriApi {
     }
   }
 }
+
+
+class PrayerTimes {
+  final Dio _dio = Dio();
+
+  Future<String> getPrayerTime(String address, DateTime date, int method) async {
+    try {
+      final response = await _dio.get(
+        'https://api.aladhan.com/v1/calendarByAddress',
+        queryParameters: {
+          'address': address,
+          'method': method,
+          'date': DateFormat('yyyy-MM-dd').format(date),
+        },
+      );
+
+      final data = response.data;
+      final timings = data['data'][0]['timings'];
+      final fajrTime = timings['Fajr'];
+      final dhuhrTime = timings['Dhuhr'];
+      final asrTime = timings['Asr'];
+      final maghribTime = timings['Maghrib'];
+      final ishaTime = timings['Isha'];
+
+      return 'Fajr: $fajrTime, Dhuhr: $dhuhrTime, Asr: $asrTime, Maghrib: $maghribTime, Isha: $ishaTime';
+    } catch (error) {
+      throw Exception('Failed to get prayer time: $error');
+    }
+  }
+}

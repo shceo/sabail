@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
               left: 0,
               right: 0,
               child: Center(
-                child: SpinKitWaveSpinner(
+                child: SpinKitSpinningLines(
                   color: Color.fromARGB(255, 87, 30, 111),
                   size: 40.0,
                 ),
