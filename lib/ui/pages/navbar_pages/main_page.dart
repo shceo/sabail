@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:sabail/components/mainWidgets/mainpage_widgets.dart';
+import 'package:sabail/components/prayerTimes/prayertimes_widget.dart';
+import 'package:sabail/components/time/mainpage_time.dart';
 import 'package:sabail/domain/api/api.dart';
 import 'package:sabail/provider/time_provider.dart';
 import 'package:sabail/ui/pages/countries_page.dart';
@@ -9,7 +12,7 @@ import 'package:sabail/ui/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({super.key});
+  const MainPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +50,13 @@ class MainPage extends StatelessWidget {
   }
 }
 
-
-
 class BodySab extends StatelessWidget {
   final String hijriDate;
   final int monthNumber;
   final String monthName;
 
   BodySab({
-    super.key,
+    Key? key,
     required this.hijriDate,
     required this.monthNumber,
   }) : monthName = HijriApi().getHijriMonthName(monthNumber);
@@ -63,7 +64,7 @@ class BodySab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: PrayerTimes().getPrayerTime('Tashkent', DateTime.now(), 2),
+      future: PrayerTimes().getPrayerTime('Ташкент', DateTime.now(), 2),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         final prayerTimes = snapshot.data != null
             ? snapshot.data!.split(', ')
@@ -80,197 +81,112 @@ class BodySab extends StatelessWidget {
         final maghribTime = prayerTimes[3].split(': ')[1];
         final ishaTime = prayerTimes[4].split(': ')[1];
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        return Stack(
           children: [
-            Expanded(
-              flex: 0,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(50.0),
-                  bottomRight: Radius.circular(50.0),
-                ),
-                child: Container(
-                  color: SabailColors.lightpurple.withOpacity(0.7),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 60,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 18),
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CitiesAndCountriesPage(),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                'assets/images/msqshil.png',
+                fit: BoxFit.fill,
+                width: 300,
+                height: 287,
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  flex: 0,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(50.0),
+                      bottomRight: Radius.circular(50.0),
+                    ),
+                    child: Container(
+                      color: SabailColors.lightpurple.withOpacity(0.7),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 60,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 18),
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CitiesAndCountriesPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Текущее место',
+                                  style: TextStyle(
+                                    fontFamily: GoogleFonts.oswald().fontFamily,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Text(
-                              'Текущее место',
-                              style: TextStyle(
-                                fontFamily: GoogleFonts.oswald().fontFamily,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 18),
-                          child: Text(
-                            hijriDate,
-                            style:
-                                GoogleFonts.oswald(fontWeight: FontWeight.bold),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 18),
+                              child: Text(
+                                hijriDate,
+                                style: TextStyle(
+                                  fontFamily: GoogleFonts.oswald().fontFamily,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      Consumer<TimeProvider>(
-                        builder: (context, timeProvider, child) {
-                          final timeParts = timeProvider.currentTime.split(':');
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${timeParts[0]}:${timeParts[1]}',
-                                style: const TextStyle(fontSize: 65),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                timeParts[2],
-                                style: const TextStyle(fontSize: 30),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              Text('Фаджр', style: GoogleFonts.oswald()),
-                              const CircleAvatar(
-                                radius: 30,
-                                backgroundImage:
-                                    AssetImage('assets/images/fajr.jpg'),
-                              ),
-                              Text(fajrTime, style: GoogleFonts.oswald()),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Зухр', style: GoogleFonts.oswald()),
-                              const CircleAvatar(
-                                radius: 30,
-                                backgroundImage:
-                                    AssetImage('assets/images/sunrise.jpg'),
-                              ),
-                              Text(dhuhrTime, style: GoogleFonts.oswald()),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Аср', style: GoogleFonts.oswald()),
-                              const CircleAvatar(
-                                radius: 30,
-                                backgroundImage:
-                                    AssetImage('assets/images/asr.jpg'),
-                              ),
-                              Text(asrTime, style: GoogleFonts.oswald()),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Магриб', style: GoogleFonts.oswald()),
-                              const CircleAvatar(
-                                radius: 30,
-                                backgroundImage:
-                                    AssetImage('assets/images/magrib.jpg'),
-                              ),
-                              Text(maghribTime, style: GoogleFonts.oswald()),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Иша', style: GoogleFonts.oswald()),
-                              const CircleAvatar(
-                                radius: 30,
-                                backgroundImage:
-                                    AssetImage('assets/images/isha.jpg'),
-                              ),
-                              Text(ishaTime, style: GoogleFonts.oswald()),
-                            ],
+                          const SizedBox(height: 30),
+                          Consumer<TimeProvider>(
+                            builder: (context, timeProvider, child) {
+                              return CurrentTimeWidget(
+                                  time: timeProvider.currentTime);
+                            },
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.generate(
-                            3,
-                            (index) => Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.grey[300],
-                                  ),
-                                )),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.generate(
-                            3,
-                            (index) => Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.grey[300],
-                                  ),
-                                )),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: List.generate(
-                            3,
-                            (index) => Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.grey[300],
-                                  ),
-                                )),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          PrayTimesWidget(
+                            fajrTime: fajrTime,
+                            dhuhrTime: dhuhrTime,
+                            asrTime: asrTime,
+                            maghribTime: maghribTime,
+                            ishaTime: ishaTime,
+                          ),
+                          const SizedBox(height: 30),
+                          EmptyBlocksRow(),
+                          const SizedBox(height: 20),
+                          EmptyBlocksRow(),
+                          const SizedBox(height: 20),
+                          EmptyBlocksRow(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         );

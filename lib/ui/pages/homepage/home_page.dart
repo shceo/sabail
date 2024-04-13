@@ -8,7 +8,7 @@ import 'package:sabail/ui/pages/navbar_pages/profile.dart';
 import 'package:sabail/ui/pages/navbar_pages/quran_page.dart';
 
 class SabailHome extends StatelessWidget {
-  const SabailHome({super.key});
+  const SabailHome({Key? key});
 
   static List<Widget> screens = const [
     MainPage(),
@@ -55,12 +55,14 @@ class SabailHome extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildNavItem(context, 0, "assets/icons/moon.svg", 'Главная'),
                       _buildNavItem(
-                          context, 1, "assets/icons/mosque.svg", 'Времена молитв'),
-                      _buildNavItem(context, 2, "assets/icons/quran.svg", 'Аль Коран'),
+                          context, 0, "assets/icons/moon.svg", 'Главная'),
+                      _buildNavItem(context, 1, "assets/icons/mosque.svg",
+                          'Времена молитв'),
                       _buildNavItem(
-                          context, 3, "assets/icons/profile.svg", 'Профиль'), 
+                          context, 2, "assets/icons/quran.svg", 'Аль Коран'),
+                      _buildNavItem(
+                          context, 3, "assets/icons/profile.svg", 'Профиль'),
                     ],
                   ),
                 ),
@@ -72,36 +74,49 @@ class SabailHome extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(
-      BuildContext context, int index, String icon, String label) {
-    final navBarProvider = Provider.of<NavBarProvider>(context);
-    final color = navBarProvider.currentIndex == index
-        ? Colors.purple.shade700
-        : Colors.grey;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
+
+    Widget _buildNavItem(
+    BuildContext context, int index, String icon, String label) {
+  final navBarProvider = Provider.of<NavBarProvider>(context);
+  final color = navBarProvider.currentIndex == index
+      ? Colors.purple.shade700
+      : Colors.grey;
+
+  return Expanded(
+    child: InkWell(
+      onTap: (){
+          navBarProvider.changeIndex(index);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Transform.translate(
+            offset: Offset(0, -13), 
+            child: SvgPicture.asset(
+              icon,
+              width: 26,
+              height: 23,
+              color: color,
+            ),
+          ),
+          SizedBox(height: 10),
+          Transform.translate(
+            offset: Offset(0, -12),
+            child: Text(
               label,
               style: TextStyle(
                 color: color,
                 fontSize: 11,
               ),
             ),
-          ],
-        ),
-        IconButton(
-          icon: SvgPicture.asset(icon, width: 26, height: 24,),
-          color: color,
-          onPressed: () {
-            navBarProvider.changeIndex(index);
-          },
-        ),
-      ],
-    );
-  }
+          ),
+        ],
+      ),
+    ),
+  );
 }
+
+}
+
