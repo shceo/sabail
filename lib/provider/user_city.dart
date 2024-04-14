@@ -6,9 +6,9 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class CityProvider extends ChangeNotifier {
   String _selectedCity = 'Ташкент'; 
-  Box? _box;
+  late Box _box;
   Future? initFuture;
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
   List<String> _cityNames = [];
 
   CityProvider() {
@@ -22,7 +22,8 @@ class CityProvider extends ChangeNotifier {
 
   Future<void> _initHive() async {
     _box = await Hive.openBox('myBox');
-    _selectedCity = _box!.get('selectedCity', defaultValue: 'Ташкент');
+    _selectedCity = _box.get('selectedCity', defaultValue: 'Ташкент');
+    notifyListeners(); // added
   }
 
   Future<void> _loadCityNames() async {
@@ -38,17 +39,14 @@ class CityProvider extends ChangeNotifier {
 
   String get selectedCity => _selectedCity;
 
-void updateSelectedCity(String city) async {
-  _selectedCity = city;
-  await _box!.close();
-  _box = await Hive.openBox('myBox');
-  saveSelectedCity(city);
-  notifyListeners(); // Добавить вызов notifyListeners()
-}
-
+  void updateSelectedCity(String city) {
+    _selectedCity = city;
+    saveSelectedCity(city);
+    notifyListeners();
+  }
 
   void saveSelectedCity(String city) {
-    _box!.put('selectedCity', city);
+    _box.put('selectedCity', city);
   }
 
   List<String> get cityNames => _cityNames;
@@ -71,4 +69,30 @@ void updateSelectedCity(String city) async {
 
 
 
+// class CityProvider extends ChangeNotifier {
+//   String _selectedCity = 'Ташкент'; 
+//   late Box _box;
+//   Future? initFuture;
 
+//   CityProvider() {
+//     initFuture = initHive();
+//   }
+
+//   Future<void> initHive() async {
+//     _box = await Hive.openBox('myBox');
+//     _selectedCity = _box.get('selectedCity', defaultValue: 'Ташкент');
+//     notifyListeners();
+//   }
+
+//   String get selectedCity => _selectedCity;
+
+//   void updateSelectedCity(String city) {
+//     _selectedCity = city;
+//     saveSelectedCity(city);
+//     notifyListeners();
+//   }
+
+//   void saveSelectedCity(String city) {
+//     _box.put('selectedCity', city);
+//   }
+// }
