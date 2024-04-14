@@ -1,0 +1,1914 @@
+{
+    "code": 200,
+    "status": "OK",
+    "data": [
+        {
+            "name": "اللَّهُ",
+            "transliteration": "Allah",
+            "number": 0,
+            "found": "",
+            "en": {
+                "meaning": "The God",
+                "desc": "It is the greatest name that the Truth, Glory be to Him, singled out and singled out for Himself and made it the first of His names, and added all of them to it, so it is knowledge of Himself, Glory be to Him."
+            },
+            "fr": {
+                "meaning": "Un dieu",
+                "desc": "C'est le plus grand nom que soit la Vérité, Gloire à Lui, choisi et choisi pour Lui-même et en a fait le premier de Ses noms, et il les a tous ajoutés, c'est donc la connaissance de Lui-même, Gloire à Lui. "
+            },
+            "ru": {
+                "meaning": "Величайшее имя",
+                "desc": "Это величайшее имя, которое Истина, Слава Ему, выделила и выделила для Себя и сделала его первым из Своих имён, и прибавила к нему все их, так что это знание о Себе, Слава Ему."
+            }
+        },
+        {
+            "name": "الرَّحْمَنُ",
+            "transliteration": "Ar Rahmaan",
+            "number": 1,
+            "found": "(1:3) (17:110)",
+            "en": {
+                "meaning": "The Beneficent",
+                "desc": "He who wills goodness and mercy for all His creatures"
+            },
+            "fr": {
+                "meaning": "Le Tout-Miséricordieux",
+                "desc": "Clément envers ses créatures. La clémence d'une mère envers son enfant est une partie infime de Son immense clémence envers Ses créatures. Son châtiment est le plus dur et sévère de tous les châtiments mais Sa clémence a précédé Sa colère ; et ce nom fait partie des noms que l’on n’attribue à nul autre qu'Allah. "
+            },
+            "ru": {
+                "meaning": "Милостивый",
+                "desc": "Тот, Кто желает добра и милости всем Своим существам."
+            }
+        },
+        {
+            "name": "الرَّحِيمُ",
+            "transliteration": "Ar Raheem",
+            "number": 2,
+            "found": "(2:163) (3: 31) (4:100) (5:3)",
+            "en": {
+                "meaning": "The Merciful",
+                "desc": "He who acts with extreme kindness "
+            },
+            "fr": {
+                "meaning": "Le Très-Miséricordieux",
+                "desc": "Miséricordieux pour ce qu'Il a créé. Il fait pleuvoir le ciel au-dessus des peuples même les plus pécheurs par miséricorde envers les bébés, les vieux et les animaux, alors qu'Il (a pu) peut (et pourra) les châtier par soif. Le terme Ar-Rahmān englobe la signification du terme Ar-Rahīm sans retirer sa signification initiale"
+            },
+            "ru": {
+                "meaning": "Милосердный",
+                "desc": "Тот, Кто действует с крайней добротой."
+            }
+        },
+        {
+            "name": "المَلِكُ",
+            "transliteration": "Al Malik",
+            "number": 3,
+            "found": "(20:114)(23:116)(59:23)(62:1)",
+            "en": {
+                "meaning": "The King / Eternal Lord",
+                "desc": "The Sovereign Lord, The One with the complete Dominion, the One Whose Dominion is clear from imperfection "
+            },
+            "fr": {
+                "meaning": "Le Souverain",
+                "desc": "Est Celui à qui ce monde appartient en réalité et en totalité et Celui dont la domination est absolue et exempte de toute imperfection alors que la domination chez les créatures est créée par Al-Malik "
+            },
+            "ru": {
+                "meaning": "Владыка",
+                "desc": "Властелин, Тот, у Кого полное Господство, Тот, Чье Господство чисто от недостатков."
+            }
+        },
+        {
+            "name": "القُدُّوسُ",
+            "transliteration": "Al Quddus",
+            "number": 4,
+            "found": "(59:23) (62:1)",
+            "en": {
+                "meaning": "The Purest",
+                "desc": "The One who is pure from any imperfection and clear from children and adversaries"
+            },
+            "fr": {
+                "meaning": "Le Pur",
+                "desc": "Le Sanctifié"
+            },
+            "ru": {
+                "meaning": "Святой",
+                "desc": "Тот, Кто чист от каких-либо недостатков и свободен от детей и противников."
+            }
+        },
+        {
+            "name": "السَّلاَمُ",
+            "transliteration": "As Salaam",
+            "number": 5,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Source of Peace",
+                "desc": "The one who provides peace, calm and serenity. By citing this name, we declare peace for ourselves and for those around us."
+            },
+            "fr": {
+                "meaning": "La Paix",
+                "desc": "Celui qui procure la paix, le calme et la sérénité. En citant ce nom, on déclare la paix pour soi-même et pour ceux qui nous entourent."
+            },
+            "ru": {
+                "meaning": "Источник Мира",
+                "desc": "Тот, Кто приносит мир, спокойствие и безмятежность. Произнося это имя, мы объявляем мир для себя и для тех, кто нас окружает."
+            }
+        },
+        {
+            "name": "المُؤْمِنُ",
+            "transliteration": "Al Mu'min",
+            "number": 6,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Bestower of Faith",
+                "desc": "The one who confirms the truth"
+            },
+            "fr": {
+                "meaning": "Le Croyant",
+                "desc": "Celui qui confirme la vérité."
+            },
+            "ru": {
+                "meaning": "Подтверждающий Веру",
+                "desc": "Тот, Кто подтверждает правду."
+            }
+        },
+        {
+            "name": "المُهَيْمِنُ",
+            "transliteration": "Al Muhaymin",
+            "number": 7,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Guardian",
+                "desc": "The one who oversees and protects all matters"
+            },
+            "fr": {
+                "meaning": "Le Protecteur",
+                "desc": "Celui qui supervise et protège toutes les affaires."
+            },
+            "ru": {
+                "meaning": "Страж",
+                "desc": "Тот, Кто следит и охраняет все дела."
+            }
+        },
+        {
+            "name": "العَزِيزُ",
+            "transliteration": "Al Azeez",
+            "number": 8,
+            "found": "(3:6) (9:40) (48:7) (59:23)",
+            "en": {
+                "meaning": "The Mighty / Strong",
+                "desc": "The Mighty, the Strong, The Defeater who is not defeated"
+            },
+            "fr": {
+                "meaning": "Le Puissant",
+                "desc": "Celui qui est capable de tout, qui triomphe de tout, à qui rien n’est impossible."
+            },
+            "ru": {
+                "meaning": "Могучий",
+                "desc": "Могущественный, Сильный, Победитель, который не побеждается."
+            }
+        },
+        {
+            "name": "الجَبَّارُ",
+            "transliteration": "Al Jabbaar",
+            "number": 9,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Compeller",
+                "desc": "The One that nothing happens in His Dominion except that which He willed"
+            },
+            "fr": {
+                "meaning": "Le Contraignant",
+                "desc": "Celui pour qui rien ne se passe dans Son empire sans qu'il l’ait voulu."
+            },
+            "ru": {
+                "meaning": "Принудитель",
+                "desc": "Тот, в чьём Владычестве ничто не происходит, кроме того, что Он велел."
+            }
+        },
+        {
+            "name": "المُتَكَبِّرُ",
+            "transliteration": "Al Mutakabbir",
+            "number": 10,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Supreme",
+                "desc": "The One who is clear from the attributes of the creatures and from resembling them."
+            },
+            "fr": {
+                "meaning": "L'Orgueilleux",
+                "desc": "Celui qui est libre de toute imperfection. Il est le Grand, il est le Superbe."
+            },
+            "ru": {
+                "meaning": "Величественный",
+                "desc": "Тот, Кто свободен от атрибутов созданий и не похож на них."
+            }
+        },
+        {
+            "name": "الخَالِقُ",
+            "transliteration": "Al Khaliq",
+            "number": 11,
+            "found": "(6:102) (13:16) (39:62) (40:62) (59:24)",
+            "en": {
+                "meaning": "The Creator",
+                "desc": "The One who brings everything from non-existence to existence "
+            },
+            "fr": {
+                "meaning": "Le Créateur",
+                "desc": "Celui qui fait exister tout ce qui existe"
+            },
+            "ru": {
+                "meaning": "Творец",
+                "desc": "Тот, Кто приносит всё из небытия в существование."
+            }
+        },
+        {
+            "name": "البَارِئُ",
+            "transliteration": "Al Bari'",
+            "number": 12,
+            "found": "(59:24)",
+            "en": {
+                "meaning": "The Evolver",
+                "desc": "The Maker, The Creator who has the Power to turn the entities."
+            },
+            "fr": {
+                "meaning": "L'Initiateur",
+                "desc": "Celui qui donne une forme à la création."
+            },
+            "ru": {
+                "meaning": "Выводящий",
+                "desc": "Тот, Кто делает, Творец, У Кого есть Сила превратить объекты."
+            }
+        },
+        {
+            "name": "المُصَوِّرُ",
+            "transliteration": "Al Musawwir",
+            "number": 13,
+            "found": "(59:24)",
+            "en": {
+                "meaning": "The Fashioner",
+                "desc": "The One who forms His creatures in different pictures"
+            },
+            "fr": {
+                "meaning": "Le Formateur",
+                "desc": "Celui qui façonne Ses créatures dans différentes formes."
+            },
+            "ru": {
+                "meaning": "Образующий",
+                "desc": "Тот, Кто формирует Своих созданий в разных образах."
+            }
+        },
+        {
+            "name": "الغَفَّارُ",
+            "transliteration": "Al Ghaffaar",
+            "number": 14,
+            "found": "(20:82) (38:66) (39:5) (40:42) (71:10)",
+            "en": {
+                "meaning": "The Great Forgiver",
+                "desc": "The Forgiver, The One who forgives the sins of His slaves time and time again."
+            },
+            "fr": {
+                "meaning": "Le Tout-Pardonnant",
+                "desc": "Celui qui pardonne, efface les péchés."
+            },
+            "ru": {
+                "meaning": "Прощающий Грехи",
+                "desc": "Прощающий, Тот, Кто прощает грехи Своих рабов снова и снова."
+            }
+        },
+        {
+            "name": "القَهَّارُ",
+            "transliteration": "Al Qahhaar",
+            "number": 15,
+            "found": "(12:39) (13:16) (14:48) (38:65) (39:4)",
+            "en": {
+                "meaning": "The All-Prevailing One",
+                "desc": "The Dominant, The One who has the perfect Power and is not unable over anything."
+            },
+            "fr": {
+                "meaning": "Le Tout-Vainqueur",
+                "desc": "Celui qui domine. Il a le pouvoir suprême et est invincible."
+            },
+            "ru": {
+                "meaning": "Властвующий",
+                "desc": "Тот, Кто имеет идеальную Власть и ничем не ограничен."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0648\u064e\u0647\u064e\u0651\u0627\u0628\u064f",
+            "transliteration": "Al Wahhaab",
+            "number": 16,
+            "found": "(3:8)(38:9)(38:35)",
+            "en": {
+                "meaning": "The Giver of All",
+                "desc": "Is the One who gives immensely without receiving anything in return"
+            },
+            "fr": {
+                "meaning": "Le Tr\u00E8s G\u00E9n\u00E9reux",
+                "desc": "Est Celui qui donne immens\\u00E9ment sans rien recevoir en retour"
+            },
+            "ru": {
+                "meaning": "Дарующий все",
+                "desc": "Тот, кто щедро дарует без ожидания вознаграждения"
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0631\u064e\u0651\u0632\u064e\u0651\u0627\u0642\u064f",
+            "transliteration": "Ar Razzaaq",
+            "number": 17,
+            "found": "(51:58)",
+            "en": {
+                "meaning": "The Sustainer",
+                "desc": "Is the One who makes distribute to every creature what it needs."
+            },
+            "fr": {
+                "meaning": "Le Grand Pourvoyeur",
+                "desc": "Est Celui qui fait distribuer \\u00e0 toute cr\\u00e9ature ce dont elle a besoin."
+            },
+            "ru": {
+                "meaning": "Питатель",
+                "desc": "Тот, кто обеспечивает каждого существа тем, что оно нуждается."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0641\u064e\u062a\u064e\u0651\u0627\u062d\u064f",
+            "transliteration": "Al Fattaah",
+            "number": 18,
+            "found": "(34:26)",
+            "en": {
+                "meaning": "The Opener",
+                "desc": "Is He Who alone knows the keys to the future and the unknown, by His knowledge and by His wisdom. This name is often associated with the following name \"Al-‘Alīm\"."
+            },
+            "fr": {
+                "meaning": "Le Grand Juge",
+                "desc": "Est Celui Qui seul connait les cl\\u00e9s du futur et l'inconnu, de par Sa connaissance et de par Sa sagesse. Ce nom est souvent associ\\u00e9 au nom suivant \\\"Al-\\u2018Al\\u012bm\\\"."
+            },
+            "ru": {
+                "meaning": "Открывающий",
+                "desc": "Тот, кто один знает ключи к будущему и неизвестному, по Его знанию и мудрости. Это имя часто ассоциируется с именем «Аль-Алим»."
+            }
+        },
+        {
+            "name": "\u0627\u064e\u0644\u0652\u0639\u064e\u0644\u0650\u064a\u0652\u0645\u064f",
+            "transliteration": "Al 'Aleem",
+            "number": 19,
+            "found": "(2:158)(3:92)(4:35)(24:41)(33:40)",
+            "en": {
+                "meaning": "The Knower of all",
+                "desc": "The one from whom nothing can hide, for He knows everything and is aware of everything."
+            },
+            "fr": {
+                "meaning": "L'Omniscient",
+                "desc": "Celui \\u00e0 qui rien ne peut se cacher, car Il connait tout et est conscient de tout."
+            },
+            "ru": {
+                "meaning": "Знающий все",
+                "desc": "Тот, от которого ничто не может скрыться, ибо Он знает все и обо всем осведомлен."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0642\u064e\u0627\u0628\u0650\u0636\u064f",
+            "transliteration": "Al Qaabid",
+            "number": 20,
+            "found": "(2:245)",
+            "en": {
+                "meaning": "The Constrictor",
+                "desc": "Is the One who restricts His good according to wisdom."
+            },
+            "fr": {
+                "meaning": "Celui Qui saisit",
+                "desc": "Est Celui qui restreint Son bien conform\\u00e9ment \\u00e0 une sagesse."
+            },
+            "ru": {
+                "meaning": "Сдерживающий",
+                "desc": "Тот, кто ограничивает свое благо в соответствии с мудростью."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0628\u064e\u0627\u0633\u0650\u0637\u064f",
+            "transliteration": "Al Baasit",
+            "number": 21,
+            "found": "(2:245)",
+            "en": {
+                "meaning": "The Reliever",
+                "desc": "Is the One who frees, increases and multiplies his good according to wisdom."
+            },
+            "fr": {
+                "meaning": "Le G\u00E9n\u00E9reux",
+                "desc": "Est Celui qui lib\\u00e8re, augmente et multiplie son bien conform\\u00e9ment \\u00e0 une sagesse."
+            },
+            "ru": {
+                "meaning": "Освобождающий",
+                "desc": "Тот, кто освобождает, увеличивает и умножает свое благо согласно мудрости."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062e\u064e\u0627\u0641\u0650\u0636\u064f",
+            "transliteration": "Al Khaafid",
+            "number": 22,
+            "found": "(95:5)",
+            "en": {
+                "meaning": "The Abaser",
+                "desc": "Is the One who destines the oppressors and the proud to demeanor and chastisement."
+            },
+            "fr": {
+                "meaning": "Celui qui abaisse",
+                "desc": "Est Celui qui destine les oppresseurs et les orgueilleux au rabaissement et au ch\\u00e2timent."
+            },
+            "ru": {
+                "meaning": "Понижающий",
+                "desc": "Тот, кто обременяет угнетателей и гордых смирением и наказанием."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0631\u064e\u0651\u0627\u0641\u0650\u0639\u064f",
+            "transliteration": "Ar Raafi'",
+            "number": 23,
+            "found": "(58:11)(6:83)",
+            "en": {
+                "meaning": "The Exalter",
+                "desc": "The Breeder in the sense of raising, the one who elevates the honor, the status and the prestige of a being in this lower world and in the hereafter."
+            },
+            "fr": {
+                "meaning": "L'\u00C9leveur",
+                "desc": "L'\\u00c9leveur dans le sens d'\\u00e9lever, celui qui \\u00e9l\\u00e8ve l'honneur, le statut et le prestige d'un \\u00eatre dans ce bas monde et dans l'au-del\\u00e0."
+            },
+            "ru": {
+                "meaning": "Возвышающий",
+                "desc": "Тот, кто поднимает в смысле возвышения, тот, кто повышает честь, статус и престиж существа в этом мире и в загробной жизни."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0645\u064f\u0639\u0650\u0632\u064f\u0651",
+            "transliteration": "Al Mu'iz",
+            "number": 24,
+            "found": "(3:26)",
+            "en": {
+                "meaning": "The Bestower of Honour",
+                "desc": "One who offers honor and precious value."
+            },
+            "fr": {
+                "meaning": "Celui qui rend puissant",
+                "desc": "Celui qui offre l'honneur et la valeur pr\\u00e9cieuse."
+            },
+            "ru": {
+                "meaning": "Почетный",
+                "desc": "Тот, кто предлагает честь и драгоценную ценность."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u0630\u0650\u0644\u064f\u0651",
+            "transliteration": "Al Mudhil",
+            "number": 25,
+            "found": "(3:26)",
+            "en": {
+                "meaning": "The Humiliator",
+                "desc": "Is the One who can humiliate and devalue any valiant."
+            },
+            "fr": {
+                "meaning": "Celui qui humilie les fiers",
+                "desc": "Est Celui qui peut humilier et d\\u00e9valoriser n'importe quel valeureux."
+            },
+            "ru": {
+                "meaning": "Унижающий",
+                "desc": "Тот, кто может унизить и обесценить любого доблестного."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0633\u064e\u0651\u0645\u0650\u064a\u0639\u064f",
+            "transliteration": "As Samee'",
+            "number": 26,
+            "found": "(2:127)(2:256)(8:17)(49:1)",
+            "en": {
+                "meaning": "The Hearer of all",
+                "desc": "One who hears any noise or sound in His kingdom emanating from any creature and also One who listens to the invocations of His creatures to respond to their invocations."
+            },
+            "fr": {
+                "meaning": "L'Audient",
+                "desc": "Celui qui entend tout bruit ou son dans Son royaume émanant de n'importe quelle créature et aussi Celui qui écoute les invocations de Ses créatures pour répondre à leurs invocations."
+            },
+            "ru": {
+                "meaning": "Слышащий все",
+                "desc": "Тот, кто слышит любой шум или звук в Его царстве, исходящий от любого существа, а также Тот, кто слушает молитвы Его существ, чтобы отвечать на их молитвы."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0628\u064e\u0635\u0650\u064a\u0631\u064f",
+            "transliteration": "Al Baseer",
+            "number": 27,
+            "found": "(4:58)(17:1)(42:11)(42:27)",
+            "en": {
+                "meaning": "The Seer of all",
+                "desc": "Is the One from whom nothing that exists or comes into existence can escape without the slightest use of an eye, instrument or organ."
+            },
+            "fr": {
+                "meaning": "Le Clairvoyant",
+                "desc": "Est Celui à qui rien de ce qui existe ou entre en existence ne peut échapper, sans le moindre usage d’œil, d’instrument ou d’organe."
+            },
+            "ru": {
+                "meaning": "Видящий все",
+                "desc": "Тот, от которого ничто, что существует или приходит в существование, не может ускользнуть без малейшего использования глаза, инструмента или органа."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062d\u064e\u0643\u064e\u0645\u064f",
+            "transliteration": "Al Hakam",
+            "number": 28,
+            "found": "(22:69)",
+            "en": {
+                "meaning": "The Judge",
+                "desc": "He is the One who judges and decides between creatures here below and in the hereafter and He who ensures equity between the creatures and no one else will and will not be able to decide between them and judge them; and the Judgment in the hereafter will be perfectly just and appropriate."
+            },
+            "fr": {
+                "meaning": "L'Arbitre",
+                "desc": "Est Celui qui juge et départage les créatures ici-bas et dans l’au-delà et Celui qui assure l’équité entre les créatures et nul autre ne va et ne pourra les départager et les juger ; et le Jugement dans l’au-delà sera parfaitement juste et approprié."
+            },
+            "ru": {
+                "meaning": "Судья",
+                "desc": "Он - Тот, кто судит и разрешает споры между существами здесь, на Земле, и в Последнем дне, и Тот, кто обеспечивает справедливость между существами, и никто другой не сможет разрешить споры и судить о них; и суд в Последнем дне будет совершенно справедливым и уместным."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0639\u064e\u062f\u0652\u0644\u064f",
+            "transliteration": "Al 'Adl",
+            "number": 29,
+            "found": "(6:115)",
+            "en": {
+                "meaning": "The Just",
+                "desc": "Is the One who is free from all forms of injustice and / or oppression."
+            },
+            "fr": {
+                "meaning": "Le Juste",
+                "desc": "Est Celui qui est exempt de toute forme d’injustice et/ou d’oppression."
+            },
+            "ru": {
+                "meaning": "Справедливый",
+                "desc": "Тот, кто свободен от любых форм несправедливости и/или угнетения."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0644\u064e\u0651\u0637\u0650\u064a\u0641\u064f",
+            "transliteration": "Al Lateef",
+            "number": 30,
+            "found": "(6:103)(22:63)(31:16)(33:34)",
+            "en": {
+                "meaning": "The Subtle One",
+                "desc": "Is the One who grants his creatures His gentleness and His benevolence."
+            },
+            "fr": {
+                "meaning": "Le Doux",
+                "desc": "Est Celui qui accorde à ses créatures Sa douceur et Sa bienveillance."
+            },
+            "ru": {
+                "meaning": "Ласковый",
+                "desc": "Тот, кто дарует своим существам свою нежность и доброту."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062e\u064e\u0628\u0650\u064a\u0631\u064f",
+            "transliteration": "Al Khabeer",
+            "number": 31,
+            "found": "(6:18)(17:30)(49:13)(59:18)",
+            "en": {
+                "meaning": "The All Aware",
+                "desc": "He is the One from whom cannot be hidden the reality of everything that exists, that is to say the truth of things; no detail escapes Him, neither the thing as a whole, nor each of its parts; and to claim to be able to hide things from the One who creates everything is a delusion and a disbelief."
+            },
+            "fr": {
+                "meaning": "Le Bien-Informé",
+                "desc": "Est Celui à qui ne peut être cachée la réalité de chaque chose qui existe, c'est-à-dire la vérité des choses ; aucun détail ne Lui échappe, ni la chose dans son ensemble, ni chacune de ses parties ; et prétendre pouvoir cacher des choses à Celui qui crée toute chose est un égarement et une mécréance."
+            },
+            "ru": {
+                "meaning": "Всезнающий",
+                "desc": "Он - Тот, от кого не может быть скрыта реальность всего существующего, то есть правда вещей; ни одна деталь не ускользает от Него, ни вещь в целом, ни каждая из ее частей; и утверждать, что можно скрыть вещи от Того, кто создает все, - это заблуждение и неверие."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062d\u064e\u0644\u0650\u064a\u0645\u064f",
+            "transliteration": "Al Haleem",
+            "number": 32,
+            "found": "(2:235)(17:44)(22:59)(35:41)",
+            "en": {
+                "meaning": "The Forebearing",
+                "desc": "Is the One whose patience towards the disbeliefs of sinners exceeds all imagination (it is possible that forgiveness will be granted to them)."
+            },
+            "fr": {
+                "meaning": "Le Très Doux",
+                "desc": "Est Celui dont la patience envers les mécréances des pécheurs dépasse toute imagination (il est possible que le pardon leur soit accordé)."
+            },
+            "ru": {
+                "meaning": "Терпеливый",
+                "desc": "Тот, чье терпение к неверию грешников превосходит всякое воображение (возможно, прощение будет им даровано)."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0639\u064e\u0638\u0650\u064a\u0645\u064f",
+            "transliteration": "Al 'Azeem",
+            "number": 33,
+            "found": "(2:255)(42:4)(56:96)",
+            "en": {
+                "meaning": "The Magnificent",
+                "desc": "This name is difficult to translate because it includes several French words that do not share the same spiritual meaning, but it can be approached as follows: \"Al-Adhīm\" He who is Gigantic Majestic and Fantastically Grandiose far from any bodily or material imperfection"
+            },
+            "fr": {
+                "meaning": "L'Immense",
+                "desc": "Ce nom est difficile à traduire car il inclut plusieurs mots français ne partageant pas le même sens spirituel, mais on peut l'approcher comme suit : \"Al-Adhīm\" Celui qui est Gigantesquement Majestueux et Fantastiquement Grandiose loin de toute imperfection corporelle ou matérielle"
+            },
+            "ru": {
+                "meaning": "Величественный",
+                "desc": "Это имя трудно перевести, потому что оно включает в себя несколько французских слов, которые не разделяют того же духовного значения, но его можно подойти следующим образом: \"Al-Adhīm\" Тот, кто гигантский величественный и фантастически величественный, далеко от любых телесных или материальных недостатков"
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u063a\u064e\u0641\u064f\u0648\u0631\u064f",
+            "transliteration": "Al Ghafoor",
+            "number": 34,
+            "found": "(2:173)(8:69)(16:110)(41:32)",
+            "en": {
+                "meaning": "The Great Forgiver",
+                "desc": "Is the One who forgives immensely over and over again."
+            },
+            "fr": {
+                "meaning": "Le Très Pardonneur",
+                "desc": "Est Celui qui pardonne immensément maintes et maintes fois."
+            },
+            "ru": {
+                "meaning": "Прощающий",
+                "desc": "Тот, кто прощает безмерно снова и снова."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0634\u064e\u0651\u0643\u064f\u0648\u0631\u064f",
+            "transliteration": "Ash Shakoor",
+            "number": 35,
+            "found": "(35:30)(35:34)(42:23)(64:17)",
+            "en": {
+                "meaning": "The Rewarder of Thankfulness",
+                "desc": "Is the One who shows His gratitude for worshipers, however incredibly easy to perform."
+            },
+            "fr": {
+                "meaning": "Le Très-Reconnaissant",
+                "desc": "Est Celui qui montre Sa gratitude envers les adorations aussi incroyablement faciles soient-elles à réaliser."
+            },
+            "ru": {
+                "meaning": "Награждающий благодарностью",
+                "desc": "Тот, кто показывает свою благодарность поклонникам, как бы легко это ни было сделать."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0639\u064e\u0644\u0650\u064a\u064f\u0651",
+            "transliteration": "Al 'Aliyy",
+            "number": 36,
+            "found": "(4:34)(31:30)(42:4)(42:51)",
+            "en": {
+                "meaning": "The Highest",
+                "desc": "Is the One who is above all that He created perfectly and unimaginably."
+            },
+            "fr": {
+                "meaning": "Le Très Haut",
+                "desc": "Est Celui qui est au-dessus de tous ce qu'Il a créé parfaitement et inimaginablement."
+            },
+            "ru": {
+                "meaning": "Всевышний",
+                "desc": "Тот, кто выше всего, что Он создал идеально и невообразимо."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0643\u064e\u0628\u0650\u064a\u0631\u064f",
+            "transliteration": "Al Kabeer",
+            "number": 37,
+            "found": "(13:9)(22:62)(31:30)",
+            "en": {
+                "meaning": "The Greatest",
+                "desc": "The Great: One who is greater than His creation, a greatness that only He knows."
+            },
+            "fr": {
+                "meaning": "Le Très Grand",
+                "desc": "Le Grand : Celui qui est plus grand que Sa création, une grandeur que Lui seul connaît."
+            },
+            "ru": {
+                "meaning": "Великий",
+                "desc": "Великий: Тот, кто больше своего творения, величие, которое знает только Он."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062d\u064e\u0641\u0650\u064a\u0638\u064f",
+            "transliteration": "Al Hafeez",
+            "number": 38,
+            "found": "(11:57)(34:21)(42:6)",
+            "en": {
+                "meaning": "The Preserver",
+                "desc": "Is the One who protects and preserves His good."
+            },
+            "fr": {
+                "meaning": "Le Gardien",
+                "desc": "Est Celui qui protège et préserve Son bien."
+            },
+            "ru": {
+                "meaning": "Хранитель",
+                "desc": "Тот, кто защищает и сохраняет Свое благо."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u0642\u064a\u0650\u062a",
+            "transliteration": "Al Muqeet",
+            "number": 39,
+            "found": "(4:85)",
+            "en": {
+                "meaning": "The Sustainer",
+                "desc": "this word is among the lost words of the ancient Arabic language; very difficult to translate even in modern Arabic}. It would mean: Is the One who leaves no detail when He judges, even the most trivial."
+            },
+            "fr": {
+                "meaning": "Est Celui qui ne laisse aucun détail lorsqu'Il juge, même les plus futiles.",
+                "desc": "Ce mot est parmi les mots perdus de la langue arabe ancienne; très difficile à traduire même en arabe moderne}. Il signifierait : Est Celui qui ne laisse aucun détail lorsqu'Il juge, même les plus futiles."
+            },
+            "ru": {
+                "meaning": "Поддерживающий",
+                "desc": "Это слово относится к потерянным словам древнего арабского языка; очень трудно перевести даже на современный арабский}. Это означало бы: Тот, кто не оставляет деталей при суде, даже самые незначительные."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062d\u0633\u0650\u064a\u0628\u064f",
+            "transliteration": "Al Haseeb",
+            "number": 40,
+            "found": "(4:6)(4:86)(33:39)",
+            "en": {
+                "meaning": "The Reckoner, The Sufficient",
+                "desc": "He is the One who will count all the facts of His creatures without forgetting or error."
+            },
+            "fr": {
+                "meaning": "Celui qui règle les comptes",
+                "desc": "Est Celui qui va compter tous les faits de Ses créatures sans oubli ni erreur."
+            },
+            "ru": {
+                "meaning": "Праведник, Достаточный",
+                "desc": "Он - Тот, кто будет пересчитывать все факты Своих созданий без забвения или ошибки."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062c\u064e\u0644\u0650\u064a\u0644\u064f",
+            "transliteration": "Al Jaleel",
+            "number": 41,
+            "found": "(55:27)(39:14)(7:143)",
+            "en": {
+                "meaning": "The Majestic",
+                "desc": "Is the One who is perfectly exempt from being compared to His creatures or from being like Him."
+            },
+            "fr": {
+                "meaning": "Le Sublime",
+                "desc": "Est Celui qui est parfaitement exempt d'être comparé à Ses créatures ou d'être comme Lui."
+            },
+            "ru": {
+                "meaning": "Величественный",
+                "desc": "Тот, кто абсолютно освобожден от сравнения с Своими творениями или быть подобным им."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0643\u064e\u0631\u0650\u064a\u0645\u064f",
+            "transliteration": "Al Kareem",
+            "number": 42,
+            "found": "(27:40)(82:6)",
+            "en": {
+                "meaning": "The Most Generous, The Most Esteemed",
+                "desc": "Is the One who flooded His creation with His generosity."
+            },
+            "fr": {
+                "meaning": "Le Généreux",
+                "desc": "Est Celui qui de Sa générosité a inondé Sa création."
+            },
+            "ru": {
+                "meaning": "Самый щедрый, Самый почетный",
+                "desc": "Тот, кто наполнил Свое творение Своим великодушием."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0631\u064e\u0651\u0642\u0650\u064a\u0628\u064f",
+            "transliteration": "Ar Raqeeb",
+            "number": 43,
+            "found": "(4:1)(5:117)",
+            "en": {
+                "meaning": "The Watchful One",
+                "desc": "Is the One who observes and beholds all that He has created (and the actions of creatures are also creations)."
+            },
+            "fr": {
+                "meaning": "L'Observateur",
+                "desc": "Est Celui qui observe et regarde tout ce qu'Il a créé (et les actions des créatures sont aussi des créations)."
+            },
+            "ru": {
+                "meaning": "Бдительный",
+                "desc": "Тот, кто наблюдает и видит все, что Он создал (и действия существ также являются творениями)."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0645\u064f\u062c\u0650\u064a\u0628\u064f",
+            "transliteration": "Al Mujeeb ",
+            "number": 44,
+            "found": "(11:61)",
+            "en": {
+                "meaning": "The Responder to Prayer",
+                "desc": "Is the One who answers the invocations of His creatures if He wills and to whom He wills."
+            },
+            "fr": {
+                "meaning": "Celui qui exauce les prières",
+                "desc": "Est Celui qui exauce les invocations de Ses créatures s'Il le veut et à qui Il veut."
+            },
+            "ru": {
+                "meaning": "Отвечающий на молитвы",
+                "desc": "Тот, кто отвечает на молитвы Своих существ, если Он захочет, и кому захочет."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0648\u064e\u0627\u0633\u0650\u0639\u064f",
+            "transliteration": "Al Waasi'",
+            "number": 45,
+            "found": "(2:268)(3:73)(5:54)",
+            "en": {
+                "meaning": "The All-Encompassing, the Boundless",
+                "desc": "This name in Arabic means: immensely wide, but to qualify God it is understood that He has filled every void and has contained all things in a way that only He knows."
+            },
+            "fr": {
+                "meaning": "Le Vaste",
+                "desc": "Ce nom en arabe veut dire : immensément large, mais pour qualifier Dieu on comprend inclusivement qu'Il a rempli tout vide et a contenu toutes choses d'une façon que Lui seul connaît"
+            },
+            "ru": {
+                "meaning": "Всеохватывающий, Безграничный",
+                "desc": "Это имя на арабском означает: безмерно широкий, но для квалификации Бога понимается, что Он заполнил каждую пустоту и содержит все вещи так, как знает только Он."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u062d\u064e\u0643\u0650\u064a\u0645\u064f",
+            "transliteration": "Al Hakeem",
+            "number": 46,
+            "found": "(31:27)(46:2)(57:1)(66:2)",
+            "en": {
+                "meaning": "The Perfectly Wise",
+                "desc": "He whose Wisdom has dazzled, dazzled and will dazzle any conscious and intelligent mind."
+            },
+            "fr": {
+                "meaning": "Le Sage",
+                "desc": "Celui de qui la Sagesse a ébloui, éblouit et éblouira n'importe quel esprit conscient et intelligent."
+            },
+            "ru": {
+                "meaning": "Совершенно Мудрый",
+                "desc": "Тот, чья Мудрость ослепила, ослепляет и будет ослеплять любой сознательный и разумный ум."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0648\u064e\u062f\u064f\u0648\u062f\u064f",
+            "transliteration": "Al Wudood",
+            "number": 47,
+            "found": "(11:90)(85:14)",
+            "en": {
+                "meaning": "The Most Loving",
+                "desc": "This word in Arabic means: The one who draws near to his beloved by mercy, pity and beneficence, but when one reads this name in the \"Koran\", one feels each time different meanings which are difficult to translate into words}. We can try to translate it: The one who draws near to His servants out of pity although they move away from Him and do not glorify Him."
+            },
+            "fr": {
+                "meaning": "Le Tout affectueux",
+                "desc": "Ce mot en arabe veut dire : Celui qui se rapproche de son aimé par la clémence, la pitié et le bienfait, mais lorsqu'on lit ce nom dans le \" Coran \", on sent chaque fois différents sens difficilement traduisibles en mots}. On peut tenter de le traduire : Celui qui se rapproche de Ses serviteurs par pitié bien qu'ils s'éloignent de Lui et ne Le glorifient pas."
+            },
+            "ru": {
+                "meaning": "Самый любящий",
+                "desc": "Это слово на арабском языке означает: Тот, кто приближается к своему возлюбленному милосердием, жалостью и благотворительностью, но когда кто-то читает это имя в \"Коране\", каждый раз ощущаются разные значения, которые трудно передать словами}. Мы можем попробовать перевести это: Тот, кто приближается к Своим слугам из жалости, хотя они отдаляются от Него и не прославляют Его."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0645\u064e\u062c\u0650\u064a\u062f\u064f",
+            "transliteration": "Al Majeed",
+            "number": 48,
+            "found": "(11:73) ",
+            "en": {
+                "meaning": "The Glorious One, The Most Honorable",
+                "desc": "Is the One who is glorified in the infinitely past, present and eternal."
+            },
+            "fr": {
+                "meaning": "Le Tout Glorieux",
+                "desc": "Est Celui qui est glorifié dans l'infiniment passé, le présent et dans l'éternel."
+            },
+            "ru": {
+                "meaning": "Славный, Самый Почетный",
+                "desc": "Тот, кого прославляют в бесконечном прошлом, настоящем и вечном."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0628\u064e\u0627\u0639\u0650\u062b\u064f",
+            "transliteration": "Al Baa'ith",
+            "number": 49,
+            "found": "(22:7)",
+            "en": {
+                "meaning": "The Resurrector",
+                "desc": "Is the One who raises the dead and deploys life in whatever He wants, be they men, animals or simply earth."
+            },
+            "fr": {
+                "meaning": "Celui qui ressuscite",
+                "desc": "Est Celui qui ressuscite les morts et déploie la vie dans ce qu'Il veut, soient-ils des hommes des animaux ou bien une terre tout simplement."
+            },
+            "ru": {
+                "meaning": "Воскрешающий",
+                "desc": "Тот, кто воскрешает мертвых и разворачивает жизнь во всем, что Он хочет, будь то люди, животные или просто земля."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0634\u064e\u0651\u0647\u0650\u064a\u062f\u064f",
+            "transliteration": "Ash Shaheed",
+            "number": 50,
+            "found": "(4:166)(22:17)(41:53)(48:28)",
+            "en": {
+                "meaning": "The Witness",
+                "desc": "Le Témoin : Allah est l'ultime et parfait témoin de tout ce qui s'est passé dans Son royaume, avec des preuves claires et flagrantes, parfaitement irréprochables."
+            },
+            "fr": {
+                "meaning": "Le Grand Témoin",
+                "desc": "The Witness: Allah is the ultimate and perfect witness to all that has happened in His kingdom, with clear and blatant evidence, perfectly blameless."
+            },
+            "ru": {
+                "meaning": "Свидетель",
+                "desc": "Свидетель: Аллах - последний и идеальный свидетель всего, что произошло в Его царстве, с четкими и очевидными доказательствами, абсолютно безупречными."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062d\u064e\u0642\u064f\u0651",
+            "transliteration": "Al Haqq",
+            "number": 51,
+            "found": "(6:62)(22:6)(23:116)(24:25)",
+            "en": {
+                "meaning": "The Truth",
+                "desc": "Is the One who holds the absolute Truth."
+            },
+            "fr": {
+                "meaning": "Le Véridique",
+                "desc": "Est Celui qui détient la Vérité absolue."
+            },
+            "ru": {
+                "meaning": "Истина",
+                "desc": "Тот, кто обладает абсолютной Истиной."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0648\u064e\u0643\u0650\u064a\u0644\u064f",
+            "transliteration": "Al Wakeel",
+            "number": 52,
+            "found": "(3:173)(4:171)(28:28)(73:9)",
+            "en": {
+                "meaning": "The Trustee",
+                "desc": "Is the One who guarantees the sustenance of creatures and the One from whom nothing of their every state can be concealed"
+            },
+            "fr": {
+                "meaning": "Le Tuteur",
+                "desc": "Est Celui qui garantit la subsistance des créatures et Celui à qui rien de chacun de leurs états ne peut être dissimulé "
+            },
+            "ru": {
+                "meaning": "Попечитель",
+                "desc": "Тот, кто гарантирует существование существ и Тот, от которого нельзя скрыть ничего из их каждого состояния"
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0642\u064e\u0648\u0650\u064a\u064f\u0651",
+            "transliteration": "Al Qawiyy",
+            "number": 53,
+            "found": "(22:40)(22:74)(42:19)(57:25)",
+            "en": {
+                "meaning": "The Possessor of all strength",
+                "desc": "The Mighty: Allah is the most powerful, the strongest, his strength has no limit and is not described with definitions of physical strength."
+            },
+            "fr": {
+                "meaning": "Le Fort",
+                "desc": "Le Puissant : Allah est le plus puissant, le plus fort, sa force n'a pas de limite et ne se décrit pas avec des définitions de la force physique. "
+            },
+            "ru": {
+                "meaning": "Обладающий всей силой",
+                "desc": "Могущественный: Аллах - самый могущественный, самый сильный, его сила не имеет предела и не описывается определениями физической силы."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0645\u064e\u062a\u0650\u064a\u0646\u064f",
+            "transliteration": "Al Mateen",
+            "number": 54,
+            "found": "(51:58)",
+            "en": {
+                "meaning": "The Forceful",
+                "desc": "The Enduring: An endurance worthy of Him, unlimited, indefatigable, and which is not marred by any weakness, without pause, without interruption and which no factor can attenuate."
+            },
+            "fr": {
+                "meaning": "Le Robuste",
+                "desc": "L'Endurant : Une endurance digne de Lui, illimitée, infatigable, et qui n'est entachée d'aucune faiblesse, sans pause, sans interruption et qu'aucun facteur ne peut atténuer. "
+            },
+            "ru": {
+                "meaning": "Могучий",
+                "desc": "Устойчивый: Выносливость, достойная Его, неограниченная, неутомимая, не подверженная никаким слабостям, без пауз, без прерываний и ни один фактор не может ее ослабить."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0648\u064e\u0644\u0650\u064a\u064f\u0651",
+            "transliteration": "Al Waliyy",
+            "number": 55,
+            "found": "(4:45)(7:196)(42:28)(45:19)",
+            "en": {
+                "meaning": "The Protector",
+                "desc": "Is the One who preserves the believing servants, so the prophets and those who follow them are those who are the \"preserved people\" in the sense that they have been guided to the obligatory thanks to Him who makes them exist, that is, that is to say with regard to Allah"
+            },
+            "fr": {
+                "meaning": "Le Protecteur",
+                "desc": "Est Celui qui préserve les serviteurs croyants, ainsi les prophètes et ceux qui les suivent sont ceux qui sont les « gens préservés » dans le sens où ils ont été guidés vers le remerciement obligatoire à l’égard de Celui qui les fait exister, c’est-à-dire à l’égard d'Allah "
+            },
+            "ru": {
+                "meaning": "Хранитель",
+                "desc": "Тот, кто сохраняет верующих слуг, так что пророки и те, кто следует за ними, являются теми, кто является \"сохраненным народом\" в том смысле, что они были направлены на обязательное благодарение перед Тем, кто делает их существование, то есть, что касается Аллаха"
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u062d\u064e\u0645\u0650\u064a\u062f\u064f",
+            "transliteration": "Al Hameed",
+            "number": 56,
+            "found": "(14:8)(31:12)(31:26)(41:42)",
+            "en": {
+                "meaning": "The Praised",
+                "desc": "Is the One who deserves the thanksgiving, the glorification and the song of praise more than any other"
+            },
+            "fr": {
+                "meaning": "Le Loué",
+                "desc": "Est Celui qui mérite plus que tout autre le remerciement, la glorification et le chant d’éloge "
+            },
+            "ru": {
+                "meaning": "Хвалимый",
+                "desc": "Тот, кто заслуживает благодарность, прославление и песню хвалы больше, чем кто-либо другой"
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0639\u064e\u0644\u064e\u064a\u0651",
+            "transliteration": "Al 'Aliyy",
+            "number": 57,
+            "found": "(31:30)(42:4)(42:51)(57:1)",
+            "en": {
+                "meaning": "The Most High",
+                "desc": "Is the One who is absolutely exalted above everything, that is, who exceeds all perfection."
+            },
+            "fr": {
+                "meaning": "Le Très-Haut",
+                "desc": "Est Celui qui est absolument élevé au-dessus de tout, c'est-à-dire qui dépasse toute perfection."
+            },
+            "ru": {
+                "meaning": "Самый Высокий",
+                "desc": "Тот, кто абсолютно превосходит всё, то есть, кто превосходит всю совершенство."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u062a\u0650\u0639\u064f",
+            "transliteration": "Al Mu'ti",
+            "number": 58,
+            "found": "(13:26)(22:15)(24:38)(26:49)",
+            "en": {
+                "meaning": "The Giver of All",
+                "desc": "He whose gift is eternal."
+            },
+            "fr": {
+                "meaning": "Celui qui donne",
+                "desc": "Celui dont le don est éternel. "
+            },
+            "ru": {
+                "meaning": "Дарующий Все",
+                "desc": "Тот, чей дар вечен."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u0639\u0650\u0651\u0644\u0652\u064a\u0651",
+            "transliteration": "Al Mu'izz",
+            "number": 59,
+            "found": "(3:26)(4:176)(9:71)",
+            "en": {
+                "meaning": "The Giver of Honour",
+                "desc": "He who can give glory to those He wants."
+            },
+            "fr": {
+                "meaning": "Celui qui donne l'honneur",
+                "desc": "Celui qui peut donner de la gloire à ceux qu’Il veut. "
+            },
+            "ru": {
+                "meaning": "Дарующий Честь",
+                "desc": "Тот, кто может дать славу тем, кого Он захочет."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u0630\u0650\u0644\u0652\u0644\u0651",
+            "transliteration": "Al Mudhill",
+            "number": 60,
+            "found": "(3:26)(4:176)(9:71)",
+            "en": {
+                "meaning": "The Giver of Dishonour",
+                "desc": "He who can humiliate whoever He wants."
+            },
+            "fr": {
+                "meaning": "Celui qui donne l'humiliation",
+                "desc": "Celui qui peut humilier qui Il veut. "
+            },
+            "ru": {
+                "meaning": "Дарующий Унижение",
+                "desc": "Тот, кто может унизить кого угодно."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0631\u064e\u0632\u0650\u0627\u0642\u064f",
+            "transliteration": "Ar Razzaq",
+            "number": 61,
+            "found": "(51:58)(51:22)",
+            "en": {
+                "meaning": "The Provider",
+                "desc": "He whose generosity is eternal."
+            },
+            "fr": {
+                "meaning": "Celui qui pourvoit",
+                "desc": "Celui dont la générosité est éternelle. "
+            },
+            "ru": {
+                "meaning": "Провайдер",
+                "desc": "Тот, чья щедрость вечна."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0641\u064e\u0627\u0637\u0650\u0631\u064f",
+            "transliteration": "Al Fattar",
+            "number": 62,
+            "found": "(59:24)",
+            "en": {
+                "meaning": "The Creator of all",
+                "desc": "The one who creates without needing to refer to anything or to imitate someone."
+            },
+            "fr": {
+                "meaning": "Celui qui crée",
+                "desc": "Celui qui crée sans avoir besoin de se référer à quoi que ce soit ou d’imiter quelqu’un. "
+            },
+            "ru": {
+                "meaning": "Создатель всего",
+                "desc": "Тот, кто создает, не нуждаясь в ссылках на что-либо или в подражании кому-либо."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0639\u0650\u0644\u064e\u0645\u0650",
+            "transliteration": "Al 'Alim",
+            "number": 63,
+            "found": "(2:158)(3:92)(33:40)(35:38)",
+            "en": {
+                "meaning": "The All-Knowing",
+                "desc": "The knower of the visible and the invisible."
+            },
+            "fr": {
+                "meaning": "Le Savant",
+                "desc": "Celui qui sait du visible et de l’invisible. "
+            },
+            "ru": {
+                "meaning": "Всезнающий",
+                "desc": "Тот, кто знает видимое и невидимое."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0642\u064e\u0627\u0628\u0650\u0644\u064f",
+            "transliteration": "Al Qaabid",
+            "number": 64,
+            "found": "(2:245)(6:42)(11:6)(17:107)",
+            "en": {
+                "meaning": "The Constricter",
+                "desc": "The one who withholds, in the same way as He extends in favor."
+            },
+            "fr": {
+                "meaning": "Celui qui retient",
+                "desc": "Celui qui retient, de la même façon qu’Il étend en faveur. "
+            },
+            "ru": {
+                "meaning": "Сжимающий",
+                "desc": "Тот, кто сдерживает, так же как Он расширяется в благосклонности."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0628\u064e\u0627\u0633\u0650\u0651\u0650\u0637\u064f",
+            "transliteration": "Al Baasit",
+            "number": 65,
+            "found": "(2:245)(6:42)(11:6)(17:107)",
+            "en": {
+                "meaning": "The Expander",
+                "desc": "The one who has no limit or measure in giving."
+            },
+            "fr": {
+                "meaning": "Celui qui donne largement",
+                "desc": "Celui qui n’a pas de limite ou de mesure en donnant. "
+            },
+            "ru": {
+                "meaning": "Распространяющий",
+                "desc": "Тот, у кого нет предела или меры в дарении."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0643\u0627\u0641\u0650\u0651",
+            "transliteration": "Al Kaafi",
+            "number": 66,
+            "found": "(2:109)(4:6)(4:173)(22:64)",
+            "en": {
+                "meaning": "The Sufficient One",
+                "desc": "The one who gives abundantly to His creatures and is in need of nothing."
+            },
+            "fr": {
+                "meaning": "Celui qui suffit",
+                "desc": "Celui qui donne abondamment à Ses créatures et qui n’a besoin de rien. "
+            },
+            "ru": {
+                "meaning": "Достаточный",
+                "desc": "Тот, кто изобилует дарящим Своим созданиям и не нуждается ни в чем."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u0624\u0650\u0645\u0650\u0646\u064f",
+            "transliteration": "Al Mu'min",
+            "number": 67,
+            "found": "(59:23)(23:114)(40:51)(40:65)",
+            "en": {
+                "meaning": "The Guarantor",
+                "desc": "He whose affirmation is obligatory."
+            },
+            "fr": {
+                "meaning": "Le Fidèle",
+                "desc": "Celui dont l’affirmation est obligatoire. "
+            },
+            "ru": {
+                "meaning": "Гарант",
+                "desc": "Тот, чье утверждение является обязательным."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u0647\u0649",
+            "transliteration": "Al Muhaymin",
+            "number": 68,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Guardian",
+                "desc": "The one who guarantees the continuity of existence."
+            },
+            "fr": {
+                "meaning": "Le Surveillant",
+                "desc": "Celui qui garantit la continuité de l’existence. "
+            },
+            "ru": {
+                "meaning": "Хранитель",
+                "desc": "Тот, кто гарантирует продолжение существования."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0639\u0632\u064a\u0632",
+            "transliteration": "Al 'Azeez",
+            "number": 69,
+            "found": "(3:6)(4:158)(9:40)(9:71)",
+            "en": {
+                "meaning": "The Honorable",
+                "desc": "He who holds all kinds of honor, all glory and all qualities of elevation and sovereignty, both internally and externally."
+            },
+            "fr": {
+                "meaning": "L’Honoré",
+                "desc": "Celui qui détient toutes sortes d’honneurs, toute gloire et toute qualité d’élévation et de souveraineté, tant internes qu’externes. "
+            },
+            "ru": {
+                "meaning": "Возвышенный",
+                "desc": "Тот, кто обладает всеми видами чести, всей славой и всеми качествами возвышенности и власти как внутренними, так и внешними."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u062c\u064e\u0628\u0650\u0627\u0631\u064f",
+            "transliteration": "Al Jabbar",
+            "number": 70,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Irresistible",
+                "desc": "The Master, to whom all are subject."
+            },
+            "fr": {
+                "meaning": "L’irrésistible",
+                "desc": "Le Maître, à qui tous sont soumis. "
+            },
+            "ru": {
+                "meaning": "Непреодолимый",
+                "desc": "Мастер, к которому все подчинены."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0652\u0643\u0627\u062a\u0650\u0645\u064f",
+            "transliteration": "Al Qahhar",
+            "number": 71,
+            "found": "(12:39)(13:16)(14:48)(38:65)",
+            "en": {
+                "meaning": "The Subduer",
+                "desc": "The One who has the ability to subdue anything or anyone in any way He wills."
+            },
+            "fr": {
+                "meaning": "Celui qui dompte",
+                "desc": "Celui qui a la capacité de dompter quoi que ce soit ou quiconque de n’importe quelle manière qu’Il veut. "
+            },
+            "ru": {
+                "meaning": "Покоряющий",
+                "desc": "Тот, кто способен покорить что-либо или кого-либо любым способом, как только Он пожелает."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0648\u0627\u062d\u0650\u0651\u0650\u062f\u064f",
+            "transliteration": "Al Wahid",
+            "number": 72,
+            "found": "(2:163)(5:73)(9:31)(14:48)",
+            "en": {
+                "meaning": "The Only One",
+                "desc": "The One who alone is worthy of all worship and obedience."
+            },
+            "fr": {
+                "meaning": "L’Unique",
+                "desc": "Celui qui seul est digne de tout culte et de toute obéissance. "
+            },
+            "ru": {
+                "meaning": "Единственный",
+                "desc": "Тот, кто один заслуживает всего поклонения и послушания."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u0650\u0643\u0650\u0631\u0650\u0651\u0650\u0651\u064e\u0628\u0650\u0651",
+            "transliteration": "Al Makīr",
+            "number": 73,
+            "found": "(3:54)(8:30)(27:50)(86:15)",
+            "en": {
+                "meaning": "The All-Planner",
+                "desc": "The one who tricks the disbelievers."
+            },
+            "fr": {
+                "meaning": "Le Grand planificateur",
+                "desc": "Celui qui trompe les mécréants. "
+            },
+            "ru": {
+                "meaning": "Великий Планировщик",
+                "desc": "Тот, кто обманывает неверующих."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064e\u062a\u064e\u0643\u0652\u064a\u064e\u0646\u0650",
+            "transliteration": "Al Mutakabbir",
+            "number": 74,
+            "found": "(59:23)",
+            "en": {
+                "meaning": "The Majestic",
+                "desc": "The One who deserves that all the creatures respect and glorify Him."
+            },
+            "fr": {
+                "meaning": "Le Superbe",
+                "desc": "Celui qui mérite que toutes les créatures le respectent et le glorifient. "
+            },
+            "ru": {
+                "meaning": "Величественный",
+                "desc": "Тот, кто заслуживает, чтобы все существа уважали и прославляли Его."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u0650\u0647\u0652\u064a\u0650\u0645\u0650",
+            "transliteration": "Al Muhiym",
+            "number": 75,
+            "found": "(55:27)(40:3)(57:3)",
+            "en": {
+                "meaning": "The Maintainer",
+                "desc": "The one who protects and preserves His creatures."
+            },
+            "fr": {
+                "meaning": "Le Préservateur",
+                "desc": "Celui qui protège et préserve Ses créatures. "
+            },
+            "ru": {
+                "meaning": "Оберегающий",
+                "desc": "Тот, кто защищает и сохраняет Свои создания."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u062f\u0628\u0651\u0650\u0631",
+            "transliteration": "Al Muddathir",
+            "number": 76,
+            "found": "(74:1)",
+            "en": {
+                "meaning": "The Cloaked One",
+                "desc": "He who covers the universe with His power."
+            },
+            "fr": {
+                "meaning": "L’Enveloppé",
+                "desc": "Celui qui recouvre l’univers de Sa puissance. "
+            },
+            "ru": {
+                "meaning": "Завернутый",
+                "desc": "Тот, кто покрывает вселенную Своей силой."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u0642\u0652\u062f\u0650\u064e\u0645",
+            "transliteration": "Al Muqaddim",
+            "number": 77,
+            "found": "(16:61)(17:27)(22:38)(34:20)",
+            "en": {
+                "meaning": "The Advancer",
+                "desc": "The one who advances or delays whatever He wills."
+            },
+            "fr": {
+                "meaning": "Celui qui avance",
+                "desc": "Celui qui avance ou retarde ce qu’Il veut. "
+            },
+            "ru": {
+                "meaning": "Предшествующий",
+                "desc": "Тот, кто сдвигает вперед или откладывает то, что Он желает."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0645\u064f\u062e\u0650\u0651\u0650\u0631\u0652",
+            "transliteration": "Al Mu'akhkhir",
+            "number": 78,
+            "found": "(71:4)",
+            "en": {
+                "meaning": "The Delayer",
+                "desc": "He who delays the punishment of those who deserve it until a time that He sees fit."
+            },
+            "fr": {
+                "meaning": "Celui qui retarde",
+                "desc": "Celui qui retarde le châtiment de ceux qui le méritent jusqu’à un moment qu’Il juge opportun. "
+            },
+            "ru": {
+                "meaning": "Тормозящий",
+                "desc": "Тот, кто задерживает наказание тех, кто заслуживает его, до времени, когда Он сочтет нужным."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0623\u0648\u0650\u0644\u064f",
+            "transliteration": "Al Awwal",
+            "number": 79,
+            "found": "(57:3)",
+            "en": {
+                "meaning": "The First",
+                "desc": "The one who has not been preceded by anything and will not be succeeded by anything."
+            },
+            "fr": {
+                "meaning": "Le Premier",
+                "desc": "Celui qui n’a pas été précédé par quoi que ce soit et ne sera suivi par quoi que ce soit. "
+            },
+            "ru": {
+                "meaning": "Первый",
+                "desc": "Тот, который не был предшествован ничем и не будет последован ничем."
+            }
+        },
+        {
+            "name": "\u0627\u0644\u0622\u062e\u0650\u0651\u0650\u0631",
+            "transliteration": "Al Aakhir",
+            "number": 80,
+            "found": "(57:3)",
+            "en": {
+                "meaning": "The Last",
+                "desc": "The one who remains after everything has passed away."
+            },
+            "fr": {
+                "meaning": "Le Dernier",
+                "desc": "Celui qui reste après que tout a disparu. "
+            },
+            "ru": {
+                "meaning": "Последний",
+                "desc": "Тот, кто остается после того, как все пройдет."
+            }
+        },
+        {
+            "name": "الظاهِرُ",
+            "transliteration": "Az Zaahir",
+            "number": 75,
+            "found": "(57:3)",
+            "en": {
+                "meaning": "The Manifest",
+                "desc": "Is the One whose existence is manifested in everything by proofs, from the point of view of power and domination and not what would be present in any body from the point of view of place, image and how"
+            },
+            "fr": {
+                "meaning": "L'Apparent",
+                "desc": "Est Celui dont l’existence se manifeste en toute chose par des preuves, du point de vue de la puissance et de la domination et non pas ce qui serait présent en tout corps du point de vue de l’endroit, de l’image et du comment"
+            },
+            "ru": {
+                "meaning": "Очевидец",
+                "desc": "Тот, чье существование проявлено во всем, что есть, по доказательствам, с точки зрения силы и власти, а не просто присутствующее в теле, с точки зрения места, образа и как"
+            }
+        },
+        {
+            "name": "البَاطِنُ",
+            "transliteration": "Al Baatin",
+            "number": 76,
+            "found": "(57:3)",
+            "en": {
+                "meaning": "The Hidden",
+                "desc": "Is the One who is preserved from the delusions of creatures attempting to attribute to the Creator human characteristics or characteristics of creatures and the One who creates the characteristics of creatures and their images"
+            },
+            "fr": {
+                "meaning": "Le Caché",
+                "desc": "Est Celui qui est préservé des idées délirantes des créatures tentant d’attribuer à Celui qui crée les créatures des caractéristiques humaines ou des caractéristiques propres aux créatures et Celui qui crée les caractéristiques des créatures et leurs images"
+            },
+            "ru": {
+                "meaning": "Скрытый",
+                "desc": "Тот, кто сберегается от заблуждений созданий, пытающихся приписать Творцу человеческие характеристики или характеристики созданий, и Тот, кто создает характеристики созданий и их образы"
+            }
+        },
+        {
+            "name": "الْوَالِي",
+            "transliteration": "Al Waali",
+            "number": 77,
+            "found": "(13:11)(22:7)",
+            "en": {
+                "meaning": "The Governor",
+                "desc": "Is the One who owns, manages and controls all things and the One who creates everything according to wisdom"
+            },
+            "fr": {
+                "meaning": "Le Monarque",
+                "desc": "Est Celui qui possède, gère et contrôle toute chose et Celui qui crée toute chose selon une sagesse "
+            },
+            "ru": {
+                "meaning": "Властитель",
+                "desc": "Тот, кто владеет, управляет и контролирует все вещи и Тот, кто создает все в соответствии с мудростью"
+            }
+        },
+        {
+            "name": "الْمُتَعَالِي",
+            "transliteration": "Al Muta’ali",
+            "number": 78,
+            "found": "(13:9)",
+            "en": {
+                "meaning": "The Supreme One",
+                "desc": "Is the One who is free from the attributes of creatures and the One whose power over creatures is boundless"
+            },
+            "fr": {
+                "meaning": "Le Sublime",
+                "desc": "Est Celui qui est exempt des attributs des créatures et Celui dont le pouvoir sur les créatures est sans borne "
+            },
+            "ru": {
+                "meaning": "Высший",
+                "desc": "Тот, кто свободен от атрибутов созданий, и Тот, чья власть над созданиями безгранична"
+            }
+        },
+        {
+            "name": "الْبَرُّ",
+            "transliteration": "Al Barr",
+            "number": 79,
+            "found": "(52:28)",
+            "en": {
+                "meaning": "The Doer of Good",
+                "desc": "Is the One who has the ability to bestow faith and blessings on all creatures, and among them some are grateful and some are not: the former are called Muslims or believers and others are called non-Muslims or non-believers."
+            },
+            "fr": {
+                "meaning": "Le Bienfaisant",
+                "desc": "Est Celui qui a la capacité de destiner la foi et les bienfaits à toutes les créatures, et parmi elles certaines sont reconnaissantes et certaines ne le sont pas : on appelle les premiers des musulmans ou des croyants et les autres les non-musulmans ou les non-croyants "
+            },
+            "ru": {
+                "meaning": "Добродетельный",
+                "desc": "Тот, кто обладает способностью даровать веру и благословения всем созданиям, и среди них некоторые благодарны, а некоторые нет: первые называются мусульманами или верующими, а другие называются немусульманами или неверующими"
+            }
+        },
+        {
+            "name": "التَّوَّابُ",
+            "transliteration": "At Tawwaab",
+            "number": 80,
+            "found": "(2:128)(4:64)(49:12)(110:3)",
+            "en": {
+                "meaning": "The Guide to Repentance",
+                "desc": "Is the One who grants forgiveness to those who repent every time they repent"
+            },
+            "fr": {
+                "meaning": "L'Accueillant au repentir",
+                "desc": "Est Celui qui accorde le pardon à ceux qui se repentent à chaque fois qu’ils se repentent "
+            },
+            "ru": {
+                "meaning": "Начальник к покаянию",
+                "desc": "Тот, кто дарует прощение тем, кто каются каждый раз, когда они каются"
+            }
+        },
+        {
+            "name": "الْمُنْتَقِمُ",
+            "transliteration": "Al Muntaqim",
+            "number": 81,
+            "found": "(32:22)(43:41)(44:16)",
+            "en": {
+                "meaning": "The Avenger",
+                "desc": "Is the avenger"
+            },
+            "fr": {
+                "meaning": "Le Vengeur",
+                "desc": "Est le vengeur "
+            },
+            "ru": {
+                "meaning": "Мститель",
+                "desc": "Тот, кто мстит"
+            }
+        },
+        {
+            "name": "الْعَفُوُّ",
+            "transliteration": "Al Afuww",
+            "number": 82,
+            "found": "(4:99)(4:149)(22:60) ",
+            "en": {
+                "meaning": "The Forgiver",
+                "desc": "Is the One who sets aside and forgives sin and the One who preserves in every seemingly hopeless situation a door to honor, maintenance and blessings or to immediate repentance"
+            },
+            "fr": {
+                "meaning": "Le Très Indulgent",
+                "desc": "Est Celui qui écarte du péché et le pardonne et Celui qui préserve dans chaque situation en apparence sans issue une porte vers l’honneur, le maintien et les bienfaits ou vers le repentir immédiat"
+            },
+            "ru": {
+                "meaning": "Прощающий",
+                "desc": "Тот, кто откладывает и прощает грех и Тот, кто сохраняет в каждой кажущейся безысходной ситуации дверь к чести, поддержке и благословениям или к немедленному покаянию"
+            }
+        },
+        {
+            "name": "الرَّؤُوفُ",
+            "transliteration": "Ar Ra’oof",
+            "number": 83,
+            "found": "(3:30)(9:117)(57:9)(59:10)",
+            "en": {
+                "meaning": "The Most Kind",
+                "desc": "Is the One who can offer an immensity of benefits without counterpart and without necessity"
+            },
+            "fr": {
+                "meaning": "Le Bienveillant",
+                "desc": "Est Celui qui peut offrir une immensité de bienfaits sans contrepartie et sans nécessité "
+            },
+            "ru": {
+                "meaning": "Самый Добрый",
+                "desc": "Тот, кто может предложить огромное количество благ без противоположности и без необходимости"
+            }
+        },
+        {
+            "name": "مَالِكُ الْمُلْكِ",
+            "transliteration": "Maalik Ul Mulk",
+            "number": 84,
+            "found": "(3:26)",
+            "en": {
+                "meaning": "The Owner \/ Soverign of All",
+                "desc": "Is the One who creates and attributes according to a destiny all sovereignty, domination, property and all broad power which are granted to certain creatures in this lower world"
+            },
+            "fr": {
+                "meaning": "Le Maître du Pouvoir",
+                "desc": "Est Celui qui crée et attribue selon une destinée toute souveraineté, domination, propriété et tout large pouvoir qui sont accordés à certaines créatures dans ce bas monde "
+            },
+            "ru": {
+                "meaning": "Владыка всех владений",
+                "desc": "Тот, кто создает и приписывает в соответствии с судьбой всю власть, владычество, собственность и все широкие полномочия, предоставленные определенным существам в этом низшем мире"
+            }
+        },
+        {
+            "name": "ذُو الْجَلَالِ وَالإِكْرَامِ",
+            "transliteration": "Dhu Al Jalaali Wa Al Ikraam",
+            "number": 85,
+            "found": "(55:27)(55:78)",
+            "en": {
+                "meaning": "Possessor of Majesty and Bounty",
+                "desc": "That is, Allah is the One who is better than any other in reality and all the evidence confirms this and denies the contrary so it is not valid to dispute this point, to deny it or to be hostile against this subject; is the One who fills with blessings those who will have understood this who will know the general holiness, will have success and will be well guided on the Day of Judgment"
+            },
+            "fr": {
+                "meaning": "Le Plein de Majesté et de Magnificence",
+                "desc": "C’est-à-dire qu'Allah est Celui qui est meilleur que tout autre en réalité et toutes les preuves confirment cela et infirment le contraire donc il n’est pas valable de contester ce point, de le renier ou d’être hostile à l’encontre de ce sujet ; est Celui qui comble de bienfaits ceux qui auront compris cela qui connaîtront la sainteté générale, auront la réussite et seront bien guidés au Jour du Jugement "
+            },
+            "ru": {
+                "meaning": "Обладатель Величия и Щедрости",
+                "desc": "То есть, Аллах - Тот, кто лучше всех в реальности, и все доказательства подтверждают это и опровергают противоположное, поэтому нет оснований оспаривать это, отрицать это или быть враждебным к этой теме; Тот, кто наполняет благословениями тех, кто поймет это, кто поймет общую святость, достигнет успеха и будет хорошо направлен в День Суда"
+            }
+        },
+        {
+            "name": "الْمُقْسِطُ",
+            "transliteration": "Al Muqsit",
+            "number": 86,
+            "found": "(7:29)(3:18)",
+            "en": {
+                "meaning": "The Equitable One",
+                "desc": "Is the One who judges according to the greatest justice, the One who is free from all forms of injustice and tyranny, and the One who has absolutely no accountability"
+            },
+            "fr": {
+                "meaning": "L'Equitable",
+                "desc": "Est Celui qui juge conformément à la plus grande justice, Celui qui est exempt de toute forme d’injustice et de tyrannie et Celui qui n’a absolument aucun compte à rendre"
+            },
+            "ru": {
+                "meaning": "Податливый",
+                "desc": "Тот, кто судит по самой большой справедливости, Тот, кто свободен от всех форм несправедливости и тирании, и Тот, кто абсолютно не несет ответственности"
+            }
+        },
+        {
+            "name": "الْجَامِعُ",
+            "transliteration": "Al Jaami'",
+            "number": 87,
+            "found": "(3:9)",
+            "en": {
+                "meaning": "The Gatherer",
+                "desc": "Is the One who gathers creatures together on a day of which there is no doubt, the Day of Judgment"
+            },
+            "fr": {
+                "meaning": "Le Rassembleur",
+                "desc": "Est Celui qui rassemble les créatures en un jour au sujet duquel il n’y a pas de doute, le Jour du Jugement "
+            },
+            "ru": {
+                "meaning": "Собиратель",
+                "desc": "Тот, кто собирает существ вместе в день, о котором нет сомнений, День Суда"
+            }
+        },
+        {
+            "name": "الْغَنِيُّ",
+            "transliteration": "Al Ghaniyy",
+            "number": 88,
+            "found": "(3:97)(39:7)(47:38)(57:24)",
+            "en": {
+                "meaning": "The Rich One",
+                "desc": "Is the One who has no need of creatures and whose creatures cannot do without al-Ghaniyy [who is the One who makes them exist and keeps them in existence and constantly changes them]"
+            },
+            "fr": {
+                "meaning": "Le Riche",
+                "desc": "Est Celui qui n’a aucun besoin des créatures et dont les créatures ne peuvent se passer de al-Ghaniyy [qui est Celui qui les fait exister et les maintient en existence et les fait changer en permanence] "
+            },
+            "ru": {
+                "meaning": "Богатый",
+                "desc": "Тот, кто не нуждается в существах, и чьи существа не могут обойтись без аль-Гханий [который делает их существовать, сохраняет их в существовании и постоянно меняет их]"
+            }
+        },
+        {
+            "name": "الْمُغْنِي",
+            "transliteration": "Al Mughi",
+            "number": 89,
+            "found": "(9:28)",
+            "en": {
+                "meaning": "The Enricher",
+                "desc": "Is the One who satisfies the needs of creatures and the One who brings them their sustenance"
+            },
+            "fr": {
+                "meaning": "Celui qui enrichit",
+                "desc": "Est Celui qui satisfait les besoins des créatures et Celui qui leur fait parvenir leur subsistance "
+            },
+            "ru": {
+                "meaning": "Обогащающий",
+                "desc": "Тот, кто удовлетворяет потребности существ и Тот, кто приносит им их пропитание"
+            }
+        },
+        {
+            "name": "الْمَانِعُ",
+            "transliteration": "Al Maani'",
+            "number": 90,
+            "found": "(67:21)",
+            "en": {
+                "meaning": "The Preventer of harm",
+                "desc": "Is the One who intends for each creature his victories, his protections and the One from whom they must always be preserved according to a destiny"
+            },
+            "fr": {
+                "meaning": "Le Défenseur",
+                "desc": "Est Celui qui destine à chaque créature ses victoires, ses protections et Celui dont ils devront être préservés toujours selon une destinée "
+            },
+            "ru": {
+                "meaning": "Защищающий",
+                "desc": "Тот, кто намерен обеспечить каждому существу его победы, его защиту и Тот, от которого они всегда должны быть сохранены согласно судьбе"
+            }
+        },
+        {
+            "name": "الضَّارُّ",
+            "transliteration": "Ad Daaarr",
+            "number": 91,
+            "found": "(6:17)",
+            "en": {
+                "meaning": "The Afflictor",
+                "desc": "Is the One who leads astray and no one can lead astray by an act of His"
+            },
+            "fr": {
+                "meaning": "Le Nuisible",
+                "desc": "Est Celui qui égare et personne ne peut égarer par un acte de Lui "
+            },
+            "ru": {
+                "meaning": "Вредитель",
+                "desc": "Тот, кто вводит в заблуждение, и никто не может ввести в заблуждение действием Его"
+            }
+        },
+        {
+            "name": "النَّافِعُ",
+            "transliteration": "An Nafi’",
+            "number": 92,
+            "found": "(2:105)",
+            "en": {
+                "meaning": "The Benefactor",
+                "desc": "Is the One who brings benefits to the creatures according to a destiny"
+            },
+            "fr": {
+                "meaning": "Celui qui accorde le bénéfice",
+                "desc": "Est Celui qui apporte des bienfaits aux créatures selon une destinée "
+            },
+            "ru": {
+                "meaning": "Пользующий",
+                "desc": "Тот, кто приносит пользу существам согласно судьбе"
+            }
+        },
+        {
+            "name": "النُّورُ",
+            "transliteration": "An Noor",
+            "number": 93,
+            "found": "(24:35)",
+            "en": {
+                "meaning": "The Light",
+                "desc": "Is the One who is the guide of all the created beings in the universe and the One who knows their needs, interests and the One who created their souls and bodies in the best forms and shapes"
+            },
+            "fr": {
+                "meaning": "La Lumière",
+                "desc": "Est Celui qui est le guide de tous les êtres créés dans l’univers et Celui qui connaît leurs besoins, leurs intérêts et Celui qui a créé leurs âmes et leurs corps dans les meilleures formes et les meilleures apparences "
+            },
+            "ru": {
+                "meaning": "Свет",
+                "desc": "Тот, кто является руководителем всех созданных существ во вселенной, и Тот, кто знает их потребности, интересы и Тот, кто создал их души и тела в лучших формах и образах"
+            }
+        },
+        {
+            "name": "الْهَادِي",
+            "transliteration": "Al Haadi",
+            "number": 94,
+            "found": "(22:54)(45:22)",
+            "en": {
+                "meaning": "The Guide",
+                "desc": "Is the One who, at every moment, guides each creature towards its appointed destiny, according to His wisdom and His way"
+            },
+            "fr": {
+                "meaning": "Le Guide",
+                "desc": "Est Celui qui, à chaque instant, guide chaque créature vers sa destinée fixée, selon Sa sagesse et Sa voie "
+            },
+            "ru": {
+                "meaning": "Путеводитель",
+                "desc": "Тот, кто в каждый момент направляет каждое создание к его назначенной судьбе, согласно Своей мудрости и Своему способу"
+            }
+        },
+        {
+            "name": "الْبَدِيعُ",
+            "transliteration": "Al Badee'",
+            "number": 95,
+            "found": "(2:117)",
+            "en": {
+                "meaning": "The Originator",
+                "desc": "Is the One who starts all things in existence and the One who creates them without a pre-existing model and with new attributes"
+            },
+            "fr": {
+                "meaning": "L'Innovateur",
+                "desc": "Est Celui qui débute toute chose dans l’existence et Celui qui les crée sans modèle préexistant et avec de nouveaux attributs "
+            },
+            "ru": {
+                "meaning": "Творец",
+                "desc": "Тот, кто начинает все вещи в существование и Тот, кто создает их без предварительной модели и с новыми атрибутами"
+            }
+        },
+        {
+            "name": "الْبَاقِي",
+            "transliteration": "Al Baaqi",
+            "number": 96,
+            "found": "(55:27)",
+            "en": {
+                "meaning": "The Everlasting One",
+                "desc": "Is the One who remains after the perishing of all created things, the One whose existence will remain when all things are destroyed"
+            },
+            "fr": {
+                "meaning": "Le Permanent",
+                "desc": "Est Celui qui reste après la disparition de toutes les choses créées, Celui dont l’existence demeurera quand toutes les choses seront détruites "
+            },
+            "ru": {
+                "meaning": "Вечный",
+                "desc": "Тот, кто остается после исчезновения всех созданных вещей, Тот, чье существование останется, когда все вещи будут уничтожены"
+            }
+        },
+        {
+            "name": "الْوَارِثُ",
+            "transliteration": "Al Waarith",
+            "number": 97,
+            "found": "(15:23)",
+            "en": {
+                "meaning": "The Inheritor",
+                "desc": "Is the One who remains after all created things perish, the One whose existence will remain when all things are destroyed"
+            },
+            "fr": {
+                "meaning": "L'Inhéritier",
+                "desc": "Est Celui qui demeure après que toutes les choses créées périssent, Celui dont l’existence demeurera quand toutes les choses seront détruites "
+            },
+            "ru": {
+                "meaning": "Наследник",
+                "desc": "Тот, кто останется после того, как все созданные вещи погибнут, Тот, чье существование останется, когда все вещи будут уничтожены"
+            }
+        },
+        {
+            "name": "الرَّشِيدُ",
+            "transliteration": "Ar Rashid",
+            "number": 98,
+            "found": "(2:256)",
+            "en": {
+                "meaning": "The Guide to the Right Path",
+                "desc": "Is the One who guides creatures to the ways of wisdom and of truth, the One who always judges them in truth and wisdom and who constantly renews their existence and their form and who is in no need of their sustenance, of their invocation or of their prayers"
+            },
+            "fr": {
+                "meaning": "Le Droit Chemin",
+                "desc": "Est Celui qui guide les créatures vers les voies de la sagesse et de la vérité, Celui qui les juge toujours dans la vérité et la sagesse et qui renouvelle constamment leur existence et leur forme et qui n’a besoin ni de leur subsistance, ni de leur invocation, ni de leurs prières "
+            },
+            "ru": {
+                "meaning": "Путеводитель на Правильный Путь",
+                "desc": "Тот, кто направляет существ в пути мудрости и истины, Тот, кто всегда судит их в истине и мудрости и кто постоянно обновляет их существование и их форму и кто не нуждается в их пропитании, в их обращении или в их молитвах"
+            }
+        },
+        {
+            "name": "الصَّبُورُ",
+            "transliteration": "As Saboor",
+            "number": 99,
+            "found": "(2:260)(3:200)",
+            "en": {
+                "meaning": "The Patient One",
+                "desc": "Is the One who delays the punishment for those who sin against Him and does not hasten to punish them, the One who is slow to anger and does not hasten to requite the sinners for their sins"
+            },
+            "fr": {
+                "meaning": "L'Endurant",
+                "desc": "Est Celui qui retarde la punition pour ceux qui pèchent contre Lui et n’a pas hâte de les punir, Celui qui est lent à la colère et ne se hâte pas de rétribuer les pécheurs pour leurs péchés "
+            },
+            "ru": {
+                "meaning": "Терпеливый",
+                "desc": "Тот, кто откладывает наказание для тех, кто грешит против Него, и не спешит наказывать их, Тот, кто медленно гневится и не спешит возмездия грешникам за их грехи"
+            }
+        }
+    ]
+}

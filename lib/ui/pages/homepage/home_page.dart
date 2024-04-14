@@ -58,7 +58,7 @@ class SabailHome extends StatelessWidget {
                       _buildNavItem(
                           context, 0, "assets/icons/moon.svg", 'Главная'),
                       _buildNavItem(context, 1, "assets/icons/mosque.svg",
-                          'Времена молитв'),
+                          'Время молитв'),
                       _buildNavItem(
                           context, 2, "assets/icons/quran.svg", 'Аль Коран'),
                       _buildNavItem(

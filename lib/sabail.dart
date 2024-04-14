@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:sabail/provider/nav_bar_provider.dart';
 import 'package:sabail/provider/time_provider.dart';
+import 'package:sabail/provider/user_city.dart';
 import 'package:sabail/ui/routes/app_navigator.dart';
 
 class Sabail extends StatelessWidget {
@@ -18,7 +19,10 @@ class Sabail extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => TimeProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CityProvider(),
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

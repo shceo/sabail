@@ -30,6 +30,7 @@ dependencies:
   google_fonts: ^6.2.1
   country_pickers: ^2.0.0
   flutter_typeahead: ^5.2.0
+  flutter_islamic_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +51,7 @@ flutter:
     - assets/icons/
     - assets/fonts/
     - assets/cities.json
+    - assets/json/namesofAllah.json
     
 
   # example:
