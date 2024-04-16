@@ -1,5 +1,7 @@
-[![Google Play](https://codebeat.co/badges/65010906-564f-48c9-aadd-bf9c9ee1d4b3)](https://example.com)
-[![Codemagic build status](https://api.codemagic.io/apps/5e1c37ea48f5bc38b74143ab/5e1c37ea48f5bc38b74143aa/status_badge.svg)](https://example.com)
+[![Google Play](https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png)](https://play.google.com/store/apps/details?id=your.package.name)
+[![App Store](https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg)](https://apps.apple.com/app/your-app-name/idyourappid)
+[![Telegram](https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1024px-Telegram_logo.svg.png)](https://t.me/AmEGames)
+[![Instagram](https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png)](https://www.instagram.com/a.me.studio/)
 
 # sabail
 
