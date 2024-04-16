@@ -1,6 +1,5 @@
-[![Google Play](https://example.com)](https://example.com)
-[![App Store](https://example.com)](https://example.com)
-
+[![Google Play](https://codebeat.co/badges/65010906-564f-48c9-aadd-bf9c9ee1d4b3)](https://example.com)
+[![Codemagic build status](https://api.codemagic.io/apps/5e1c37ea48f5bc38b74143ab/5e1c37ea48f5bc38b74143aa/status_badge.svg)](https://example.com)
 
 # sabail
 
