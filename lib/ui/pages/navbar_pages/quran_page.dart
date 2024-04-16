@@ -180,7 +180,7 @@ class BodyAl extends StatelessWidget {
 class JuzDetailScreen extends StatelessWidget {
   final int juzNumber;
 
-  const JuzDetailScreen({Key? key, required this.juzNumber}) : super(key: key);
+  const JuzDetailScreen({super.key, required this.juzNumber});
 
   @override
   Widget build(BuildContext context) {

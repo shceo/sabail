@@ -1,6 +1,6 @@
 name: sabail
 description: "Probably nothing"
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' 
 
 version: 1.0.0+1
 
@@ -31,6 +31,7 @@ dependencies:
   country_pickers: ^2.0.0
   flutter_typeahead: ^5.2.0
   flutter_islamic_icons: ^1.0.2
+  flutter_local_notifications: ^17.0.1
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,3 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
