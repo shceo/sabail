@@ -1,7 +1,7 @@
-[![Google Play](https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png)](https://play.google.com/store/apps/details?id=your.package.name)
-[![App Store](https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg)](https://apps.apple.com/app/your-app-name/idyourappid)
-[![Telegram](https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1024px-Telegram_logo.svg.png)](https://t.me/AmEGames)
-[![Instagram](https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png)](https://www.instagram.com/a.me.studio/)
+[<img src="https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png" height="50">](https://play.google.com/store/apps/details?id=your.package.name)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" height="50">](https://apps.apple.com/app/your-app-name/idyourappid)
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/1024px-Telegram_logo.svg.png" height="50">](https://t.me/AmEGames)
+[<img src="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" height="50">](https://www.instagram.com/a.me.studio/)
 
 # sabail
 
