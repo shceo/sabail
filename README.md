@@ -1,6 +1,6 @@
 # sabail
 
-![App Icon](appla.png)
+![App Icon](assets/images/appla.png)
 
 This application provides access to various Islamic materials, including 99 Names of Allah, Hadiths, Duas, and more.
 
