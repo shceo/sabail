@@ -7,12 +7,12 @@ import 'package:sabail/ui/pages/screens/surah_screen.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
 
 class AlQuranPage extends StatelessWidget {
-  const AlQuranPage({Key? key}) : super(key: key);
+  const AlQuranPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: SabailColors.notwhite,
         appBar: AppBar(
@@ -30,7 +30,7 @@ class AlQuranPage extends StatelessWidget {
 }
 
 class BodyAl extends StatelessWidget {
-  const BodyAl({Key? key}) : super(key: key);
+  const BodyAl({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +56,18 @@ class BodyAl extends StatelessWidget {
                 children: [
                   Text(
                     'Последнее чтение \n\n${lastReadSurah?.surahName ?? ''}',
-                    style: TextStyle(color: SabailColors.notwhite, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: SabailColors.notwhite,
+                        fontWeight: FontWeight.bold),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SurahScreen(surahNumber: lastReadSurah?.surahNumber ?? 1), // Open the last read Surah
+                          builder: (context) => SurahScreen(
+                              surahNumber: lastReadSurah?.surahNumber ??
+                                  1), // Open the last read Surah
                         ),
                       );
                     },
@@ -95,7 +99,8 @@ class BodyAl extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final surahNumber = index + 1;
                   final surahName = Quran.getSurahName(surahNumber);
-                  final surahEnglishName = Quran.getSurahNameEnglish(surahNumber);
+                  final surahEnglishName =
+                      Quran.getSurahNameEnglish(surahNumber);
                   final surahArabicName = Quran.getSurahNameArabic(surahNumber);
                   return ListTile(
                     title: Text(
@@ -128,19 +133,109 @@ class BodyAl extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SurahScreen(surahNumber: surahNumber),
+                          builder: (context) =>
+                              SurahScreen(surahNumber: surahNumber),
                         ),
                       );
                     },
                   );
                 },
               ),
-              Container(),
-              Container(),
+              ListView.builder(
+                itemCount: 30,
+                itemBuilder: (context, index) {
+                  final juzNumber = index + 1;
+                  return ListTile(
+                    title: Text(
+                      'Джуз $juzNumber',
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.purple,
+                      child: Text(
+                        '$juzNumber',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              JuzDetailScreen(juzNumber: juzNumber),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class JuzDetailScreen extends StatelessWidget {
+  final int juzNumber;
+
+  const JuzDetailScreen({Key? key, required this.juzNumber}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Джуз $juzNumber'),
+      ),
+      body: ListView.builder(
+        itemCount: Quran.totalSurahCount,
+        itemBuilder: (context, index) {
+          final surahNumber = index + 1;
+        
+          if (Quran.getJuzNumber(surahNumber, 1) == juzNumber) {
+            final surahName = Quran.getSurahName(surahNumber);
+            final surahEnglishName = Quran.getSurahNameEnglish(surahNumber);
+            final surahArabicName = Quran.getSurahNameArabic(surahNumber);
+            return ListTile(
+              title: Text(
+                surahArabicName,
+                style: TextStyle(color: Colors.black),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    surahName,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    surahEnglishName,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              leading: CircleAvatar(
+                backgroundColor: Colors.purple,
+                child: Text(
+                  '$surahNumber',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SurahScreen(surahNumber: surahNumber),
+                  ),
+                );
+              },
+            );
+          } else {
+            return SizedBox(); // Если сурата не содержит данный джуз, возвращаем пустой виджет
+          }
+        },
+      ),
     );
   }
 }
