@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sabail/domain/blocs/splash_bloc/splash_screen_bloc.dart';
@@ -13,6 +14,8 @@ void main() async {
   // Инициализация Hive и остальных компонентов
   await Hive.initFlutter();
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations( 
+  [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]); 
 
   // Получение выбранного города
   await cityProvider.initFuture;

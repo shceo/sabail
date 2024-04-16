@@ -81,7 +81,7 @@ class BodyAl extends StatelessWidget {
             ),
             Positioned(
               top: 10,
-              left: 190,
+              left: 184,
               child: Image.asset(
                 'assets/images/quran.png',
                 fit: BoxFit.cover,
