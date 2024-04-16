@@ -12,7 +12,7 @@ This application provides access to various Islamic materials, including 99 Name
 
 ## License
 
-This application is distributed under the GNU General Public License v3.0. You can view the terms of the license in the [LICENSE](LICENSE) file.
+This application is distributed under the GNU General Public License v3.0. You can view the terms of the license in the [LICENSE](LICENSE.md) file.
 
 ## Feedback
 
