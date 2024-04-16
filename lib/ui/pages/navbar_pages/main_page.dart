@@ -43,8 +43,7 @@ class MainPage extends StatelessWidget {
             final hijriDate = snapshot.data!;
             final monthNumber = int.parse(hijriDate.split('')[1]);
             return ChangeNotifierProvider<CityProvider>(
-              create: (_) =>
-                  CityProvider(), // Provide a new instance of CityProvider
+              create: (_) => CityProvider(),
               builder: (context, _) {
                 return BodySab(
                   hijriDate: hijriDate,
@@ -76,21 +75,21 @@ class BodySab extends StatefulWidget {
 class _BodySabState extends State<BodySab> {
   // late String _selectedCity;
 
-String? _selectedCity;
+  String? _selectedCity;
 
-@override
-void didChangeDependencies() {
-  super.didChangeDependencies();
-  _selectedCity = Provider.of<CityProvider>(context).selectedCity;
-}
-
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _selectedCity = Provider.of<CityProvider>(context).selectedCity;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<CityProvider>(
       builder: (context, cityProvider, child) {
         return FutureBuilder<String>(
-          future: PrayerTimes().getPrayerTime(_selectedCity!, DateTime.now(), 2),
+          future:
+              PrayerTimes().getPrayerTime(_selectedCity!, DateTime.now(), 2),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             final prayerTimes = snapshot.data != null
                 ? snapshot.data!.split(', ')
@@ -111,11 +110,12 @@ void didChangeDependencies() {
               children: [
                 Align(
                   alignment: Alignment.topCenter,
-                  child: Image.asset(
-                    'assets/images/msq1.png',
-                    fit: BoxFit.fill,
-                    width: 406.9, // 400
-                    height: 259,
+                  child: AspectRatio(
+                    aspectRatio: 406.9 / 255.3, // pin
+                    child: Image.asset(
+                      'assets/images/msq1.png',
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
                 Column(
@@ -146,10 +146,11 @@ void didChangeDependencies() {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              CitiesAndCountriesPage(),
+                                            const  CitiesAndCountriesPage(),
                                         ),
                                       );
                                       if (selectedCity != null) {
+                                        // ignore: use_build_context_synchronously
                                         Provider.of<CityProvider>(context,
                                                 listen: false)
                                             .updateSelectedCity(selectedCity);
@@ -212,7 +213,7 @@ void didChangeDependencies() {
                                   maghribTime: maghribTime,
                                   ishaTime: ishaTime,
                                 ),
-                                const SizedBox(height: 30),
+                                const SizedBox(height: 20),
                                 const MainWidgets(),
                                 const SizedBox(height: 20),
                                 const MainPodWidgets(),

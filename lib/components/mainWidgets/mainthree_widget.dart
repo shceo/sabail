@@ -42,7 +42,7 @@ class MainThreePodWidget extends StatelessWidget {
                 Icon(icons[index], size: 28, color: SabailColors.darkpurple,), 
                 Text(
                   texts[index],
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12), 
                 ),
@@ -65,27 +65,27 @@ class Page extends StatelessWidget {
     if (index == 0) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('99 имен Аллаха'),
+          title: const Text('99 имен Аллаха'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('Здесь будут отображаться 99 имен Аллаха'),
         ),
       );
     } else if (index == 1) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Хадисы'),
+          title: const Text('Хадисы'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('Здесь будут отображаться Хадисы'),
         ),
       );
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Дуа'),
+          title: const Text('Дуа'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('Здесь будут отображаться Дуа'),
         ),
       );

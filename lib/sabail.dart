@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:sabail/provider/nav_bar_provider.dart';
+import 'package:sabail/provider/tabmodel_provider.dart';
 import 'package:sabail/provider/time_provider.dart';
 import 'package:sabail/provider/user_city.dart';
 import 'package:sabail/ui/routes/app_navigator.dart';
@@ -22,6 +23,9 @@ class Sabail extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => CityProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TabBarModel(),
         ),
       ],
       child: MaterialApp.router(

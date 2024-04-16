@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
 
 class MainWidgets extends StatelessWidget {
-  const MainWidgets({Key? key});
+  const MainWidgets({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,8 @@ class MainWidgets extends StatelessWidget {
             );
           },
           child: Container(
-            width: 90,
-            height: 90,
+            width: 88,
+            height: 88,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.grey[300],
@@ -51,8 +51,9 @@ class MainWidgets extends StatelessWidget {
                   color: SabailColors.darkpurple,
                 ),
                 Text(
+                  textAlign: TextAlign.center,
                   texts[index],
-                  style: TextStyle(color: Colors.black, fontSize: 12),
+                  style: const TextStyle(color: Colors.black, fontSize: 11),
                 ),
               ],
             ),
@@ -64,9 +65,9 @@ class MainWidgets extends StatelessWidget {
 }
 
 class Page extends StatelessWidget {
-  // новый класс для страницы, на которую будет осуществлен переход
+
   final int index;
-  Page(this.index);
+  const Page(this.index, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +105,12 @@ class Page extends StatelessWidget {
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 8,
                           horizontal:
-                              16), // Добавляем отступы по вертикали и горизонтали
+                              16),
                       leading: CircleAvatar(
                         backgroundColor: SabailColors.darkpurple,
                         child: Text(
                           '${index + 1}',
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                       title: Text(
@@ -123,7 +124,7 @@ class Page extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             child: Text(
                               name['name'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -139,7 +140,7 @@ class Page extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Divider(indent: 65), // Линии начинаются после нумерации
+                    const Divider(indent: 65), 
                   ],
                 );
               },
@@ -150,18 +151,18 @@ class Page extends StatelessWidget {
     } else if (index == 1) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Хадисы'),
+          title: const Text('Хадисы'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('Здесь будут отображаться Хадисы'),
         ),
       );
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Дуа'),
+          title: const Text('Дуа'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('Здесь будут отображаться Дуа'),
         ),
       );
