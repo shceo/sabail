@@ -13,7 +13,7 @@ class HijriDateModel extends ChangeNotifier {
     try {
       final hijriDate = await HijriApi().getCurrentHijriDate();
       _hijriDate = hijriDate;
-      // notifyListeners();
+      notifyListeners();
     } catch (error) {
       Fluttertoast.showToast(
         msg: "Что то пошло не так: $error",
@@ -29,7 +29,7 @@ class HijriDateModel extends ChangeNotifier {
 }
 
 class PrayTimes extends StatelessWidget {
-  const PrayTimes({Key? key}) : super(key: key);
+  const PrayTimes({super.key});
 
   @override
   Widget build(BuildContext context) {
