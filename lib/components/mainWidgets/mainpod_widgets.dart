@@ -22,8 +22,8 @@ class MainPodWidgets extends StatelessWidget {
             );
           },
           child: Container(
-            width: 90,
-            height: 90,
+            width: 88,
+            height: 88,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.grey[300],

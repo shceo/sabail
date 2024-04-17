@@ -22,8 +22,8 @@ class MainThreePodWidget extends StatelessWidget {
             );
           },
           child: Container(
-            width: 90,
-            height: 90,
+            width: 88,
+            height: 88,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.grey[300],
@@ -73,11 +73,13 @@ class Page extends StatelessWidget {
       );
     } else if (index == 1) {
       return Scaffold(
+        backgroundColor: SabailColors.notwhite,
         appBar: AppBar(
-          title: const Text('Хадисы'),
+          backgroundColor: SabailColors.notwhite,
+          title: const Text('Тасбих'),
         ),
         body: const Center(
-          child: Text('Здесь будут отображаться Хадисы'),
+          child: Text('Тасбих'),
         ),
       );
     } else {
