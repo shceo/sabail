@@ -43,7 +43,7 @@ class ProfileBody extends StatelessWidget {
             ),
             child: const ListTile(
               leading: Icon(Icons.group_add),
-              title: Text('Invite Friends'),
+              title: Text('Профиль'),
             ),
             onPressed: () {/* Invite friends */},
           ),
@@ -82,7 +82,7 @@ class ProfileBody extends StatelessWidget {
             ),
             child: const ListTile(
               leading: Icon(Icons.language),
-              title: Text('Change Language'),
+              title: Text('Фонд "Sadaqa"'),
             ),
             onPressed: () {/* Change language */},
           ),
@@ -95,7 +95,7 @@ class ProfileBody extends StatelessWidget {
             ),
             child: const ListTile(
               leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              title: Text('Настройки'),
             ),
             onPressed: () {/* Settings */},
           ),
@@ -108,7 +108,7 @@ class ProfileBody extends StatelessWidget {
             ),
             child: const ListTile(
               leading: Icon(Icons.question_answer),
-              title: Text('FAQs'),
+              title: Text('Условия использования'),
             ),
             onPressed: () {/* FAQs */},
           ),
