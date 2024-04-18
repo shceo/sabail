@@ -98,6 +98,7 @@ class PrayerTimes {
     );
 
     final data = response.data;
+    print(data);
     final timings = data['data'][0]['timings'];
     final fajrTime = timings['Fajr'].replaceAll(' (+05)', '');
     final dhuhrTime = timings['Dhuhr'].replaceAll(' (+05)', '');

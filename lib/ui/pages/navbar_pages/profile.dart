@@ -55,32 +55,6 @@ class ProfileBody extends StatelessWidget {
               backgroundColor: Colors.grey[200],
             ),
             child: const ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Account Settings'),
-            ),
-            onPressed: () {/* Account settings */},
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(10),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.grey[200],
-            ),
-            child: const ListTile(
-              leading: Icon(Icons.payment),
-              title: Text('Billing'),
-            ),
-            onPressed: () {/* Billing */},
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(10),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.grey[200],
-            ),
-            child: const ListTile(
               leading: Icon(Icons.language),
               title: Text('Фонд "Sadaqa"'),
             ),
@@ -113,20 +87,7 @@ class ProfileBody extends StatelessWidget {
             onPressed: () {/* FAQs */},
           ),
         ),
-        // Добавленная кнопка
-        Container(
-          margin: const EdgeInsets.all(10),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.grey[200],
-            ),
-            child: const ListTile(
-              // leading: Icon(Icons.add),
-              // title: Text('Additional Button'),
-            ),
-            onPressed: () {/* Additional button action */},
-          ),
-        ),
+       
       ],
     );
   }

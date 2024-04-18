@@ -63,12 +63,13 @@ class BodySab extends StatefulWidget {
   final int monthNumber;
 
   const BodySab({
-    Key? key,
+    super.key,
     required this.hijriDate,
     required this.monthNumber,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _BodySabState createState() => _BodySabState();
 }
 
@@ -98,7 +99,7 @@ class _BodySabState extends State<BodySab> {
                     'Dhuhr: --:--',
                     'Asr: --:--',
                     'Maghrib: --:--',
-                    'Isha: --:--'
+                    'Isha: --:--',
                   ];
             final fajrTime = prayerTimes[0].split(': ')[1];
             final dhuhrTime = prayerTimes[1].split(': ')[1];
@@ -111,10 +112,12 @@ class _BodySabState extends State<BodySab> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: AspectRatio(
-                    aspectRatio: 406.9 / 255.3, // pin
+                    aspectRatio: 406.9 / 255.3,
                     child: Image.asset(
                       'assets/images/msq1.png',
                       fit: BoxFit.fill,
+                    width: 406.9,
+                    height: 255.3,
                     ),
                   ),
                 ),

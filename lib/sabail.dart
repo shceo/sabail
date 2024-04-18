@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:sabail/provider/nav_bar_provider.dart';
+import 'package:sabail/provider/prayerpage_provider.dart';
 import 'package:sabail/provider/tabmodel_provider.dart';
 import 'package:sabail/provider/time_provider.dart';
 import 'package:sabail/provider/user_city.dart';
 import 'package:sabail/ui/pages/navbar_pages/prayer_times.dart';
+
 import 'package:sabail/ui/routes/app_navigator.dart';
 
 class Sabail extends StatelessWidget {
@@ -28,7 +30,10 @@ class Sabail extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => TabBarModel(),
         ),
-        ChangeNotifierProvider(create: (context) => HijriDateModel())
+        ChangeNotifierProvider(create: (context) => HijriDateModel()),
+        ChangeNotifierProvider(
+          create: ((context) => PrayerTimesModel()),
+        ),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
