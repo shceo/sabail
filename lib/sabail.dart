@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:sabail/provider/image_picker_provider.dart';
 
 import 'package:sabail/provider/nav_bar_provider.dart';
 import 'package:sabail/provider/prayerpage_provider.dart';
@@ -34,6 +35,7 @@ class Sabail extends StatelessWidget {
         ChangeNotifierProvider(
           create: ((context) => PrayerTimesModel()),
         ),
+        ChangeNotifierProvider(create: (context) => ImageNotifier()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

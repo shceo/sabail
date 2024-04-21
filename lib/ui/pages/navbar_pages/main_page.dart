@@ -112,12 +112,12 @@ class _BodySabState extends State<BodySab> {
                 Align(
                   alignment: Alignment.topCenter,
                   child: AspectRatio(
-                    aspectRatio: 406.9 / 255.3,
+                    aspectRatio: 406.9 / 256.3,
                     child: Image.asset(
                       'assets/images/msq1.png',
                       fit: BoxFit.fill,
-                    width: 406.9,
-                    height: 255.3,
+                    // width: 406.9,
+                    // height: 255.3,
                     ),
                   ),
                 ),

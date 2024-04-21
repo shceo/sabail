@@ -33,6 +33,9 @@ dependencies:
   flutter_islamic_icons: ^1.0.2
   flutter_local_notifications: ^17.0.1
   fluttertoast: ^8.2.5
+  path_provider: ^2.1.3
+  flutter_native_image: ^0.0.6+1
+  image_picker: ^1.1.0
 
 dev_dependencies:
   flutter_test:

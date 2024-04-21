@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -36,13 +37,19 @@ class PrayTimes extends StatelessWidget {
       ),
       body: Column(
         children: [
+          const SizedBox(height: 20),
           const HijriDateText(),
           Expanded(
-            child: CustomPaint(
-              painter: PrayerTimeGraph(Provider.of<PrayerTimesModel>(context)),
-              child: Container(),
+            child: AnimatedPrayerTimeGraph(
+              provider: Provider.of<PrayerTimesModel>(context),
             ),
-          )
+          ),
+          const SizedBox(height: 20),
+          Container(
+            width: 200,
+            height: 200,
+            color: Colors.purple.withOpacity(0.5),
+          ),
         ],
       ),
     );
@@ -69,6 +76,38 @@ class HijriDateText extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class AnimatedPrayerTimeGraph extends StatefulWidget {
+  final PrayerTimesModel provider;
+
+  const AnimatedPrayerTimeGraph({Key? key, required this.provider}) : super(key: key);
+
+  @override
+  _AnimatedPrayerTimeGraphState createState() => _AnimatedPrayerTimeGraphState();
+}
+
+class _AnimatedPrayerTimeGraphState extends State<AnimatedPrayerTimeGraph> {
+  bool isSun = true; // Переменная для отслеживания состояния солнца
+
+  @override
+  void initState() {
+    super.initState();
+    // Анимация смены солнца на луну через 5 секунд после загрузки виджета
+    Timer(Duration(seconds: 5), () {
+      setState(() {
+        isSun = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: PrayerTimeGraph(widget.provider, isSun),
+      child: Container(),
     );
   }
 }
@@ -101,90 +140,54 @@ class PrayerTimesModel with ChangeNotifier {
 
 class PrayerTimeGraph extends CustomPainter {
   final PrayerTimesModel prayerTimes;
+  final bool isSun;
 
-  PrayerTimeGraph(this.prayerTimes);
+  PrayerTimeGraph(this.prayerTimes, this.isSun);
 
-  @override
-  void paint(Canvas canvas, Size size) {
-    final double radius = size.width * 0.45;
+@override
+void paint(Canvas canvas, Size size) {
+  final double radius = size.width * 0.45;
 
-    final Paint sunPaint = Paint()..color = Colors.orange;
-    final Paint moonPaint = Paint()..color = Colors.grey[300]!;
-    // final Paint textPaint = Paint()
-      // ..color = Colors.black
-      // ..textAlign = TextAlign.center;
+  final Paint sunPaint = Paint()..color = Colors.orange;
+  final Paint moonPaint = Paint()..color = Colors.grey[300]!;
+  final Paint linePaint = Paint()
+    ..color = Colors.blue
+    ..strokeWidth = 2
+    ..style = PaintingStyle.stroke;
 
-    final Offset center = Offset(size.width / 2, size.height * 0.3); 
+  final Offset center = Offset(size.width / 2, size.height / 2);
 
-    // Draw sun
-    final double sunX = center.dx - radius * math.sin(math.pi / 3);
-    final double sunY = center.dy - radius * math.cos(math.pi / 3);
+  if (isSun) {
+    final double sunX = center.dx;
+    final double sunY = center.dy - radius;
     canvas.drawCircle(Offset(sunX, sunY), 20, sunPaint);
-
-    // Draw moon
-    final double moonX = center.dx + radius * math.sin(math.pi / 3);
-    final double moonY = center.dy - radius * math.cos(math.pi / 3);
+  } else {
+    final double moonX = center.dx;
+    final double moonY = center.dy - radius;
     canvas.drawCircle(Offset(moonX, moonY), 20, moonPaint);
-
-    // Draw graph
-    final Paint graphPaint = Paint()
-      ..color = Colors.blue
-      ..strokeWidth = 3;
-
-    final double graphStartX = center.dx - radius;
-    final double graphEndX = center.dx + radius;
-    final double graphY = center.dy;
-
-    canvas.drawLine(
-      Offset(graphStartX, graphY),
-      Offset(graphEndX, graphY),
-      graphPaint,
-    );
-
-    // Draw labels
-    final textStyle = TextStyle(
-      color: Colors.black,
-      fontFamily: GoogleFonts.oswald().fontFamily,
-      fontSize: 14,
-    );
-
-    final textSpanFajr = TextSpan(text: 'Fajr', style: textStyle);
-    final textSpanDhuhr = TextSpan(text: 'Dhuhr', style: textStyle);
-    final textSpanAsr = TextSpan(text: 'Asr', style: textStyle);
-    final textSpanMaghrib = TextSpan(text: 'Maghrib', style: textStyle);
-    final textSpanIsha = TextSpan(text: 'Isha', style: textStyle);
-
-    final textPainterFajr = TextPainter(
-      text: textSpanFajr,
-      textDirection: TextDirection.ltr,
-    )..layout(minWidth: 0, maxWidth: size.width);
-
-    final textPainterDhuhr = TextPainter(
-      text: textSpanDhuhr,
-      textDirection: TextDirection.ltr,
-    )..layout(minWidth: 0, maxWidth: size.width);
-
-    final textPainterAsr = TextPainter(
-      text: textSpanAsr,
-      textDirection: TextDirection.ltr,
-    )..layout(minWidth: 0, maxWidth: size.width);
-
-    final textPainterMaghrib = TextPainter(
-      text: textSpanMaghrib,
-      textDirection: TextDirection.ltr,
-    )..layout(minWidth: 0, maxWidth: size.width);
-
-    final textPainterIsha = TextPainter(
-      text: textSpanIsha,
-      textDirection: TextDirection.ltr,
-    )..layout(minWidth: 0, maxWidth: size.width);
-
-    textPainterFajr.paint(canvas, Offset(graphStartX - 20, graphY - 20));
-    textPainterDhuhr.paint(canvas, Offset(graphStartX + radius * 0.25, graphY - 20));
-    textPainterAsr.paint(canvas, Offset(center.dx - 10, graphY - 20));
-    textPainterMaghrib.paint(canvas, Offset(graphStartX + radius * 0.75, graphY - 20));
-    textPainterIsha.paint(canvas, Offset(graphEndX - 20, graphY - 20));
   }
+
+  final Rect rect = Rect.fromCircle(center: center, radius: radius);
+
+  final double startAngle = -math.pi / 3;
+  final double sweepAngle = math.pi;
+
+  canvas.drawArc(rect, startAngle, sweepAngle, false, linePaint);
+
+  // Draw labels
+  final double graphStartX = center.dx - radius;
+  final double graphEndX = center.dx + radius;
+  final double graphY = center.dy;
+
+  // Draw only one line instead of two
+  final double lineY = center.dy - radius;
+  canvas.drawLine(
+    Offset(graphStartX, lineY),
+    Offset(graphEndX, lineY),
+    linePaint,
+  );
+}
+
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
