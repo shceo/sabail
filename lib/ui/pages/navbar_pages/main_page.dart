@@ -15,7 +15,7 @@ import 'package:sabail/ui/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key});
+  const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {

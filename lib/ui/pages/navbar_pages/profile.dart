@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sabail/ui/pages/Sadaqa_project.dart';
 import 'package:sabail/ui/pages/profilepage.dart';
+import 'package:sabail/ui/pages/settings_page.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
 
 class Profile extends StatelessWidget {
@@ -51,9 +52,14 @@ class ProfileBody extends StatelessWidget {
               leading: Icon(Icons.group_add),
               title: Text('Профиль'),
             ),
-            onPressed: () {  Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfilePage(),),);},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(),
+                ),
+              );
+            },
           ),
         ),
         Container(
@@ -67,7 +73,8 @@ class ProfileBody extends StatelessWidget {
               title: Text('Фонд "Sadaqa"'),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: ((context) => SadaqaProj())));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => SadaqaProj())));
             },
           ),
         ),
@@ -81,7 +88,14 @@ class ProfileBody extends StatelessWidget {
               leading: Icon(Icons.settings),
               title: Text('Настройки'),
             ),
-            onPressed: () {/* Settings */},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (((context) => SettingsPage())),
+                ),
+              );
+            },
           ),
         ),
         Container(

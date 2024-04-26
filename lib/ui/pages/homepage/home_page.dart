@@ -84,7 +84,7 @@ class SabailHome extends StatelessWidget {
       : Colors.grey;
 
   return Expanded(
-    child: InkWell(
+    child: GestureDetector(
       onTap: (){
           navBarProvider.changeIndex(index);
       },
