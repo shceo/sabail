@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
+import 'package:sabail/ui/pages/sadaqa_project.dart';
 import 'package:sabail/ui/theme/app_colors.dart';
-
 
 class MainPodWidgets extends StatelessWidget {
   const MainPodWidgets({super.key});
@@ -9,7 +9,11 @@ class MainPodWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> texts = ['Викторина', 'صدقة', 'Календарь'];
-    List<IconData> icons = [FlutterIslamicIcons.solidLantern, FlutterIslamicIcons.solidZakat,FlutterIslamicIcons.calendar];
+    List<IconData> icons = [
+      FlutterIslamicIcons.solidLantern,
+      FlutterIslamicIcons.solidZakat,
+      FlutterIslamicIcons.calendar
+    ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
@@ -39,12 +43,14 @@ class MainPodWidgets extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(icons[index], size: 28, color: SabailColors.darkpurple,), 
+                Icon(
+                  icons[index],
+                  size: 28,
+                  color: SabailColors.darkpurple,
+                ),
                 Text(
                   texts[index],
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12), 
+                  style: const TextStyle(color: Colors.black, fontSize: 12),
                 ),
               ],
             ),
@@ -72,14 +78,7 @@ class Page extends StatelessWidget {
         ),
       );
     } else if (index == 1) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Хадисы'),
-        ),
-        body: Center(
-          child: Text('Здесь будут отображаться Хадисы'),
-        ),
-      );
+      return const SadaqaProj();
     } else {
       return Scaffold(
         appBar: AppBar(

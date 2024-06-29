@@ -1,7 +1,5 @@
-import 'dart:async';
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sabail/provider/prayerpage_provider.dart';
@@ -13,7 +11,8 @@ class PrayTimes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<HijriDateModel>(context, listen: false).fetchHijriDate();
-
+    final myWidth = MediaQuery.of(context).size.width;
+    final myHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: SabailColors.notwhite,
       appBar: AppBar(
@@ -37,21 +36,66 @@ class PrayTimes extends StatelessWidget {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           const HijriDateText(),
-          Expanded(
-            child: AnimatedPrayerTimeGraph(
-              provider: Provider.of<PrayerTimesModel>(context),
-            ),
-          ),
+          const SizedBox(height: 20),
+          const AnimatedPrayerTimeGraph(),
           const SizedBox(height: 20),
           Container(
-            width: 200,
-            height: 200,
-            color: Colors.purple.withOpacity(0.5),
+            width: myWidth / 1.14,
+            height: myHeight / 2.1,
+            decoration: BoxDecoration(
+              color: Colors.purple.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(25)
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _PrayerRow(iconData: Icons.access_time, prayerName: 'Fajr', bellIcon: Icons.notifications_active),
+                Divider(),
+                _PrayerRow(iconData: Icons.wb_sunny, prayerName: 'Sun Rise', bellIcon: Icons.notifications_active),
+                Divider(),
+                _PrayerRow(iconData: Icons.brightness_5, prayerName: 'Zuhr', bellIcon: Icons.notifications_active),
+                Divider(),
+                _PrayerRow(iconData: Icons.brightness_6, prayerName: 'Asr', bellIcon: Icons.notifications_active),
+                Divider(),
+                _PrayerRow(iconData: Icons.brightness_7, prayerName: 'Magrib', bellIcon: Icons.notifications_active),
+                Divider(),
+                _PrayerRow(iconData: Icons.star, prayerName: 'Isaa', bellIcon: Icons.notifications_active),
+              ],
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PrayerRow extends StatelessWidget {
+  final IconData iconData;
+  final String prayerName;
+  final IconData bellIcon;
+
+  const _PrayerRow({
+    Key? key,
+    required this.iconData,
+    required this.prayerName,
+    required this.bellIcon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(iconData, color: Colors.yellow[700]),
+        SizedBox(width: 10),
+        Text(prayerName, style: TextStyle(fontSize: 18)),
+        SizedBox(width: 5), // Adjust spacing between text and bell icon
+        Padding(
+          padding: EdgeInsets.only(left: 190),
+          child: Icon(bellIcon, size: 16)), // Adding bell icon
+      ],
     );
   }
 }
@@ -80,117 +124,40 @@ class HijriDateText extends StatelessWidget {
   }
 }
 
-class AnimatedPrayerTimeGraph extends StatefulWidget {
-  final PrayerTimesModel provider;
+class AnimatedPrayerTimeGraph extends StatelessWidget {
+  const AnimatedPrayerTimeGraph({Key? key}) : super(key: key);
 
-  const AnimatedPrayerTimeGraph({Key? key, required this.provider}) : super(key: key);
-
-  @override
-  _AnimatedPrayerTimeGraphState createState() => _AnimatedPrayerTimeGraphState();
-}
-
-class _AnimatedPrayerTimeGraphState extends State<AnimatedPrayerTimeGraph> {
-  bool isSun = true; // Переменная для отслеживания состояния солнца
-
-  @override
-  void initState() {
-    super.initState();
-    // Анимация смены солнца на луну через 5 секунд после загрузки виджета
-    Timer(Duration(seconds: 5), () {
-      setState(() {
-        isSun = false;
-      });
-    });
-  }
-
-  @override
+  @override 
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: PrayerTimeGraph(widget.provider, isSun),
-      child: Container(),
+    final myWidth = MediaQuery.of(context).size.width;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: myWidth / 2.5,
+          height: 170,
+          decoration: BoxDecoration(
+            color: Colors.amber,
+            borderRadius: BorderRadius.circular(25)
+          ),
+          child: Column(
+            children: [Text('Current Prayer')],
+          ),
+        ),
+        SizedBox(width: 30),
+        Container(
+          width: myWidth / 2.5,
+          height: 170,
+          decoration: BoxDecoration(
+            color: Colors.amber,
+            borderRadius: BorderRadius.circular(25)
+          ),
+          child: Column(
+            children: [Text('Next Prayer')],
+          ),
+        ),
+      ],
     );
-  }
-}
-
-class PrayerTimesModel with ChangeNotifier {
-  String fajr = '04:11';
-  String sunrise = '06:00';
-  String dhuhr = '12:33';
-  String asr = '16:03';
-  String sunset = '19:08';
-  String maghrib = '19:08';
-  String isha = '20:57';
-  String imsak = '04:01';
-  String midnight = '00:34';
-
-  void updatePrayerTimes(Map<String, String> newTimes) {
-    fajr = newTimes['Fajr'] ?? fajr;
-    sunrise = newTimes['Sunrise'] ?? sunrise;
-    dhuhr = newTimes['Dhuhr'] ?? dhuhr;
-    asr = newTimes['Asr'] ?? asr;
-    sunset = newTimes['Sunset'] ?? sunset;
-    maghrib = newTimes['Maghrib'] ?? maghrib;
-    isha = newTimes['Isha'] ?? isha;
-    imsak = newTimes['Imsak'] ?? imsak;
-    midnight = newTimes['Midnight'] ?? midnight;
-
-    notifyListeners();
-  }
-}
-
-class PrayerTimeGraph extends CustomPainter {
-  final PrayerTimesModel prayerTimes;
-  final bool isSun;
-
-  PrayerTimeGraph(this.prayerTimes, this.isSun);
-
-@override
-void paint(Canvas canvas, Size size) {
-  final double radius = size.width * 0.45;
-
-  final Paint sunPaint = Paint()..color = Colors.orange;
-  final Paint moonPaint = Paint()..color = Colors.grey[300]!;
-  final Paint linePaint = Paint()
-    ..color = Colors.blue
-    ..strokeWidth = 2
-    ..style = PaintingStyle.stroke;
-
-  final Offset center = Offset(size.width / 2, size.height / 2);
-
-  if (isSun) {
-    final double sunX = center.dx;
-    final double sunY = center.dy - radius;
-    canvas.drawCircle(Offset(sunX, sunY), 20, sunPaint);
-  } else {
-    final double moonX = center.dx;
-    final double moonY = center.dy - radius;
-    canvas.drawCircle(Offset(moonX, moonY), 20, moonPaint);
-  }
-
-  final Rect rect = Rect.fromCircle(center: center, radius: radius);
-
-  final double startAngle = -math.pi / 3;
-  final double sweepAngle = math.pi;
-
-  canvas.drawArc(rect, startAngle, sweepAngle, false, linePaint);
-
-  // Draw labels
-  final double graphStartX = center.dx - radius;
-  final double graphEndX = center.dx + radius;
-  final double graphY = center.dy;
-
-  // Draw only one line instead of two
-  final double lineY = center.dy - radius;
-  canvas.drawLine(
-    Offset(graphStartX, lineY),
-    Offset(graphEndX, lineY),
-    linePaint,
-  );
-}
-
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

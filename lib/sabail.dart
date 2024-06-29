@@ -32,9 +32,7 @@ class Sabail extends StatelessWidget {
           create: (context) => TabBarModel(),
         ),
         ChangeNotifierProvider(create: (context) => HijriDateModel()),
-        ChangeNotifierProvider(
-          create: ((context) => PrayerTimesModel()),
-        ),
+       
         ChangeNotifierProvider(create: (context) => ImageNotifier()),
       ],
       child: MaterialApp.router(

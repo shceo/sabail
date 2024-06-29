@@ -73,8 +73,12 @@ class ProfileBody extends StatelessWidget {
               title: Text('Фонд "Sadaqa"'),
             ),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => SadaqaProj())));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => const SadaqaProj()),
+                ),
+              );
             },
           ),
         ),
