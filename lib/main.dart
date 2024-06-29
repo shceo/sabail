@@ -23,7 +23,7 @@ void main() async {
   // Установка уведомлений о времени молитвы для выбранного города
   await schedulePrayerTimeNotifications(cityProvider.selectedCity);
 
-  // Запуск приложения
+  // Запуск 
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
