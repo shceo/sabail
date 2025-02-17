@@ -1,35 +1,41 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sabail/domain/blocs/splash_bloc/splash_screen_bloc.dart';
-import 'package:sabail/domain/notifications/local_notifications.dart';
-import 'package:sabail/provider/user_city.dart';
-import 'package:sabail/sabail.dart';
+import 'package:sabail/src/domain/blocs/splash_bloc/splash_screen_bloc.dart';
+import 'package:sabail/src/domain/notifications/local_notifications.dart';
+import 'package:sabail/src/provider/user_city.dart';
+import 'package:sabail/src/sabail.dart';
 
-// Глобальная переменная для хранения выбранного города
 CityProvider cityProvider = CityProvider();
 
-void main() async {
-  // Инициализация Hive и остальных компонентов
-  await Hive.initFlutter();
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations( 
-  [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]); 
-
-  // Получение выбранного города
-  await cityProvider.initFuture;
-
-  // Установка уведомлений о времени молитвы для выбранного города
-  await schedulePrayerTimeNotifications(cityProvider.selectedCity);
-
-  // Запуск 
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider(
-        create: (context) => SplashBloc()..add(AppStarted()),
-      ),
-    ],
-    child: const Sabail(),
-  ));
+void main() {
+  runZonedGuarded(() {
+    WidgetsFlutterBinding.ensureInitialized();
+    
+    Hive.initFlutter().then((_) {
+      return SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+      );
+    }).then((_) {
+      return cityProvider.initFuture;
+    }).then((_) {
+      return schedulePrayerTimeNotifications(cityProvider.selectedCity);
+    }).then((_) {
+      runApp(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => SplashBloc()..add(AppStarted()),
+            ),
+          ],
+          child: const Sabail(),
+        ),
+      );
+    });
+  }, (error, stack) {
+    print('Uncaught error: $error');
+    print('Stack trace: $stack');
+  });
 }

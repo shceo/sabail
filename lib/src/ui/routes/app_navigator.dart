@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:sabail/ui/pages/homepage/home_page.dart';
-import 'package:sabail/ui/pages/screens/splash_screen.dart';
-import 'package:sabail/ui/routes/app_router.dart';
+import 'package:sabail/src/ui/pages/homepage/home_page.dart';
+import 'package:sabail/src/ui/pages/screens/splash_screen.dart';
+import 'package:sabail/src/ui/routes/app_router.dart';
 
 class AppNavigator {
   static final router = GoRouter(

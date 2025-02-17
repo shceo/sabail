@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:sabail/ui/theme/app_colors.dart';
+import 'package:sabail/src/ui/pages/sadaqa_project.dart';
+import 'package:sabail/src/ui/theme/app_colors.dart';
 
-
-class MainThreePodWidget extends StatelessWidget {
-  const MainThreePodWidget({super.key});
+class MainPodWidgets extends StatelessWidget {
+  const MainPodWidgets({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<String> texts = ['Кибла', 'Тасбих', 'Сунна'];
-    List<IconData> icons = [FlutterIslamicIcons.qibla, FlutterIslamicIcons.solidTasbih2,FlutterIslamicIcons.wudhu];
+    List<String> texts = ['Викторина', 'صدقة', 'Календарь'];
+    List<IconData> icons = [
+      FlutterIslamicIcons.solidLantern,
+      FlutterIslamicIcons.solidZakat,
+      FlutterIslamicIcons.calendar
+    ];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(
@@ -39,12 +43,14 @@ class MainThreePodWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(icons[index], size: 28, color: SabailColors.darkpurple,), 
+                Icon(
+                  icons[index],
+                  size: 28,
+                  color: SabailColors.darkpurple,
+                ),
                 Text(
                   texts[index],
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12), 
+                  style: const TextStyle(color: Colors.black, fontSize: 12),
                 ),
               ],
             ),
@@ -65,29 +71,20 @@ class Page extends StatelessWidget {
     if (index == 0) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('99 имен Аллаха'),
+          title: Text('99 имен Аллаха'),
         ),
-        body: const Center(
+        body: Center(
           child: Text('Здесь будут отображаться 99 имен Аллаха'),
         ),
       );
     } else if (index == 1) {
-      return Scaffold(
-        backgroundColor: SabailColors.notwhite,
-        appBar: AppBar(
-          backgroundColor: SabailColors.notwhite,
-          title: const Text('Тасбих'),
-        ),
-        body: const Center(
-          child: Text('Тасбих'),
-        ),
-      );
+      return const SadaqaProj();
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Дуа'),
+          title: Text('Дуа'),
         ),
-        body: const Center(
+        body: Center(
           child: Text('Здесь будут отображаться Дуа'),
         ),
       );

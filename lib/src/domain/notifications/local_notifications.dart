@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:sabail/domain/api/api.dart';
+import 'package:sabail/src/domain/api/api.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:intl/intl.dart';
 
@@ -9,19 +9,20 @@ Future<void> schedulePrayerTimeNotifications(String selectedCity) async {
       FlutterLocalNotificationsPlugin();
 
   // Notification channel settings for Android
-  var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
     'prayer_channel_id',
     'Prayer Channel',
+    channelDescription: 'Channel for prayer time notifications',
     importance: Importance.max,
     priority: Priority.high,
   );
 
   // Create NotificationDetails
-  var platformChannelSpecifics = NotificationDetails(
+  final NotificationDetails platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
   );
 
-  // Get prayer times and set notifications for each time
   try {
     final hijriApi = HijriApi();
     final prayerTimesApi = PrayerTimes();
@@ -30,46 +31,61 @@ Future<void> schedulePrayerTimeNotifications(String selectedCity) async {
     final hijriDate = await hijriApi.getCurrentHijriDate();
 
     // Get prayer times for the current day and selected city
-    final prayerTimes = await prayerTimesApi.getPrayerTime(selectedCity, DateTime.now(), 0);
+    final prayerTimes = await prayerTimesApi.getPrayerTime(
+      selectedCity,
+      DateTime.now(),
+      0,
+    );
 
-    // Parse prayer times
+    // Parse prayer times; assume they are comma-separated strings
     final List<String> prayerTimeList = prayerTimes.split(', ');
 
-    // Format prayer times for notifications
+    // DateFormat for parsing prayer time strings (e.g. "5:30 PM")
     final DateFormat dateFormat = DateFormat('h:mm a');
 
     // Set notifications for each prayer time
     for (String prayerTime in prayerTimeList) {
       final List<String> prayerTimeSplit = prayerTime.split(': ');
+      if (prayerTimeSplit.length < 2) continue;
       final String prayerName = prayerTimeSplit[0];
       final String prayerTimeString = prayerTimeSplit[1];
 
       // Parse prayer time
-      final DateTime prayerDateTime = dateFormat.parse(prayerTimeString);
+      final DateTime parsedTime = dateFormat.parse(prayerTimeString);
 
-      // Notification title
+      // Combine today's date with the parsed time
+      final now = DateTime.now();
+      final DateTime prayerDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        parsedTime.hour,
+        parsedTime.minute,
+      );
+
+      // Notification title and body
       final String notificationTitle = 'Время Молитвы ($hijriDate)';
-
-      // Notification body
       final String notificationBody = '$prayerName в $prayerTimeString';
 
-      // Create prayer time in the device's time zone
-      final tz.TZDateTime scheduledPrayerDateTime = tz.TZDateTime.from(prayerDateTime, tz.local);
+      // Convert to device's local time zone
+      final tz.TZDateTime scheduledPrayerDateTime =
+          tz.TZDateTime.from(prayerDateTime, tz.local);
 
-      // Set notification for prayer time
+      // Schedule the notification
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        prayerName.hashCode, // Use prayer name hash code as identifier
+        prayerName.hashCode, // Unique identifier
         notificationTitle,
         notificationBody,
         scheduledPrayerDateTime,
         platformChannelSpecifics,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        androidScheduleMode: AndroidScheduleMode.exact,
+        // androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
       );
     }
   } catch (error) {
-    // Error handling
     print('Error scheduling prayer time notifications: $error');
   }
 }

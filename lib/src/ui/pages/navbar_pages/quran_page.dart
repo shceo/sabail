@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // ignore: library_prefixes
 import 'package:quran/quran.dart' as Quran;
-import 'package:sabail/components/tabbar/custom_tabbar.dart';
-import 'package:sabail/provider/last_readen_provider.dart';
-import 'package:sabail/ui/pages/screens/surah_screen.dart';
-import 'package:sabail/ui/theme/app_colors.dart';
+import 'package:sabail/src/components/tabbar/custom_tabbar.dart';
+import 'package:sabail/src/provider/last_readen_provider.dart';
+import 'package:sabail/src/ui/pages/screens/surah_screen.dart';
+import 'package:sabail/src/ui/theme/app_colors.dart';
 
 class AlQuranPage extends StatelessWidget {
   const AlQuranPage({super.key});

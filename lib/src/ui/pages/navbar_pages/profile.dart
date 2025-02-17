@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:sabail/ui/pages/Sadaqa_project.dart';
-import 'package:sabail/ui/pages/profilepage.dart';
-import 'package:sabail/ui/pages/settings_page.dart';
-import 'package:sabail/ui/theme/app_colors.dart';
+
+import 'package:sabail/src/ui/pages/profilepage.dart';
+import 'package:sabail/src/ui/pages/sadaqa_project.dart';
+import 'package:sabail/src/ui/pages/settings_page.dart';
+import 'package:sabail/src/ui/theme/app_colors.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});

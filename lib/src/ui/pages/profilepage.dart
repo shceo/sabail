@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabail/provider/image_picker_provider.dart';
-import 'package:sabail/ui/theme/app_colors.dart';
+import 'package:sabail/src/provider/image_picker_provider.dart';
+import 'package:sabail/src/ui/theme/app_colors.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

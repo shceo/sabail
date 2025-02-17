@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sabail/domain/api/api.dart';
+import 'package:sabail/src/domain/api/api.dart';
 
 class HijriDateModel extends ChangeNotifier {
   String _hijriDate = '';

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sabail/provider/prayerpage_provider.dart';
-import 'package:sabail/ui/theme/app_colors.dart';
+import 'package:sabail/src/provider/prayerpage_provider.dart';
+import 'package:sabail/src/ui/theme/app_colors.dart';
 
 class PrayTimes extends StatelessWidget {
   const PrayTimes({Key? key}) : super(key: key);

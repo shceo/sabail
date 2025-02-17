@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sabail/domain/blocs/splash_bloc/splash_screen_bloc.dart';
-import 'package:sabail/ui/routes/app_router.dart';
+import 'package:sabail/src/domain/blocs/splash_bloc/splash_screen_bloc.dart';
+import 'package:sabail/src/ui/routes/app_router.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
