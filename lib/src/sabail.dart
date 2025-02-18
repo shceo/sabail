@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:sabail/src/provider/image_picker_provider.dart';
-
 import 'package:sabail/src/provider/nav_bar_provider.dart';
 import 'package:sabail/src/provider/prayerpage_provider.dart';
 import 'package:sabail/src/provider/tabmodel_provider.dart';

@@ -20,8 +20,8 @@ void main() {
       );
     }).then((_) {
       return cityProvider.initFuture;
-    }).then((_) {
-      return schedulePrayerTimeNotifications(cityProvider.selectedCity);
+    // }).then((_) {
+    //   return schedulePrayerTimeNotifications(cityProvider.selectedCity);
     }).then((_) {
       runApp(
         MultiBlocProvider(
@@ -35,7 +35,7 @@ void main() {
       );
     });
   }, (error, stack) {
-    print('Uncaught error: $error');
+    debugPrint('Uncaught error: $error');
     print('Stack trace: $stack');
   });
 }

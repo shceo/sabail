@@ -1,15 +1,33 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+
+class ApiConfig {
+  final String hijriApiUrl;
+  final String prayerTimesUrl;
+
+  ApiConfig({
+    this.hijriApiUrl = 'https://api.aladhan.com/v1/gToH',
+    this.prayerTimesUrl = 'https://api.aladhan.com/v1/calendarByAddress',
+  });
+}
 
 class HijriApi {
-  final Dio _dio = Dio();
+  final Dio dio;
+  final Logger logger;
+  final ApiConfig config;
+
+  HijriApi({Dio? dio, Logger? logger, ApiConfig? config})
+      : dio = dio ?? Dio(),
+        logger = logger ?? Logger(),
+        config = config ?? ApiConfig();
 
   /// Получить текущую дату хиджри.
   Future<String> getCurrentHijriDate() async {
     try {
-      final response = await _dio.get(
-        'https://api.aladhan.com/v1/gToH',
+      final response = await dio.get(
+        config.hijriApiUrl,
         queryParameters: {
           'date': DateFormat('dd-MM-yyyy').format(DateTime.now()),
         },
@@ -21,24 +39,28 @@ class HijriApi {
       final hijriDay = hijriData['day'];
       final monthName = getHijriMonthName(hijriMonth);
 
-      final hijriDate = '$hijriDay $monthName $hijriYear'; 
-      return hijriDate;
-    } catch (error) {
-      throw Exception('Failed to get hijri date: $error');
+      return '$hijriDay $monthName $hijriYear';
+    } catch (error, stackTrace) {
+      logger.e('Failed to get hijri date', error: error, stackTrace: stackTrace);
+      rethrow;
     }
   }
 
+  /// Пример поточного получения даты Хиджры (обновляется раз в час).
   Stream<String> getCurrentHijriDateStream() async* {
-    
-    try {
-      while (true) {
-        final hijriDate = await getCurrentHijriDate();
+    while (true) {
+      try {
+        final hijriDate = await retry<String>(
+          () => getCurrentHijriDate(),
+          maxAttempts: 3,
+          delayBetweenAttempts: const Duration(seconds: 2),
+          logger: logger,
+        );
         yield hijriDate;
-        await Future.delayed(const Duration(hours: 1));
+      } catch (error) {
+        logger.e('Error fetching hijri date in stream', error: error);
       }
-    } catch (error) {
-      // print('Error fetching hijri date: $error');
-      await Future.delayed(const Duration(minutes: 5));
+      await Future.delayed(const Duration(hours: 1));
     }
   }
 
@@ -53,7 +75,7 @@ class HijriApi {
       case 4:
         return 'Раби-уль-Ахир';
       case 5:
-        return 'Джумад-уль-Авваль'; 
+        return 'Джумад-уль-Авваль';
       case 6:
         return 'Джумад-уль-Ахир';
       case 7:
@@ -74,41 +96,101 @@ class HijriApi {
   }
 }
 
-
-/// A class to fetch prayer times from an API.
 class PrayerTimes {
-  final Dio _dio = Dio();
+  final Dio dio;
+  final Logger logger;
+  final ApiConfig config;
 
-  /// Fetches prayer times for a given address and date.
-  ///
-  /// The [address] parameter is the location to fetch prayer times for.
-  /// The [date] parameter is the date to fetch prayer times for.
-  /// The [method] parameter is the calculation method to use.
-  ///
-  /// Returns a string containing the prayer times.
- Future<String> getPrayerTime(String address, DateTime date, int method) async {
-  try {
-    final response = await _dio.get(
-      'https://api.aladhan.com/v1/calendarByAddress',
-      queryParameters: {
-        'address': address,
-        'method': method,
-        'date': DateFormat('yyyy-MM-dd').format(date),
-      },
-    );
+  PrayerTimes({Dio? dio, Logger? logger, ApiConfig? config})
+      : dio = dio ?? Dio(),
+        logger = logger ?? Logger(),
+        config = config ?? ApiConfig();
 
-    final data = response.data;
-    print(data);
-    final timings = data['data'][0]['timings'];
-    final fajrTime = timings['Fajr'].replaceAll(' (+05)', '');
-    final dhuhrTime = timings['Dhuhr'].replaceAll(' (+05)', '');
-    final asrTime = timings['Asr'].replaceAll(' (+05)', '');
-    final maghribTime = timings['Maghrib'].replaceAll(' (+05)', '');
-    final ishaTime = timings['Isha'].replaceAll(' (+05)', '');
+  /// Получить времена намаза для указанного адреса и даты.
+  Future<String> getPrayerTime(String address, DateTime date, int method) async {
+    try {
+      final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+      final response = await dio.get(
+        config.prayerTimesUrl,
+        queryParameters: {
+          'address': address,
+          'method': method,
+          'date': formattedDate,
+        },
+      );
 
-    return 'Fajr: $fajrTime, Dhuhr: $dhuhrTime, Asr: $asrTime, Maghrib: $maghribTime, Isha: $ishaTime';
-  } catch (error) {
-    throw Exception('Failed to get prayer time: $error');
+      final data = response.data;
+      logger.i('Response data: $data');
+      final timings = data['data'][0]['timings'];
+
+      final fajrTime = _cleanTime(timings['Fajr']);
+      final dhuhrTime = _cleanTime(timings['Dhuhr']);
+      final asrTime = _cleanTime(timings['Asr']);
+      final maghribTime = _cleanTime(timings['Maghrib']);
+      final ishaTime = _cleanTime(timings['Isha']);
+
+      return 'Fajr: $fajrTime, Dhuhr: $dhuhrTime, Asr: $asrTime, Maghrib: $maghribTime, Isha: $ishaTime';
+    } catch (error, stackTrace) {
+      logger.e('Failed to get prayer time', error: error, stackTrace: stackTrace);
+      rethrow;
+    }
+  }
+
+  /// Новый метод для получения времени восхода и заката
+  Future<Map<String, String>> getSunTimes(
+      String address, DateTime date, int method) async {
+    try {
+      final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+      final response = await dio.get(
+        config.prayerTimesUrl,
+        queryParameters: {
+          'address': address,
+          'method': method,
+          'date': formattedDate,
+        },
+      );
+
+      final data = response.data;
+      logger.i('Response data: $data');
+      final timings = data['data'][0]['timings'];
+
+      final sunrise = _cleanTime(timings['Sunrise']);
+      final sunset = _cleanTime(timings['Sunset']);
+
+      return {
+        'sunrise': sunrise,
+        'sunset': sunset,
+      };
+    } catch (error, stackTrace) {
+      logger.e('Failed to get sun times', error: error, stackTrace: stackTrace);
+      rethrow;
+    }
+  }
+
+  String _cleanTime(String time) {
+    return time.replaceAll(RegExp(r'\s*\(\+\d+\)'), '').trim();
   }
 }
+
+/// Утилита для повторных попыток (retry)
+Future<T> retry<T>(
+  Future<T> Function() task, {
+  int maxAttempts = 3,
+  Duration delayBetweenAttempts = const Duration(seconds: 2),
+  required Logger logger,
+}) async {
+  int attempt = 0;
+  while (true) {
+    attempt++;
+    try {
+      return await task();
+    } catch (error, stackTrace) {
+      logger.w('Attempt $attempt failed', error: error, stackTrace: stackTrace);
+      if (attempt >= maxAttempts) {
+        logger.e('Max attempts reached, rethrowing error');
+        rethrow;
+      }
+      await Future.delayed(delayBetweenAttempts);
+    }
+  }
 }

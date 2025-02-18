@@ -1,8 +1,12 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:sabail/src/domain/api/api.dart';
 import 'package:sabail/src/provider/prayerpage_provider.dart';
+import 'package:sabail/src/provider/user_city.dart';
 import 'package:sabail/src/ui/theme/app_colors.dart';
 
 class PrayTimes extends StatelessWidget {
@@ -10,9 +14,10 @@ class PrayTimes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<HijriDateModel>(context, listen: false).fetchHijriDate();
-    final myWidth = MediaQuery.of(context).size.width;
-    final myHeight = MediaQuery.of(context).size.height;
+    final today = DateTime.now();
+    final prayerTimesApi = PrayerTimes();
+    final selectedCity = Provider.of<CityProvider>(context).selectedCity;
+
     return Scaffold(
       backgroundColor: SabailColors.notwhite,
       appBar: AppBar(
@@ -34,130 +39,322 @@ class PrayTimes extends StatelessWidget {
         centerTitle: true,
         backgroundColor: SabailColors.notwhite,
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 15),
-          const HijriDateText(),
-          const SizedBox(height: 20),
-          const AnimatedPrayerTimeGraph(),
-          const SizedBox(height: 20),
-          Container(
-            width: myWidth / 1.14,
-            height: myHeight / 2.1,
-            decoration: BoxDecoration(
-              color: Colors.purple.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(25)
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // --- Блок времени молитв для выбранного города ---
+            FutureBuilder<String>(
+              future: prayerTimesApi.getPrayerTime(selectedCity, today, 2),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text('Ошибка загрузки времени молитв');
+                } else {
+                  final timings = snapshot.data!.split(',');
+                  Map<String, String> prayerMap = {};
+                  for (var item in timings) {
+                    final parts = item.split(':');
+                    if (parts.length >= 2) {
+                      final prayerName = parts[0].trim();
+                      final prayerTime = parts.sublist(1).join(':').trim();
+                      prayerMap[prayerName] = prayerTime;
+                    }
+                  }
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: prayerMap.entries.map((entry) {
+                        IconData icon;
+                        switch (entry.key) {
+                          case 'Fajr':
+                            icon = Icons.nights_stay;
+                            break;
+                          case 'Dhuhr':
+                            icon = Icons.wb_sunny;
+                            break;
+                          case 'Asr':
+                            icon = Icons.cloud;
+                            break;
+                          case 'Maghrib':
+                            icon = Icons.nightlight_round;
+                            break;
+                          case 'Isha':
+                            icon = Icons.nightlight_round;
+                            break;
+                          default:
+                            icon = Icons.access_time;
+                        }
+                        return _PrayerRow(
+                          iconData: icon,
+                          prayerName: entry.key,
+                          prayerTime: entry.value,
+                          bellIcon: Icons.notifications_active,
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
+              },
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _PrayerRow(iconData: Icons.access_time, prayerName: 'Fajr', bellIcon: Icons.notifications_active),
-                Divider(),
-                _PrayerRow(iconData: Icons.wb_sunny, prayerName: 'Sun Rise', bellIcon: Icons.notifications_active),
-                Divider(),
-                _PrayerRow(iconData: Icons.brightness_5, prayerName: 'Zuhr', bellIcon: Icons.notifications_active),
-                Divider(),
-                _PrayerRow(iconData: Icons.brightness_6, prayerName: 'Asr', bellIcon: Icons.notifications_active),
-                Divider(),
-                _PrayerRow(iconData: Icons.brightness_7, prayerName: 'Magrib', bellIcon: Icons.notifications_active),
-                Divider(),
-                _PrayerRow(iconData: Icons.star, prayerName: 'Isaa', bellIcon: Icons.notifications_active),
-              ],
+            const SizedBox(height: 20),
+            // --- Блок солнечной диаграммы (восход/закат) ---
+            FutureBuilder<Map<String, String>>(
+              future: prayerTimesApi.getSunTimes(selectedCity, today, 1),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      height: 220,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasError || !snapshot.hasData) {
+                  return const Text('Ошибка загрузки восхода и заката');
+                } else {
+                  final sunTimes = snapshot.data!;
+                  final sunrise = _parseTime(sunTimes['sunrise']!);
+                  final sunset = _parseTime(sunTimes['sunset']!);
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        _SunPathDiagram(
+                          sunrise: sunrise,
+                          sunset: sunset,
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.wb_sunny,
+                                    color: Colors.orange),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '${sunTimes['sunrise']}\nВосход',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  '${sunTimes['sunset']}\nЗакат',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                                const SizedBox(width: 4),
+                                const Icon(Icons.nightlight_round,
+                                    color: Colors.blueGrey),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
+  /// Утилита для парсинга строки "HH:mm" в DateTime на текущую дату
+  DateTime _parseTime(String timeStr) {
+    final now = DateTime.now();
+    final parts = timeStr.split(':');
+    final hour = int.tryParse(parts[0]) ?? 0;
+    final minute = int.tryParse(parts[1]) ?? 0;
+    return DateTime(now.year, now.month, now.day, hour, minute);
+  }
 }
 
+// Виджет строки с информацией о молитве (без изменений)
 class _PrayerRow extends StatelessWidget {
   final IconData iconData;
   final String prayerName;
+  final String prayerTime;
   final IconData bellIcon;
 
   const _PrayerRow({
     Key? key,
     required this.iconData,
     required this.prayerName,
+    required this.prayerTime,
     required this.bellIcon,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(iconData, color: Colors.yellow[700]),
-        SizedBox(width: 10),
-        Text(prayerName, style: TextStyle(fontSize: 18)),
-        SizedBox(width: 5), // Adjust spacing between text and bell icon
-        Padding(
-          padding: EdgeInsets.only(left: 190),
-          child: Icon(bellIcon, size: 16)), // Adding bell icon
-      ],
-    );
-  }
-}
-
-class HijriDateText extends StatelessWidget {
-  const HijriDateText({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Consumer<HijriDateModel>(
-        builder: (context, model, child) {
-          return Text(
-            model.hijriDate.isEmpty ? '--:--' : model.hijriDate,
-            style: TextStyle(
-              fontFamily: GoogleFonts.oswald().fontFamily,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: Colors.grey.withOpacity(0.7),
+    final textStyle = Theme.of(context).textTheme.titleMedium;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(iconData,
+              color: Theme.of(context).colorScheme.primary, size: 28),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Text(
+              prayerName,
+              style: textStyle?.copyWith(fontWeight: FontWeight.bold),
             ),
-          );
-        },
+          ),
+          Text(prayerTime, style: textStyle),
+          const SizedBox(width: 10),
+          Icon(bellIcon,
+              size: 20, color: Theme.of(context).colorScheme.primary),
+        ],
       ),
     );
   }
 }
 
-class AnimatedPrayerTimeGraph extends StatelessWidget {
-  const AnimatedPrayerTimeGraph({Key? key}) : super(key: key);
+/// Виджет, рисующий дугу от восхода до заката с текущим положением солнца.
+class _SunPathDiagram extends StatelessWidget {
+  final DateTime sunrise;
+  final DateTime sunset;
 
-  @override 
+  const _SunPathDiagram({
+    Key? key,
+    required this.sunrise,
+    required this.sunset,
+  }) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
-    final myWidth = MediaQuery.of(context).size.width;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          width: myWidth / 2.5,
-          height: 170,
-          decoration: BoxDecoration(
-            color: Colors.amber,
-            borderRadius: BorderRadius.circular(25)
-          ),
-          child: Column(
-            children: [Text('Current Prayer')],
-          ),
+    // Задаём размеры диаграммы
+    return SizedBox(
+      width: 300,
+      height: 150,
+      child: CustomPaint(
+        painter: _SunPathPainter(
+          sunrise: sunrise,
+          sunset: sunset,
         ),
-        SizedBox(width: 30),
-        Container(
-          width: myWidth / 2.5,
-          height: 170,
-          decoration: BoxDecoration(
-            color: Colors.amber,
-            borderRadius: BorderRadius.circular(25)
-          ),
-          child: Column(
-            children: [Text('Next Prayer')],
-          ),
-        ),
-      ],
+      ),
     );
   }
+}
+
+class _SunPathPainter extends CustomPainter {
+  final DateTime sunrise;
+  final DateTime sunset;
+
+  _SunPathPainter({
+    required this.sunrise,
+    required this.sunset,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Центр нижней части (по центру ширины, снизу по высоте)
+    final center = Offset(size.width / 2, size.height);
+    final radius = size.width / 2;
+
+    // Рисуем полукруг (дугу) от левого края к правому
+    final arcPaint = Paint()
+      ..color = Colors.orange
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+    final arcRect = Rect.fromCircle(center: center, radius: radius);
+    canvas.drawArc(
+      arcRect,
+      math.pi,
+      math.pi,
+      false,
+      arcPaint,
+    );
+
+    // Вычисляем прогресс прошедшего дня между восходом и закатом
+    final now = DateTime.now();
+    final totalDaylight = sunset.difference(sunrise).inMinutes;
+    double progress = 0.0;
+    if (totalDaylight > 0) {
+      final passed = now.difference(sunrise).inMinutes;
+      progress = passed / totalDaylight;
+      if (progress < 0) progress = 0;
+      if (progress > 1) progress = 1;
+    }
+    final currentAngle = math.pi - (math.pi * progress);
+    final sunX = center.dx + radius * math.cos(currentAngle);
+    final sunY = center.dy + radius * math.sin(currentAngle);
+
+    final sunPaint = Paint()..color = Colors.yellow;
+    canvas.drawCircle(Offset(sunX, sunY), 10, sunPaint);
+
+    // Рисуем иконку луны у правого края дуги (на закате)
+    final moonX = center.dx + radius * math.cos(0);
+    final moonY = center.dy + radius * math.sin(0);
+    final moonPaint = Paint()..color = Colors.blueGrey;
+    canvas.drawCircle(Offset(moonX, moonY), 8, moonPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+// Вспомогательные функции для получения названий дня недели и месяца
+String getDayOfWeek(int weekday) {
+  const days = [
+    'Понедельник',
+    'Вторник',
+    'Среда',
+    'Четверг',
+    'Пятница',
+    'Суббота',
+    'Воскресенье',
+  ];
+  return days[weekday - 1];
+}
+
+String getMonthName(int month) {
+  const months = [
+    'Января',
+    'Февраля',
+    'Марта',
+    'Апреля',
+    'Мая',
+    'Июня',
+    'Июля',
+    'Августа',
+    'Сентября',
+    'Октября',
+    'Ноября',
+    'Декабря',
+  ];
+  return months[month - 1];
 }
