@@ -12,7 +12,6 @@ class ApiConfig {
     this.prayerTimesUrl = 'https://api.aladhan.com/v1/calendarByAddress',
   });
 }
-
 class HijriApi {
   final Dio dio;
   final Logger logger;
@@ -23,14 +22,11 @@ class HijriApi {
         logger = logger ?? Logger(),
         config = config ?? ApiConfig();
 
-  /// Получить текущую дату хиджри.
   Future<String> getCurrentHijriDate() async {
     try {
       final response = await dio.get(
         config.hijriApiUrl,
-        queryParameters: {
-          'date': DateFormat('dd-MM-yyyy').format(DateTime.now()),
-        },
+        queryParameters: {'date': DateFormat('dd-MM-yyyy').format(DateTime.now())},
       );
 
       final hijriData = response.data['data']['hijri'];
@@ -46,7 +42,58 @@ class HijriApi {
     }
   }
 
-  /// Пример поточного получения даты Хиджры (обновляется раз в час).
+  Future<Map<DateTime, List<String>>> getIslamicHolidays() async {
+    try {
+      return {
+        DateTime.utc(2025, 4, 10): ['Ид аль-Фитр'],
+        DateTime.utc(2025, 6, 17): ['Ид аль-Адха'],
+      };
+    } catch (error, stackTrace) {
+      logger.e('Failed to get Islamic holidays', error: error, stackTrace: stackTrace);
+      return {};
+    }
+  }
+
+  Future<DateTime> getRamadanStart() async {
+  try {
+    final response = await dio.get(
+      config.hijriApiUrl,
+      queryParameters: {'date': DateFormat('dd-MM-yyyy').format(DateTime.now())},
+    );
+
+    final hijriData = response.data['data']['hijri'];
+    final hijriYear = hijriData['year'];
+    final ramadanStart = await _findRamadanStartDate(hijriYear);
+
+    return ramadanStart;
+  } catch (error, stackTrace) {
+    logger.e('Failed to get Ramadan start date', error: error, stackTrace: stackTrace);
+    rethrow;
+  }
+}
+
+Future<DateTime> _findRamadanStartDate(int year) async {
+  try {
+    final response = await dio.get(
+      'https://api.aladhan.com/v1/gToH',  // Modify if necessary based on API response
+      queryParameters: {'date': '01-01-$year'},
+    );
+
+    final hijriData = response.data['data']['hijri'];
+    final ramadanMonth = hijriData['month']['number'];
+
+    if (ramadanMonth == 9) {
+      // Укажите дату начала Рамадана, например 1-й день Рамадана
+      return DateTime(year, 3, 23);  // Примерная дата начала Рамадана (нужно уточнить)
+    } else {
+      throw Exception('Ramadan start date not available for year $year');
+    }
+  } catch (error, stackTrace) {
+    logger.e('Error fetching Ramadan start date', error: error, stackTrace: stackTrace);
+    rethrow;
+  }
+}
+
   Stream<String> getCurrentHijriDateStream() async* {
     while (true) {
       try {
@@ -95,6 +142,7 @@ class HijriApi {
     }
   }
 }
+
 
 class PrayerTimes {
   final Dio dio;
