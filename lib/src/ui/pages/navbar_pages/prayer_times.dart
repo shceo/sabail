@@ -17,8 +17,6 @@ class PrayTimes extends StatefulWidget {
 
 class _PrayTimesState extends State<PrayTimes> {
   Future<void> _refreshData() async {
-    // Если необходимо добавить логику обновления данных, добавьте её сюда.
-    // Сейчас вызываем setState(), чтобы пересоздать FutureBuilder'ы.
     setState(() {});
   }
 
@@ -51,7 +49,6 @@ class _PrayTimesState extends State<PrayTimes> {
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
-        // Всегда можно прокрутить, даже если содержимого мало
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(16),
@@ -177,9 +174,8 @@ class _PrayTimesState extends State<PrayTimes> {
                                   const SizedBox(width: 4),
                                   Text(
                                     '${sunTimes['sunrise']}\nВосход',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                   ),
                                 ],
                               ),
@@ -187,9 +183,8 @@ class _PrayTimesState extends State<PrayTimes> {
                                 children: [
                                   Text(
                                     '${sunTimes['sunset']}\nЗакат',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
                                   ),
                                   const SizedBox(width: 4),
                                   const Icon(Icons.nightlight_round,
@@ -312,7 +307,8 @@ class _SunPathPainter extends CustomPainter {
       if (progress < 0) progress = 0;
       if (progress > 1) progress = 1;
     }
-    final currentAngle = math.pi - (math.pi * progress);
+    // Исправлено: теперь угол вычисляется от math.pi до 2*pi
+    final currentAngle = math.pi + (math.pi * progress);
     final sunX = center.dx + radius * math.cos(currentAngle);
     final sunY = center.dy + radius * math.sin(currentAngle);
 

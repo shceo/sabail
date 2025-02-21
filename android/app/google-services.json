@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "711096347122",
+    "project_id": "sabail",
+    "storage_bucket": "sabail.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711096347122:android:293d20a5e3019f29e3a36b",
+        "android_client_info": {
+          "package_name": "com.example.sabail"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALuWpEyVf0WsCbvQggM10SD_sm9o_MK-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

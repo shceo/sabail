@@ -42,6 +42,7 @@ dependencies:
   flutter_qiblah: ^3.0.3
   permission_handler: ^11.3.1
   google_maps_flutter: ^2.10.0
+  firebase_auth: ^5.5.0
 
 dev_dependencies:
   flutter_test:
