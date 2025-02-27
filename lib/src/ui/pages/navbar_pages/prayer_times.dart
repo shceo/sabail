@@ -54,7 +54,7 @@ class _PrayTimesState extends State<PrayTimes> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // --- Блок времени молитв для выбранного города ---
+           
               FutureBuilder<String>(
                 future: prayerTimesApi.getPrayerTime(selectedCity, today, 2),
                 builder: (context, snapshot) {
@@ -254,7 +254,6 @@ class _PrayerRow extends StatelessWidget {
     );
   }
 }
-
 class _SunPathDiagram extends StatelessWidget {
   final DateTime sunrise;
   final DateTime sunset;
@@ -291,39 +290,74 @@ class _SunPathPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height);
     final radius = size.width / 2;
 
-    final arcPaint = Paint()
+    // Краска для пройденной дуги (сплошная оранжевая)
+    final passedPaint = Paint()
       ..color = Colors.orange
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    final arcRect = Rect.fromCircle(center: center, radius: radius);
-    canvas.drawArc(arcRect, math.pi, math.pi, false, arcPaint);
+      
+    // Краска для оставшейся дуги (серая, dashed)
+    final remainingPaint = Paint()
+      ..color = Colors.grey
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
 
+    final arcRect = Rect.fromCircle(center: center, radius: radius);
+
+    // Вычисляем прогресс между восходом и закатом
     final now = DateTime.now();
     final totalDaylight = sunset.difference(sunrise).inMinutes;
     double progress = 0.0;
     if (totalDaylight > 0) {
-      final passed = now.difference(sunrise).inMinutes;
-      progress = passed / totalDaylight;
+      final passedMinutes = now.difference(sunrise).inMinutes;
+      progress = passedMinutes / totalDaylight;
       if (progress < 0) progress = 0;
       if (progress > 1) progress = 1;
     }
-    // Исправлено: теперь угол вычисляется от math.pi до 2*pi
-    final currentAngle = math.pi + (math.pi * progress);
+
+    // Полная дуга от math.pi до 2π (180°)
+    final totalSweep = math.pi;
+    final currentAngle = math.pi + (totalSweep * progress);
+    final passedSweep = currentAngle - math.pi;
+    final remainingSweep = totalSweep - passedSweep;
+
+    // Рисуем пройденную дугу сплошной линией
+    canvas.drawArc(arcRect, math.pi, passedSweep, false, passedPaint);
+
+    // Рисуем оставшуюся дугу в виде серых черточек (dashed)
+    const double dashLength = 10.0; // длина штриха в пикселях
+    const double gapLength = 5.0;   // промежуток между штрихами
+    final double dashAngle = dashLength / radius;
+    final double gapAngle = gapLength / radius;
+    
+    double dashStartAngle = currentAngle;
+    final double arcEndAngle = math.pi + totalSweep;
+    while (dashStartAngle < arcEndAngle) {
+      double dashEndAngle = dashStartAngle + dashAngle;
+      if (dashEndAngle > arcEndAngle) {
+        dashEndAngle = arcEndAngle;
+      }
+      canvas.drawArc(
+        arcRect,
+        dashStartAngle,
+        dashEndAngle - dashStartAngle,
+        false,
+        remainingPaint,
+      );
+      dashStartAngle = dashEndAngle + gapAngle;
+    }
+
+    // Рисуем солнце в текущем положении на дуге
     final sunX = center.dx + radius * math.cos(currentAngle);
     final sunY = center.dy + radius * math.sin(currentAngle);
-
     final sunPaint = Paint()..color = Colors.yellow;
     canvas.drawCircle(Offset(sunX, sunY), 10, sunPaint);
-
-    final moonX = center.dx + radius * math.cos(0);
-    final moonY = center.dy + radius * math.sin(0);
-    final moonPaint = Paint()..color = Colors.blueGrey;
-    canvas.drawCircle(Offset(moonX, moonY), 8, moonPaint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
+
 
 String getDayOfWeek(int weekday) {
   const days = [

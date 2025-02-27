@@ -1,61 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:sabail/src/domain/sql/last_read_dao.dart';
 
 class LastReadSurah with ChangeNotifier {
+  final LastReadDao _dao = LastReadDao();
+
   String _surahName = '';
   int _surahNumber = 1;
+  int _verseNumber = 1;  // добавляем сохранение номера аята
 
   String get surahName => _surahName;
   int get surahNumber => _surahNumber;
+  int get verseNumber => _verseNumber;
 
   LastReadSurah() {
     loadLastRead();
   }
 
-  void saveLastRead() async {
-    final box = await Hive.openBox('lastReadSurah');
-    box.put('name', _surahName);
-    box.put('number', _surahNumber);
+  Future<void> saveLastRead() async {
+    await _dao.saveLastRead(_surahNumber, _verseNumber);
+  }
+
+  Future<void> loadLastRead() async {
+    final lastRead = await _dao.getLastRead();
+    if (lastRead != null) {
+      _surahNumber = lastRead['surah_number'] ?? 1;
+      _verseNumber = lastRead['verse_number'] ?? 1;
+      _surahName = lastRead['surah_name'] ?? '';  // имя теперь придется сохранять отдельно
+    } else {
+      _surahNumber = 1;
+      _verseNumber = 1;
+      _surahName = '';
+    }
     notifyListeners();
   }
 
-  void loadLastRead() async {
-    final box = await Hive.openBox('lastReadSurah');
-    _surahName = box.get('name', defaultValue: '');
-    _surahNumber = box.get('number', defaultValue: 1);
-    notifyListeners();
-  }
-
-  void setLastReadSurah(String surahName) async {
+  void setLastReadSurah(String surahName) {
     _surahName = surahName;
-    saveLastRead();
+    notifyListeners();
   }
 
-  void setLastReadSurahNumber(int surahNumber) async {
+  void setLastReadSurahNumber(int surahNumber) {
     _surahNumber = surahNumber;
-    saveLastRead();
+    notifyListeners();
+  }
+
+  void setLastReadVerse(int verseNumber) {
+    _verseNumber = verseNumber;
+    saveLastRead();  // при установке сразу сохраняем в БД
+    notifyListeners();
   }
 }
 
-class LastReadSurahProvider extends InheritedNotifier {
+
+
+class LastReadSurahProvider extends InheritedNotifier<LastReadSurah> {
   final LastReadSurah lastReadSurah;
 
   const LastReadSurahProvider({
     super.key,
-    required LastReadSurah lastReadSurah,
+    required this.lastReadSurah,
     required super.child,
-  // ignore: unnecessary_null_comparison
-  })  : assert(lastReadSurah != null),
-        // ignore: prefer_initializing_formals
-        lastReadSurah = lastReadSurah,
-        super(notifier: lastReadSurah);
+  }) : super(notifier: lastReadSurah);
 
   static LastReadSurahProvider? watch(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<LastReadSurahProvider>();
   }
 
   static LastReadSurahProvider? read(BuildContext context) {
-    final widget = context.getElementForInheritedWidgetOfExactType<LastReadSurahProvider>()?.widget;
+    final widget =
+        context.getElementForInheritedWidgetOfExactType<LastReadSurahProvider>()?.widget;
     return widget is LastReadSurahProvider ? widget : null;
   }
 }

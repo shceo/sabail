@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sabail/src/provider/image_picker_provider.dart';
 import 'package:sabail/src/provider/nav_bar_provider.dart';
 import 'package:sabail/src/provider/prayerpage_provider.dart';
+import 'package:sabail/src/provider/surah_cache_provider.dart';
 import 'package:sabail/src/provider/tabmodel_provider.dart';
 import 'package:sabail/src/provider/time_provider.dart';
 import 'package:sabail/src/provider/user_city.dart';
@@ -30,6 +31,7 @@ class Sabail extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HijriDateModel()),
        
         ChangeNotifierProvider(create: (context) => ImageNotifier()),
+          ChangeNotifierProvider(create: (context) => SurahCacheProvider()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
