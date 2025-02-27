@@ -5,6 +5,7 @@ import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sabail/src/ui/pages/screens/tasbih_Screen.dart';
 import 'package:sabail/src/ui/theme/app_colors.dart';
 
 class MainThreePodWidget extends StatelessWidget {
@@ -77,16 +78,7 @@ class Page extends StatelessWidget {
     if (index == 0) {
       return const QiblahCompassScreen();
     } else if (index == 1) {
-      return Scaffold(
-        backgroundColor: SabailColors.notwhite,
-        appBar: AppBar(
-          backgroundColor: SabailColors.notwhite,
-          title: const Text('Тасбих'),
-        ),
-        body: const Center(
-          child: Text('Тасбих'),
-        ),
-      );
+      return TasbihScreen();
     } else {
       return Scaffold(
         appBar: AppBar(

@@ -1,7 +1,7 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sabail/src/ui/pages/login_page.dart';
 
 class Profile extends StatelessWidget {
@@ -14,253 +14,228 @@ class Profile extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Профиль',
-          style: GoogleFonts.oswald(),
+          'Личный кабинет',
+          style: GoogleFonts.oswald(fontSize: 25),
         ),
+        centerTitle: true,
         automaticallyImplyLeading: false,
+        leading: const Icon(FlutterIslamicIcons.mosque),
       ),
       body: SingleChildScrollView(
         child: Container(
           color: const Color(0xFFF9F9F9),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 33, 17, 255),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Icon(Icons.arrow_back_ios),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user?.displayName ?? 'Имя не установлено',
-                              style: GoogleFonts.oswald(
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              user?.email ?? 'Почта не указана',
-                              style: GoogleFonts.oswald(
-                                textStyle: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           const ProfileEditscreen()),
-                            // );
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xFFFFFFFF),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: Icon(Icons.arrow_back_ios),
-                        title: Text(
-                          'Об аккаунте',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        subtitle: Text(
-                          'Изменить данные об аккаунте',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(
-                                fontSize: 14, color: Colors.grey),
-                          ),
-                        ),
-                        trailing: Icon(Icons.arrow_back_ios),
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const ProfileEditscreen()),
-                          // );
-                        },
-                      ),
-                      Divider(color: Colors.grey[300]),
-                      ListTile(
-                        leading: Icon(Icons.arrow_back_ios),
-                        title: Text(
-                          'Персональная информация',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        subtitle: Text(
-                          'Ваши данные, увлечения, интересы',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(
-                                fontSize: 14, color: Colors.grey),
-                          ),
-                        ),
-                        trailing: Icon(Icons.arrow_back_ios),
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => const PersonalInfoPage()),
-                          // );
-                        },
-                      ),
-                      Divider(color: Colors.grey[300]),
-                      ListTile(
-                        leading: Image.asset(
-                          'assets/images/sunrise.jpg',
-                          width: 24,
-                          height: 24,
-                        ),
-                        title: Text(
-                          'Выход',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        subtitle: Text(
-                          'Выйти из аккаунта',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(
-                                fontSize: 14, color: Colors.grey),
-                          ),
-                        ),
-                        trailing: Icon(Icons.arrow_back_ios),
-                        onTap: () {
-                          // Реализация выхода
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Помощь',
-                      style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)
-                          .merge(
-                        GoogleFonts.oswald(),
-                      ),
-                    )),
-                const SizedBox(height: 15),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color(0xFFFFFFFF),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: Icon(Icons.arrow_back_ios),
-                        title: Text(
-                          'Помощь & Поддержка',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        trailing: Icon(Icons.arrow_back_ios),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HelpSupportPage()),
-                          );
-                        },
-                      ),
-                      Divider(color: Colors.grey[300]),
-                      ListTile(
-                        leading: Icon(Icons.arrow_back_ios),
-                        title: Text(
-                          'О приложении',
-                          style: GoogleFonts.oswald(
-                            textStyle: const TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        trailing: Icon(Icons.arrow_back_ios),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _buildProfileHeader(context, user),
+              const SizedBox(height: 30),
+              _buildAccountSection(context),
+              const SizedBox(height: 15),
+              _buildSectionHeader('Поддержка и помощь'),
+              const SizedBox(height: 15),
+              _buildHelpSection(context),
+            ],
           ),
         ),
       ),
     );
   }
+
+  Widget _buildProfileHeader(BuildContext context, User? user) {
+    return Stack(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 100,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Colors.green, Colors.teal],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Icon(FlutterIslamicIcons.family, color: Colors.white, size: 32),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user?.displayName ?? 'Ваше имя не указано',
+                  style: GoogleFonts.oswald(
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  user?.email ?? 'Ваш email не указан',
+                  style: GoogleFonts.oswald(
+                    textStyle: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            IconButton(
+              icon: const Icon(
+                FlutterIslamicIcons.quran,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                // Навигация в редактирование профиля (можно добавить страницу)
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccountSection(BuildContext context) {
+    return _buildCard([
+      _buildListTile(
+        context,
+        title: 'Настройки профиля',
+        subtitle: 'Редактировать данные аккаунта',
+        leadingIcon: FlutterIslamicIcons.prayer,
+        onTap: () {
+          // Добавить логику редактирования профиля
+        },
+      ),
+      const Divider(),
+      _buildListTile(
+        context,
+        title: 'Личные данные',
+        subtitle: 'Имя, интересы и информация',
+        leadingIcon: FlutterIslamicIcons.quran,
+        onTap: () {
+          // Добавить логику
+        },
+      ),
+      const Divider(),
+      _buildListTile(
+        context,
+        title: 'Выход из приложения',
+        subtitle: 'Завершить сеанс',
+        leadingIcon: FlutterIslamicIcons.islam,
+        onTap: () => {},
+      ),
+    ]);
+  }
+
+  Widget _buildHelpSection(BuildContext context) {
+    return _buildCard([
+      _buildListTile(
+        context,
+        title: 'Центр поддержки',
+        subtitle: 'Вопросы и советы',
+        leadingIcon: FlutterIslamicIcons.solidTakbir,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const HelpSupportPage()),
+          );
+        },
+      ),
+      const Divider(),
+      _buildListTile(
+        context,
+        title: 'О приложении',
+        subtitle: 'Информация о приложении',
+        leadingIcon: FlutterIslamicIcons.kaaba,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AboutAppPage()),
+          );
+        },
+      ),
+    ]);
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        style: GoogleFonts.oswald(
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard(List<Widget> children) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: const Color(0xFFFFFFFF),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(children: children),
+    );
+  }
+
+  Widget _buildListTile(
+    BuildContext context, {
+    required String title,
+    String? subtitle,
+    required IconData leadingIcon,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(leadingIcon, color: Colors.green),
+      title: Text(
+        title,
+        style: GoogleFonts.oswald(textStyle: const TextStyle(fontSize: 16)),
+      ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle,
+              style: GoogleFonts.oswald(textStyle: const TextStyle(fontSize: 14, color: Colors.grey)),
+            )
+          : null,
+      trailing: const Icon(Icons.arrow_forward_ios),
+      onTap: onTap,
+    );
+  }
+
+  void _logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    // Обязательно с микротаской или delayed, чтобы избежать Navigator conflict
+    Future.microtask(() {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+        (route) => false,
+      );
+    });
+  }
 }
-
-
-
 
 class HelpSupportPage extends StatelessWidget {
   const HelpSupportPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('Помощь & Поддержка')));
+    return Scaffold(appBar: AppBar(title: const Text('Центр поддержки')));
   }
 }
 
@@ -272,4 +247,3 @@ class AboutAppPage extends StatelessWidget {
     return Scaffold(appBar: AppBar(title: const Text('О приложении')));
   }
 }
-
