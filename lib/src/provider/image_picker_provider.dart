@@ -1,9 +1,9 @@
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -26,37 +26,53 @@ class ImageNotifier with ChangeNotifier {
   }
 
   Future getImage() async {
-     final pickedFile = await ImagePicker().pickImage(
-    source: ImageSource.gallery, 
-  );
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
 
-      File compressedFile = await FlutterNativeImage.compressImage(
-          imageFile.path,
-          quality: 80,
-          percentage: 80);
+      File compressedFile = await _compressImage(imageFile);
 
       final directory = await getApplicationDocumentsDirectory();
+      final newPath = '${directory.path}/${DateTime.now().toIso8601String()}.png';
 
-      final File newImage = await compressedFile
-          .copy('${directory.path}/${DateTime.now().toIso8601String()}.png');
+      await compressedFile.copy(newPath);
 
       Box box = await Hive.openBox('images');
+      box.put('imagePath', newPath);
 
-      box.put('imagePath', newImage.path);
-
-      _image = newImage;
+      _image = File(newPath);
       notifyListeners();
     } else {
       Fluttertoast.showToast(
-          msg: "Фотография не выбрана",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 2,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0);
+        msg: "Фотография не выбрана",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
+  }
+
+  Future<File> _compressImage(File file) async {
+    final Uint8List bytes = await file.readAsBytes();
+
+    // Декодируем изображение
+    img.Image? image = img.decodeImage(bytes);
+    if (image == null) throw Exception('Не удалось декодировать изображение');
+
+    // Сжимаем изображение (изменяем качество и размер, если нужно)
+    final compressedImage = img.encodeJpg(image, quality: 80);
+
+    // Записываем в новый файл
+    final tempDir = await getTemporaryDirectory();
+    final tempFile = File('${tempDir.path}/compressed_${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+    await tempFile.writeAsBytes(compressedImage);
+
+    return tempFile;
   }
 }

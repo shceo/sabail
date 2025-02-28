@@ -1,3 +1,18 @@
+buildscript {
+    ext.kotlin_version = '1.9.24'
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal() // иногда нужно для совместимости плагинов
+    }
+
+    dependencies {
+       classpath 'com.android.tools.build:gradle:8.3.1'
+        classpath 'com.google.gms:google-services:4.4.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -5,14 +20,18 @@ allprojects {
     }
 }
 
+// Настройка папок сборки
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
+// Обязательно следить, чтобы плагины правильно подключались
 subprojects {
     project.evaluationDependsOn(':app')
 }
 
+// Очистка проекта
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
