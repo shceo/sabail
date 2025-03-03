@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:quran/quran.dart' as Quran;
 import 'package:sabail/src/domain/sql/last_read_dao.dart';
 import 'package:sabail/src/domain/sql/settings_dao.dart';
 import 'package:sabail/src/domain/api/quran_api.dart' as api;
 import 'reading_mode_screen.dart';
-import 'settings_screen.dart'; // Новый экран настроек
+import 'settings_screen.dart';
 
 class SurahScreen extends StatefulWidget {
   final int surahNumber;
@@ -46,11 +47,12 @@ class _SurahScreenState extends State<SurahScreen> {
 
   Future<void> _fetchVerses() async {
     try {
-      // Получаем выбранный перевод из настроек (по умолчанию используем 131)
       final selectedTranslation = await settingsDao.getSelectedTranslation() ?? 131;
+      // Если выбран перевод для русского, измените language на "ru"
+      final language = (selectedTranslation == 79) ? "ru" : "en";
       final fetchedVerses = await api.QuranApiService.fetchSurahVerses(
         widget.surahNumber,
-        language: "en",
+        language: language,
         translationId: selectedTranslation,
       );
       setState(() {
@@ -154,7 +156,6 @@ class _SurahScreenState extends State<SurahScreen> {
                 context,
                 MaterialPageRoute(builder: (_) => const SettingsScreen()),
               );
-              // После возвращения обновляем тему и перевод
               _loadTheme();
               _fetchVerses();
             },
@@ -186,8 +187,13 @@ class _SurahScreenState extends State<SurahScreen> {
           final verseText = verse.textUthmani;
           final englishTranslation = verse.translation ?? "";
           final isCurrentVerse = (lastReadVerse == verseNumber);
-          // Формируем нумерацию аята в виде: "۝ [номер]" с арабскими цифрами
-          final arabicVerseNumber = '۝ ' + toArabicNumeral(verseNumber);
+          // Получаем символ конца аята через библиотеку Quran (оставляем результат, даже если он возвращает точку)
+          final verseEndSymbol = Quran.getVerseEndSymbol(verseNumber, arabicNumeral: true);
+          // Если возвращается точка, комбинируем её с арабской нумерацией вручную
+          final displayEndSymbol = (verseEndSymbol.trim() == '.') 
+              ? '۝ ${toArabicNumeral(verseNumber)}'
+              : verseEndSymbol + ' ' + toArabicNumeral(verseNumber);
+
           return GestureDetector(
             onTap: () => _saveLastReadVerse(verseNumber),
             child: Container(
@@ -230,9 +236,9 @@ class _SurahScreenState extends State<SurahScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  // Арабский текст с добавлением знака нумерации в конце
+                  // Арабский текст
                   Text(
-                    verseText + ' ' + arabicVerseNumber,
+                    verseText,
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
                       fontSize: 26,
@@ -240,15 +246,26 @@ class _SurahScreenState extends State<SurahScreen> {
                       height: 1.6,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  // Перевод
-                  Text(
-                    englishTranslation,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: isDarkTheme ? Colors.grey[300] : Colors.grey[800],
-                      height: 1.4,
-                    ),
+                  const SizedBox(height: 8),
+                  // Нижняя строка: нумерация с символом и перевод
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        displayEndSymbol,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: isDarkTheme ? Colors.grey[300] : Colors.grey[800],
+                        ),
+                      ),
+                      Text(
+                        englishTranslation,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: isDarkTheme ? Colors.grey[300] : Colors.grey[800],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -258,14 +275,10 @@ class _SurahScreenState extends State<SurahScreen> {
       ),
     );
   }
-}
-
-/// Преобразование арабских цифр (0-9) в арабские символы
-String toArabicNumeral(int number) {
-  const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-  return number
-      .toString()
-      .split('')
-      .map((d) => arabicDigits[int.parse(d)])
-      .join('');
+  
+  // Преобразование арабских цифр
+  String toArabicNumeral(int number) {
+    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    return number.toString().split('').map((d) => arabicDigits[int.parse(d)]).join('');
+  }
 }

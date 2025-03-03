@@ -21,12 +21,12 @@ class QuranApiService {
       }
       return list.map((json) => Surah.fromJson(json)).toList();
     } else {
-      throw Exception('Ошибка при получении сур: ${response.statusCode} ${response.body}');
+      throw Exception(
+          'Ошибка при получении сур: ${response.statusCode} ${response.body}');
     }
   }
 
-  /// Получает список джузов с объединением информации:
-  /// для каждого джуза возвращает номера сур, входящих в него.
+  /// Получает список джузов с объединением информации: для каждого джуза возвращает номера сур.
   static Future<List<JuzDetail>> fetchJuzDetails() async {
     final url = Uri.https(baseUrl, '/api/v4/juzs');
     final response = await http.get(url);
@@ -68,8 +68,8 @@ class QuranApiService {
 
   /// Получает список стихов для заданной суры через endpoint /api/v4/quran/verses/by_chapter.
   /// Параметры:
-  /// - language: "en" (для перевода; можно менять)
-  /// - translationId: 131 (например, enSaheeh)
+  /// - language: язык перевода (например, "en" или "ru")
+  /// - translationId: id выбранного перевода (например, 131 для enSaheeh или другой для русского)
   /// - per_page: '300' для загрузки всех стихов суры
   static Future<List<Verse>> fetchSurahVerses(
     int chapterNumber, {
@@ -99,20 +99,23 @@ class QuranApiService {
     }
   }
 
-  /// Получает список языков через endpoint /api/v4/resources/languages
-  static Future<List<Language>> fetchLanguages() async {
-    final url = Uri.https(baseUrl, '/api/v4/resources/languages');
+  /// Получает список доступных переводов через endpoint /api/v4/resources/translations
+  static Future<List<Translation>> fetchTranslations({String language = "en"}) async {
+    final queryParameters = {
+      'language': language,
+    };
+    final url = Uri.https(baseUrl, '/api/v4/resources/translations', queryParameters);
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      final languagesData = jsonData['languages'];
-      if (languagesData is List) {
-        return languagesData.map((json) => Language.fromJson(json)).toList();
+      final translationsData = jsonData['translations'];
+      if (translationsData is List) {
+        return translationsData.map((json) => Translation.fromJson(json)).toList();
       } else {
-        throw Exception('Unexpected format for languages: ${languagesData.runtimeType}');
+        throw Exception('Unexpected format for translations: ${translationsData.runtimeType}');
       }
     } else {
-      throw Exception('Error fetching languages: ${response.statusCode} ${response.body}');
+      throw Exception('Error fetching translations: ${response.statusCode} ${response.body}');
     }
   }
 }
@@ -205,26 +208,40 @@ class Verse {
   }
 }
 
-/// Модель описания языка
-class Language {
+/// Модель описания перевода Корана
+class Translation {
   final int id;
   final String name;
-  final String code;
-  final String nativeName;
+  final String authorName;
+  final String slug;
+  final String languageName;
+  final String translatedName;
 
-  Language({
+  Translation({
     required this.id,
     required this.name,
-    required this.code,
-    required this.nativeName,
+    required this.authorName,
+    required this.slug,
+    required this.languageName,
+    required this.translatedName,
   });
 
-  factory Language.fromJson(Map<String, dynamic> json) {
-    return Language(
+  factory Translation.fromJson(Map<String, dynamic> json) {
+    return Translation(
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
-      code: json['code'] ?? '',
-      nativeName: json['native_name'] ?? '',
+      authorName: json['author_name'] ?? '',
+      slug: json['slug'] ?? '',
+      languageName: json['language_name'] ?? '',
+      translatedName: (json['translated_name'] != null && json['translated_name']['name'] != null)
+          ? json['translated_name']['name']
+          : '',
     );
   }
+}
+
+/// Преобразование числа в арабские цифры (0-9)
+String toArabicNumeral(int number) {
+  const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return number.toString().split('').map((d) => arabicDigits[int.parse(d)]).join('');
 }
