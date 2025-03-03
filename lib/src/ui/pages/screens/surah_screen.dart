@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:quran/quran.dart' as Quran;
 import 'package:sabail/src/domain/sql/last_read_dao.dart';
 import 'package:sabail/src/domain/sql/settings_dao.dart';
-
+import 'package:sabail/src/domain/api/quran_api.dart' as api;
 import 'reading_mode_screen.dart';
+import 'settings_screen.dart'; // Новый экран настроек
 
 class SurahScreen extends StatefulWidget {
   final int surahNumber;
@@ -26,12 +26,14 @@ class _SurahScreenState extends State<SurahScreen> {
 
   bool isDarkTheme = false;
   int lastReadVerse = 1;
+  List<api.Verse> verses = [];
 
   @override
   void initState() {
     super.initState();
     _loadTheme();
     _loadLastReadVerse();
+    _fetchVerses();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.initialVerse > 1) {
@@ -40,6 +42,26 @@ class _SurahScreenState extends State<SurahScreen> {
     });
 
     _scrollController.addListener(_handleScroll);
+  }
+
+  Future<void> _fetchVerses() async {
+    try {
+      // Получаем выбранный перевод из настроек (по умолчанию используем 131)
+      final selectedTranslation = await settingsDao.getSelectedTranslation() ?? 131;
+      final fetchedVerses = await api.QuranApiService.fetchSurahVerses(
+        widget.surahNumber,
+        language: "en",
+        translationId: selectedTranslation,
+      );
+      setState(() {
+        verses = fetchedVerses;
+      });
+    } catch (e) {
+      print('Ошибка при получении стихов: $e');
+      setState(() {
+        verses = [];
+      });
+    }
   }
 
   Future<void> _loadTheme() async {
@@ -61,15 +83,20 @@ class _SurahScreenState extends State<SurahScreen> {
   }
 
   void _scrollToVerse(int verseNumber) {
-    const verseHeight = 130.0;
+    const verseHeight = 150.0;
     final offset = (verseNumber - 1) * verseHeight;
-    _scrollController.jumpTo(offset.clamp(0, _scrollController.position.maxScrollExtent));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(
+          offset.clamp(0, _scrollController.position.maxScrollExtent),
+        );
+      }
+    });
   }
 
   void _handleScroll() {
-    const verseHeight = 130.0;
+    const verseHeight = 150.0;
     final visibleVerse = (_scrollController.offset / verseHeight).floor() + 1;
-
     if (visibleVerse != lastReadVerse && visibleVerse > 0) {
       setState(() {
         lastReadVerse = visibleVerse;
@@ -91,18 +118,45 @@ class _SurahScreenState extends State<SurahScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final surahName = Quran.getSurahName(widget.surahNumber);
-    final verseCount = Quran.getVerseCount(widget.surahNumber);
-
+    final verseCount = verses.length;
+    if (verseCount == 0) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Сура ${widget.surahNumber} — $lastReadVerse аят'),
+        ),
+        backgroundColor: isDarkTheme ? Colors.grey[900] : Colors.white,
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    final surahName = verses.first.verseKey.split(":").first;
     return Scaffold(
       appBar: AppBar(
-        title: Text('$surahName — $lastReadVerse аят'),
+        backgroundColor: isDarkTheme ? Colors.black87 : Colors.grey,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Сура $surahName',
+              style: const TextStyle(fontSize: 18),
+            ),
+            const Text(
+              'Страница 3 | Джуз 1 | Хизб 1',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
         actions: [
+          // Иконка настроек
           IconButton(
-            icon: Icon(isDarkTheme ? Icons.wb_sunny : Icons.nightlight_round),
+            icon: const Icon(Icons.settings),
             onPressed: () async {
-              setState(() => isDarkTheme = !isDarkTheme);
-              await settingsDao.saveTheme(isDarkTheme);
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+              // После возвращения обновляем тему и перевод
+              _loadTheme();
+              _fetchVerses();
             },
           ),
           IconButton(
@@ -127,42 +181,75 @@ class _SurahScreenState extends State<SurahScreen> {
         controller: _scrollController,
         itemCount: verseCount,
         itemBuilder: (context, index) {
-          final verseNumber = index + 1;
-          final verseText = Quran.getVerse(widget.surahNumber, verseNumber);
-          final verseEndSymbol = Quran.getVerseEndSymbol(verseNumber, arabicNumeral: true);
-          final englishTranslation = Quran.getVerseTranslation(
-            widget.surahNumber,
-            verseNumber,
-            translation: Quran.Translation.enSaheeh,
-          );
-
+          final verse = verses[index];
+          final verseNumber = verse.verseNumber;
+          final verseText = verse.textUthmani;
+          final englishTranslation = verse.translation ?? "";
+          final isCurrentVerse = (lastReadVerse == verseNumber);
+          // Формируем нумерацию аята в виде: "۝ [номер]" с арабскими цифрами
+          final arabicVerseNumber = '۝ ' + toArabicNumeral(verseNumber);
           return GestureDetector(
             onTap: () => _saveLastReadVerse(verseNumber),
             child: Container(
-              color: lastReadVerse == verseNumber
-                  ? (isDarkTheme ? Colors.blueGrey[700] : Colors.blue[100])
-                  : Colors.transparent,
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: isCurrentVerse
+                    ? (isDarkTheme ? Colors.blueGrey[700] : Colors.blue[100])
+                    : (isDarkTheme ? Colors.grey[850] : Colors.white),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  if (!isDarkTheme)
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                ],
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Номер аята (например "2:10")
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        decoration: BoxDecoration(
+                          color: isDarkTheme ? Colors.blueGrey[600] : Colors.blueGrey[200],
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                        child: Text(
+                          verse.verseKey,
+                          style: TextStyle(
+                            color: isDarkTheme ? Colors.white : Colors.black,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  // Арабский текст с добавлением знака нумерации в конце
                   Text(
-                    '$verseText$verseEndSymbol',
+                    verseText + ' ' + arabicVerseNumber,
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 26,
                       color: isDarkTheme ? Colors.white : Colors.black,
+                      height: 1.6,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
+                  // Перевод
                   Text(
                     englishTranslation,
                     style: TextStyle(
-                      fontSize: 18,
-                      color: isDarkTheme ? Colors.grey[400] : Colors.grey[800],
+                      fontSize: 16,
+                      color: isDarkTheme ? Colors.grey[300] : Colors.grey[800],
+                      height: 1.4,
                     ),
                   ),
-                  const Divider(),
                 ],
               ),
             ),
@@ -171,4 +258,14 @@ class _SurahScreenState extends State<SurahScreen> {
       ),
     );
   }
+}
+
+/// Преобразование арабских цифр (0-9) в арабские символы
+String toArabicNumeral(int number) {
+  const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return number
+      .toString()
+      .split('')
+      .map((d) => arabicDigits[int.parse(d)])
+      .join('');
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sabail/src/components/tabbar/custom_tabbar.dart';
+import 'package:sabail/src/domain/api/quran_api.dart' as api;
 import 'package:sabail/src/provider/last_readen_provider.dart';
 import 'package:sabail/src/ui/pages/screens/surah_screen.dart';
 import 'package:sabail/src/ui/theme/app_colors.dart';
-import 'package:quran/quran.dart' as Quran;
 import 'package:sabail/src/provider/surah_cache_provider.dart';
 
 class AlQuranPage extends StatelessWidget {
@@ -43,12 +43,14 @@ class BodyAl extends StatelessWidget {
     final surahCache = Provider.of<SurahCacheProvider>(context);
     final myWidth = MediaQuery.of(context).size.width;
 
-    final lastReadTitle = (lastReadSurah?.surahName != null && lastReadSurah?.verseNumber != null)
-        ? '${lastReadSurah?.surahName} - ${lastReadSurah?.verseNumber} аят'
-        : 'Нет данных о последнем чтении';
+    final lastReadTitle =
+        (lastReadSurah?.surahName != null && lastReadSurah?.verseNumber != null)
+            ? '${lastReadSurah!.surahName} - ${lastReadSurah.verseNumber} аят'
+            : 'Нет данных о последнем чтении';
 
     return Column(
       children: [
+        // Верхняя часть страницы с информацией о последнем чтении
         Stack(
           children: [
             Container(
@@ -79,7 +81,7 @@ class BodyAl extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => SurahScreen(
                               surahNumber: lastReadSurah!.surahNumber,
-                              initialVerse: lastReadSurah.verseNumber, 
+                              initialVerse: lastReadSurah.verseNumber,
                             ),
                           ),
                         );
@@ -89,7 +91,7 @@ class BodyAl extends StatelessWidget {
                       'Продолжить чтение',
                       style: TextStyle(color: Colors.black),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -109,7 +111,7 @@ class BodyAl extends StatelessWidget {
           child: TabBarView(
             children: [
               _buildSurahList(context, surahCache),
-              _buildJuzList(context),
+              _buildJuzList(context, surahCache),
             ],
           ),
         ),
@@ -119,12 +121,11 @@ class BodyAl extends StatelessWidget {
 
   Widget _buildSurahList(BuildContext context, SurahCacheProvider surahCache) {
     return ListView.builder(
-      itemCount: surahCache.surahs.length + 2,  // +2 для пустых контейнеров
+      itemCount: surahCache.surahs.length + 2,
       itemBuilder: (context, index) {
         if (index >= surahCache.surahs.length) {
-          return const SizedBox(height: 60); // Пустое место для учета навбара
+          return const SizedBox(height: 60);
         }
-
         final surah = surahCache.surahs[index];
         return ListTile(
           title: Text(
@@ -135,7 +136,8 @@ class BodyAl extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(surah.name, style: const TextStyle(color: Colors.black)),
-              Text(surah.englishName, style: const TextStyle(color: Colors.black)),
+              Text(surah.englishName,
+                  style: const TextStyle(color: Colors.black)),
             ],
           ),
           leading: CircleAvatar(
@@ -146,20 +148,19 @@ class BodyAl extends StatelessWidget {
             ),
           ),
           onTap: () {
-            final lastReadSurah = LastReadSurahProvider.watch(context)?.lastReadSurah;
-
+            final lastReadSurah =
+                LastReadSurahProvider.watch(context)?.lastReadSurah;
             Future.microtask(() {
               lastReadSurah?.setLastReadSurah(surah.name);
               lastReadSurah?.setLastReadSurahNumber(surah.number);
-              lastReadSurah?.setLastReadVerse(1); // Открыли суру с первого аята
+              lastReadSurah?.setLastReadVerse(1);
             });
-
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (_) => SurahScreen(
                   surahNumber: surah.number,
-                  initialVerse: 1, // Начинаем с первого аята при новом открытии
+                  initialVerse: 1,
                 ),
               ),
             );
@@ -169,29 +170,59 @@ class BodyAl extends StatelessWidget {
     );
   }
 
-  Widget _buildJuzList(BuildContext context) {
-    return ListView.builder(
-      itemCount: 30,
-      itemBuilder: (context, index) {
-        final juzNumber = index + 1;
-        return ListTile(
-          title: Text(
-            'Джуз $juzNumber',
-            style: const TextStyle(color: Colors.black),
-          ),
-          leading: CircleAvatar(
-            backgroundColor: Colors.purple,
-            child: Text(
-              '$juzNumber',
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => JuzDetailScreen(juzNumber: juzNumber),
+  Widget _buildJuzList(BuildContext context, SurahCacheProvider surahCache) {
+    return FutureBuilder<List<api.JuzDetail>>(
+      future: api.QuranApiService.fetchJuzDetails(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Ошибка: ${snapshot.error}'));
+        }
+        final juzDetails = snapshot.data!;
+        return ListView.builder(
+          itemCount: juzDetails.length,
+          itemBuilder: (context, index) {
+            final juzDetail = juzDetails[index];
+            // Фильтруем сур из кэша по номерам, полученным для данного джуза
+            final surahsForJuz = surahCache.surahs
+                .where((s) => juzDetail.surahNumbers.contains(s.number))
+                .toList();
+            return ListTile(
+              title: Text(
+                'Джуз ${juzDetail.juzNumber}',
+                style: const TextStyle(color: Colors.black),
               ),
+              subtitle: surahsForJuz.isNotEmpty
+                  ? Text(
+                      surahsForJuz
+                          .map((s) => s.englishName.isNotEmpty
+                              ? s.englishName
+                              : s.name)
+                          .join(', '),
+                      style: const TextStyle(color: Colors.black),
+                    )
+                  : const Text('Нет данных',
+                      style: TextStyle(color: Colors.black)),
+              leading: CircleAvatar(
+                backgroundColor: Colors.purple,
+                child: Text(
+                  '${juzDetail.juzNumber}',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => JuzDetailScreen(
+                      juzNumber: juzDetail.juzNumber,
+                      surahs: surahsForJuz,
+                    ),
+                  ),
+                );
+              },
             );
           },
         );
@@ -202,64 +233,52 @@ class BodyAl extends StatelessWidget {
 
 class JuzDetailScreen extends StatelessWidget {
   final int juzNumber;
+  final List<api.Surah> surahs;
 
-  const JuzDetailScreen({super.key, required this.juzNumber});
+  const JuzDetailScreen({super.key, required this.juzNumber, required this.surahs});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Джуз $juzNumber')),
-      body: FutureBuilder<List<int>>(
-        future: _loadSurahsForJuz(juzNumber),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final surahNumbers = snapshot.data!;
-          return ListView.builder(
-            itemCount: surahNumbers.length,
-            itemBuilder: (context, index) {
-              final surahNumber = surahNumbers[index];
-              final surahName = Quran.getSurahName(surahNumber);
-              final surahEnglishName = Quran.getSurahNameEnglish(surahNumber);
-              final surahArabicName = Quran.getSurahNameArabic(surahNumber);
-
-              return ListTile(
-                title: Text(surahArabicName, style: const TextStyle(color: Colors.black)),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(surahName, style: const TextStyle(color: Colors.black)),
-                    Text(surahEnglishName, style: const TextStyle(color: Colors.black)),
-                  ],
+      body: ListView.builder(
+        itemCount: surahs.length,
+        itemBuilder: (context, index) {
+          final surah = surahs[index];
+          return ListTile(
+            title: Text(
+              surah.arabicName,
+              style: const TextStyle(color: Colors.black),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(surah.name, style: const TextStyle(color: Colors.black)),
+                Text(surah.englishName,
+                    style: const TextStyle(color: Colors.black)),
+              ],
+            ),
+            leading: CircleAvatar(
+              backgroundColor: Colors.purple,
+              child: Text(
+                '${surah.number}',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SurahScreen(
+                    surahNumber: surah.number,
+                    initialVerse: 1,
+                  ),
                 ),
-                leading: CircleAvatar(
-                  backgroundColor: Colors.purple,
-                  child: Text('$surahNumber', style: const TextStyle(color: Colors.white)),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => SurahScreen(
-                        surahNumber: surahNumber,
-                        initialVerse: 1,
-                      ),
-                    ),
-                  );
-                },
               );
             },
           );
         },
       ),
     );
-  }
-
-  Future<List<int>> _loadSurahsForJuz(int juzNumber) async {
-    return List.generate(Quran.totalSurahCount, (i) => i + 1)
-        .where((i) => Quran.getJuzNumber(i, 1) == juzNumber)
-        .toList();
   }
 }
