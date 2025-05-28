@@ -47,7 +47,8 @@ class _SurahScreenState extends State<SurahScreen> {
 
   Future<void> _fetchVerses() async {
     try {
-      final selectedTranslation = await settingsDao.getSelectedTranslation() ?? 131;
+      final selectedTranslation =
+          await settingsDao.getSelectedTranslation() ?? 131;
       // Если выбран перевод для русского, измените language на "ru"
       final language = (selectedTranslation == 79) ? "ru" : "en";
       final fetchedVerses = await api.QuranApiService.fetchSurahVerses(
@@ -182,22 +183,24 @@ class _SurahScreenState extends State<SurahScreen> {
         controller: _scrollController,
         itemCount: verseCount,
         itemBuilder: (context, index) {
+          
           final verse = verses[index];
           final verseNumber = verse.verseNumber;
           final verseText = verse.textUthmani;
           final englishTranslation = verse.translation ?? "";
           final isCurrentVerse = (lastReadVerse == verseNumber);
-          // Получаем символ конца аята через библиотеку Quran (оставляем результат, даже если он возвращает точку)
-          final verseEndSymbol = Quran.getVerseEndSymbol(verseNumber, arabicNumeral: true);
+          final verseEndSymbol =
+              Quran.getVerseEndSymbol(verseNumber, arabicNumeral: true);
           // Если возвращается точка, комбинируем её с арабской нумерацией вручную
-          final displayEndSymbol = (verseEndSymbol.trim() == '.') 
-              ? '۝ ${toArabicNumeral(verseNumber)}'
-              : verseEndSymbol + ' ' + toArabicNumeral(verseNumber);
+          // final displayEndSymbol = (verseEndSymbol.trim() == '.')
+          //     ? '۝ ${toArabicNumeral(verseNumber)}'
+          //     : '$verseEndSymbol ${toArabicNumeral(verseNumber)}';
 
           return GestureDetector(
             onTap: () => _saveLastReadVerse(verseNumber),
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              margin:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               padding: const EdgeInsets.all(12.0),
               decoration: BoxDecoration(
                 color: isCurrentVerse
@@ -220,9 +223,12 @@ class _SurahScreenState extends State<SurahScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
                         decoration: BoxDecoration(
-                          color: isDarkTheme ? Colors.blueGrey[600] : Colors.blueGrey[200],
+                          color: isDarkTheme
+                              ? Colors.blueGrey[600]
+                              : Colors.blueGrey[200],
                           borderRadius: BorderRadius.circular(6.0),
                         ),
                         child: Text(
@@ -246,23 +252,25 @@ class _SurahScreenState extends State<SurahScreen> {
                       height: 1.6,
                     ),
                   ),
+                  if (verseEndSymbol.isNotEmpty)
+                    Text(
+                      verseEndSymbol,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: isDarkTheme ? Colors.grey[300] : Colors.grey[800],
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   // Нижняя строка: нумерация с символом и перевод
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        displayEndSymbol,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: isDarkTheme ? Colors.grey[300] : Colors.grey[800],
-                        ),
-                      ),
-                      Text(
                         englishTranslation,
                         style: TextStyle(
                           fontSize: 16,
-                          color: isDarkTheme ? Colors.grey[300] : Colors.grey[800],
+                          color:
+                              isDarkTheme ? Colors.grey[300] : Colors.grey[800],
                         ),
                       ),
                     ],
@@ -275,10 +283,14 @@ class _SurahScreenState extends State<SurahScreen> {
       ),
     );
   }
-  
+
   // Преобразование арабских цифр
   String toArabicNumeral(int number) {
     const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-    return number.toString().split('').map((d) => arabicDigits[int.parse(d)]).join('');
+    return number
+        .toString()
+        .split('')
+        .map((d) => arabicDigits[int.parse(d)])
+        .join('');
   }
 }

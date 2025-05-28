@@ -1,0 +1,2 @@
+B:/Sabail/sabail/android/app/.cxx/Debug/25423f19/armeabi-v7a/CMakeFiles/edit_cache.dir
+B:/Sabail/sabail/android/app/.cxx/Debug/25423f19/armeabi-v7a/CMakeFiles/rebuild_cache.dir

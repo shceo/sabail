@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "B:/Sabail/sabail/windows"
+    "cmake.sourceDirectory": "B:/Sabail/sabail/windows",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

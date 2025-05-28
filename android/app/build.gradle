@@ -18,19 +18,21 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName', '1.0
 
 android {
     namespace "com.example.sabail"
-    compileSdkVersion 34
+    compileSdkVersion 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        // Включаем desugaring для поддержки Java-8+ API в AAR
+        coreLibraryDesugaringEnabled true
     }
 
     kotlinOptions {
         jvmTarget = '17'
     }
 
-    // Обязательно добавь это
+    // Kotlin toolchain
     kotlin {
         jvmToolchain(17)
     }
@@ -42,7 +44,7 @@ android {
     defaultConfig {
         applicationId "com.example.sabail"
         minSdkVersion 23
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -61,4 +63,7 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
     implementation "androidx.core:core-ktx:1.13.1"
+
+    // Обновлённая версия для desugaring — минимум 2.1.4
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.4"
 }
