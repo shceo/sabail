@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sabail/src/ui/theme/app_colors.dart';
+import 'package:sabail/src/presentation/app/app_colors.dart';
 
 class SadaqaProj extends StatelessWidget {
   const SadaqaProj({super.key});

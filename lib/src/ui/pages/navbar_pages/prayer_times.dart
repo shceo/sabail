@@ -6,7 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sabail/src/domain/api/api.dart';
 import 'package:sabail/src/provider/prayerpage_provider.dart';
 import 'package:sabail/src/provider/user_city.dart';
-import 'package:sabail/src/ui/theme/app_colors.dart';
+import 'package:sabail/src/presentation/app/app_colors.dart';
 
 class PrayTimes extends StatefulWidget {
   const PrayTimes({Key? key}) : super(key: key);

@@ -1,50 +1,32 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hive/hive.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sabail/src/data/locale/db.dart';
 
-class ImageNotifier with ChangeNotifier {
+class ImageNotifier extends ChangeNotifier {
+  final AppDatabase _db;
   File? _image;
 
   File? get image => _image;
 
-  ImageNotifier() {
+  ImageNotifier(this._db) {
     _loadImage();
   }
 
-  Future _loadImage() async {
-    Box box = await Hive.openBox('images');
-    String? imagePath = box.get('imagePath');
-    if (imagePath != null) {
-      _image = File(imagePath);
+  Future<void> _loadImage() async {
+    final path = await _db.getLastImagePath();
+    if (path != null) {
+      _image = File(path);
       notifyListeners();
     }
   }
 
-  Future getImage() async {
-    final pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-    );
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-
-      File compressedFile = await _compressImage(imageFile);
-
-      final directory = await getApplicationDocumentsDirectory();
-      final newPath = '${directory.path}/${DateTime.now().toIso8601String()}.png';
-
-      await compressedFile.copy(newPath);
-
-      Box box = await Hive.openBox('images');
-      box.put('imagePath', newPath);
-
-      _image = File(newPath);
-      notifyListeners();
-    } else {
+  Future<void> getImage() async {
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (picked == null) {
       Fluttertoast.showToast(
         msg: "Фотография не выбрана",
         toastLength: Toast.LENGTH_SHORT,
@@ -54,25 +36,38 @@ class ImageNotifier with ChangeNotifier {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      return;
     }
+
+    // Сжимаем
+    final originalFile = File(picked.path);
+    final compressedFile = await _compressImage(originalFile);
+
+    // Сохраняем в documents
+    final dir = await getApplicationDocumentsDirectory();
+    final newPath = '${dir.path}/${DateTime.now().toIso8601String()}.jpg';
+    await compressedFile.copy(newPath);
+
+    // Пишем в БД Drift
+    await _db.addImagePath(newPath);
+
+    // Обновляем состояние
+    _image = File(newPath);
+    notifyListeners();
   }
 
   Future<File> _compressImage(File file) async {
-    final Uint8List bytes = await file.readAsBytes();
+    final bytes = await file.readAsBytes();
+    final decoded = img.decodeImage(bytes);
+    if (decoded == null) {
+      throw Exception('Не удалось декодировать изображение');
+    }
 
-    // Декодируем изображение
-    img.Image? image = img.decodeImage(bytes);
-    if (image == null) throw Exception('Не удалось декодировать изображение');
-
-    // Сжимаем изображение (изменяем качество и размер, если нужно)
-    final compressedImage = img.encodeJpg(image, quality: 80);
-
-    // Записываем в новый файл
-    final tempDir = await getTemporaryDirectory();
-    final tempFile = File('${tempDir.path}/compressed_${DateTime.now().millisecondsSinceEpoch}.jpg');
-
-    await tempFile.writeAsBytes(compressedImage);
-
-    return tempFile;
+    final jpgBytes = img.encodeJpg(decoded, quality: 80);
+    final tmpDir = await getTemporaryDirectory();
+    final tmpFile =
+        File('${tmpDir.path}/cmp_${DateTime.now().millisecondsSinceEpoch}.jpg');
+    await tmpFile.writeAsBytes(jpgBytes);
+    return tmpFile;
   }
 }

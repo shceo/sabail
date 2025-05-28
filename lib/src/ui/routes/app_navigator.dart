@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:sabail/src/ui/pages/homepage/home_page.dart';
+import 'package:sabail/src/presentation/features/home/view/home.dart';
 import 'package:sabail/src/ui/pages/screens/splash_screen.dart';
 import 'package:sabail/src/ui/routes/app_router.dart';
 

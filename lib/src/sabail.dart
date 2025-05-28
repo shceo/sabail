@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabail/src/provider/image_picker_provider.dart';
+
+import 'package:sabail/src/data/locale/db.dart'; // <- AppDatabase
 import 'package:sabail/src/provider/nav_bar_provider.dart';
-import 'package:sabail/src/provider/prayerpage_provider.dart';
-import 'package:sabail/src/provider/surah_cache_provider.dart';
-import 'package:sabail/src/provider/tabmodel_provider.dart';
 import 'package:sabail/src/provider/time_provider.dart';
-import 'package:sabail/src/provider/user_city.dart';
+import 'package:sabail/src/provider/user_city.dart'; // <- CityProvider(db)
+import 'package:sabail/src/provider/tabmodel_provider.dart';
+import 'package:sabail/src/provider/prayerpage_provider.dart'; // <- HijriDateModel?
+import 'package:sabail/src/provider/image_picker_provider.dart'; // <- ImageNotifier(db)
+import 'package:sabail/src/provider/surah_cache_provider.dart';
 import 'package:sabail/src/ui/routes/app_navigator.dart';
 
 class Sabail extends StatelessWidget {
@@ -16,22 +18,23 @@ class Sabail extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => NavBarProvider()),
+        ChangeNotifierProvider(create: (_) => TimeProvider()),
+
+        // ТУТ ПЕРЕДАЁМ БД в CityProvider
         ChangeNotifierProvider(
-          create: (context) => NavBarProvider(),
+          create: (context) => CityProvider(context.read<AppDatabase>()),
         ),
+
+        ChangeNotifierProvider(create: (_) => TabBarModel()),
+        ChangeNotifierProvider(create: (_) => HijriDateModel()),
+
+        // И ТУТ — в ImageNotifier
         ChangeNotifierProvider(
-          create: (context) => TimeProvider(),
+          create: (context) => ImageNotifier(context.read<AppDatabase>()),
         ),
-        ChangeNotifierProvider(
-          create: (context) => CityProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => TabBarModel(),
-        ),
-        ChangeNotifierProvider(create: (context) => HijriDateModel()),
-       
-        ChangeNotifierProvider(create: (context) => ImageNotifier()),
-          ChangeNotifierProvider(create: (context) => SurahCacheProvider()),
+
+        ChangeNotifierProvider(create: (_) => SurahCacheProvider()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

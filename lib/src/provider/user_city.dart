@@ -1,98 +1,43 @@
-import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:sabail/src/data/locale/db.dart';
 
 class CityProvider extends ChangeNotifier {
-  String _selectedCity = 'Ташкент'; 
-  late Box _box;
-  Future? initFuture;
-  TextEditingController _controller = TextEditingController();
+  final AppDatabase _db;
+  String _selectedCity = 'Ташкент';
   List<String> _cityNames = [];
 
-  CityProvider() {
-    initFuture = _initHiveAndLoadCityNames();
+  CityProvider(this._db) {
+    _init();
   }
 
-  Future<void> _initHiveAndLoadCityNames() async {
-    await _initHive();
-    await _loadCityNames();
-  }
-
-  Future<void> _initHive() async {
-    _box = await Hive.openBox('myBox');
-    _selectedCity = _box.get('selectedCity', defaultValue: 'Ташкент');
-    notifyListeners(); // added
-  }
-
-  Future<void> _loadCityNames() async {
-    final response = await rootBundle.loadString('assets/cities.json');
-    final Map<String, dynamic> data = jsonDecode(response);
-    final List<dynamic> citiesJson = data['city'];
-    final List<String> cityNames =
-        citiesJson.map((city) => city['name'] as String).toList();
-    cityNames.sort();
-    _cityNames = cityNames;
+  Future<void> _init() async {
+    // Если в таблице нет городов — подгрузим из assets
+    final existing = await _db.getAllCities();
+    if (existing.isEmpty) {
+      final jsonStr = await rootBundle.loadString('assets/cities.json');
+      final data = jsonDecode(jsonStr)['city'] as List;
+      final names = data.map((e) => e['name'] as String).toList();
+      await _db.insertCities(names);
+    }
+    _cityNames = await _db.getAllCities();
+    _selectedCity = await _db.getSetting('selectedCity') ?? 'Ташкент';
     notifyListeners();
   }
 
+  List<String> get cityNames => _cityNames;
   String get selectedCity => _selectedCity;
 
   void updateSelectedCity(String city) {
     _selectedCity = city;
-    saveSelectedCity(city);
+    _db.setSetting('selectedCity', city);
     notifyListeners();
   }
 
-  void saveSelectedCity(String city) {
-    _box.put('selectedCity', city);
-  }
-
-  List<String> get cityNames => _cityNames;
-
-  List<String> _getFilteredCityNames(String query) {
+  List<String> getFilteredCityNames(String query) {
     return _cityNames
-        .where((city) => city.toLowerCase().startsWith(query.toLowerCase()))
+        .where((c) => c.toLowerCase().startsWith(query.toLowerCase()))
         .toList();
   }
-
-  List<String> getFilteredCityNames() {
-    return _getFilteredCityNames(_controller.text);
-  }
-
-  void updateSearchQuery(String query) {
-    _controller.text = query;
-    notifyListeners();
-  }
 }
-
-
-
-// class CityProvider extends ChangeNotifier {
-//   String _selectedCity = 'Ташкент'; 
-//   late Box _box;
-//   Future? initFuture;
-
-//   CityProvider() {
-//     initFuture = initHive();
-//   }
-
-//   Future<void> initHive() async {
-//     _box = await Hive.openBox('myBox');
-//     _selectedCity = _box.get('selectedCity', defaultValue: 'Ташкент');
-//     notifyListeners();
-//   }
-
-//   String get selectedCity => _selectedCity;
-
-//   void updateSelectedCity(String city) {
-//     _selectedCity = city;
-//     saveSelectedCity(city);
-//     notifyListeners();
-//   }
-
-//   void saveSelectedCity(String city) {
-//     _box.put('selectedCity', city);
-//   }
-// }

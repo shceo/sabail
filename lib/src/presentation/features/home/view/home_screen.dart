@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import 'package:sabail/src/components/mainWidgets/mainpage_widgets.dart';
-import 'package:sabail/src/components/mainWidgets/mainpod_widgets.dart';
-import 'package:sabail/src/components/mainWidgets/mainthree_widget.dart';
-import 'package:sabail/src/components/prayerTimes/prayertimes_widget.dart';
-import 'package:sabail/src/components/time/mainpage_time.dart';
+import 'package:sabail/src/presentation/features/home/view/widgets/mainpage_widgets.dart';
+import 'package:sabail/src/presentation/features/home/view/widgets/mainpod_widgets.dart';
+import 'package:sabail/src/presentation/features/home/view/widgets/mainthree_widget.dart';
+import 'package:sabail/src/presentation/features/prayer_times/view/widgets/prayertimes_widget.dart';
+import 'package:sabail/src/presentation/features/home/view/widgets/mainpage_time.dart';
 import 'package:sabail/src/domain/api/api.dart';
 import 'package:sabail/src/provider/time_provider.dart';
 import 'package:sabail/src/provider/user_city.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:sabail/src/ui/pages/countries_page.dart';
-import 'package:sabail/src/ui/theme/app_colors.dart';
+import 'package:sabail/src/presentation/app/app_colors.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});

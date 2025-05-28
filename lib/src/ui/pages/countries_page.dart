@@ -3,16 +3,29 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sabail/src/provider/user_city.dart';
-import 'package:sabail/src/ui/theme/app_colors.dart';
+import 'package:sabail/src/presentation/app/app_colors.dart';
 
-class CitiesAndCountriesPage extends StatelessWidget {
+class CitiesAndCountriesPage extends StatefulWidget {
   const CitiesAndCountriesPage({Key? key}) : super(key: key);
 
   @override
+  _CitiesAndCountriesPageState createState() => _CitiesAndCountriesPageState();
+}
+
+class _CitiesAndCountriesPageState extends State<CitiesAndCountriesPage> {
+  String _searchQuery = '';
+
+  @override
   Widget build(BuildContext context) {
-    // Получаем глобальный CityProvider из контекста
-    final cityProvider = Provider.of<CityProvider>(context, listen: false);
-    
+    // Здесь будем получать провайдера с ребилдом при изменениях
+    final cityProvider = context.watch<CityProvider>();
+    // Все города (загруженные из БД)
+    final allCities = cityProvider.cityNames;
+    // Отфильтрованный по _searchQuery
+    final filteredCities = _searchQuery.isEmpty
+        ? allCities
+        : cityProvider.getFilteredCityNames(_searchQuery);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -23,6 +36,7 @@ class CitiesAndCountriesPage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          // Поисковая строка
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -32,18 +46,17 @@ class CitiesAndCountriesPage extends StatelessWidget {
                 prefixIcon: Icon(Icons.search),
               ),
               onChanged: (query) {
-                cityProvider.updateSearchQuery(query);
+                setState(() {
+                  _searchQuery = query;
+                });
               },
             ),
           ),
-          // Используем Consumer для отслеживания изменений
+
           Expanded(
-            child: Consumer<CityProvider>(
-              builder: (context, cityProvider, child) {
-                final filteredCities = cityProvider.getFilteredCityNames();
-                // Если список городов ещё не загружен, можно показать лоадер
-                if (filteredCities.isEmpty) {
-                  return Center(
+            child: allCities.isEmpty
+                // Ещё не подгрузились из БД — показываем спиннер
+                ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -52,23 +65,22 @@ class CitiesAndCountriesPage extends StatelessWidget {
                         const Text('Загружаюсь...'),
                       ],
                     ),
-                  );
-                }
-                return ListView.builder(
-                  itemCount: filteredCities.length,
-                  itemBuilder: (context, index) {
-                    final city = filteredCities[index];
-                    return ListTile(
-                      title: Text(city),
-                      onTap: () {
-                        cityProvider.updateSelectedCity(city);
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                );
-              },
-            ),
+                  )
+                // Сами города уже есть — рисуем ListView
+                : ListView.builder(
+                    itemCount: filteredCities.length,
+                    itemBuilder: (context, index) {
+                      final city = filteredCities[index];
+                      return ListTile(
+                        title: Text(city),
+                        onTap: () {
+                          // Сохраняем выбор и выходим
+                          cityProvider.updateSelectedCity(city);
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
           ),
         ],
       ),

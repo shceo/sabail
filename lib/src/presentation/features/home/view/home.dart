@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sabail/src/provider/nav_bar_provider.dart';
-import 'package:sabail/src/ui/pages/navbar_pages/main_page.dart';
+import 'package:sabail/src/presentation/features/home/view/home_screen.dart';
 import 'package:sabail/src/ui/pages/navbar_pages/prayer_times.dart';
 import 'package:sabail/src/ui/pages/navbar_pages/profile.dart';
 import 'package:sabail/src/ui/pages/navbar_pages/quran_page.dart';

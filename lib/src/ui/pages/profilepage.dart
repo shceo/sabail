@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:sabail/src/provider/image_picker_provider.dart';
-import 'package:sabail/src/ui/theme/app_colors.dart';
+import 'package:sabail/src/presentation/app/app_colors.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabail/src/components/tabbar/custom_tabbar.dart';
+import 'package:sabail/src/presentation/widgets/custom_tabbar.dart';
 import 'package:sabail/src/domain/api/quran_api.dart' as api;
 import 'package:sabail/src/provider/last_readen_provider.dart';
 import 'package:sabail/src/ui/pages/screens/surah_screen.dart';
-import 'package:sabail/src/ui/theme/app_colors.dart';
+import 'package:sabail/src/presentation/app/app_colors.dart';
 import 'package:sabail/src/provider/surah_cache_provider.dart';
 
 class AlQuranPage extends StatelessWidget {

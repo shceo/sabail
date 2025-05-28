@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sabail/src/components/tabbar/tabbar_indicator.dart';
+import 'package:sabail/src/presentation/widgets/tabbar_indicator.dart';
 import 'package:sabail/src/provider/tabmodel_provider.dart';
-import 'package:sabail/src/ui/theme/app_colors.dart';
+import 'package:sabail/src/presentation/app/app_colors.dart';
 
 
 class CustomTabBar extends StatelessWidget {
