@@ -1,38 +1,42 @@
+// lib/src/presentation/features/home/view/sabail_home.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:sabail/src/provider/nav_bar_provider.dart';
-import 'package:sabail/src/presentation/features/home/view/home_screen.dart';
-import 'package:sabail/src/ui/pages/navbar_pages/prayer_times.dart';
-import 'package:sabail/src/ui/pages/navbar_pages/profile.dart';
-import 'package:sabail/src/ui/pages/navbar_pages/quran_page.dart';
+import 'package:sabail/src/presentation/features/home/view_model/home_vm.dart';
+import 'package:sabail/src/presentation/features/prayer_times/view/prayer_times.dart';
+import 'package:sabail/src/presentation/features/profile/view/profile.dart';
+import 'package:sabail/src/presentation/features/quran/view/quran_page.dart';
 
+
+import '../view/home_screen.dart';
 class SabailHome extends StatelessWidget {
   const SabailHome({Key? key}) : super(key: key);
 
   static const List<Widget> screens = [
-    MainPage(),
-    PrayTimes(),
+    HomeScreen(),
+    PrayerTimesPage(),
     AlQuranPage(),
     Profile(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final navBarProvider = Provider.of<NavBarProvider>(context);
+    final vm = context.watch<HomeViewModel>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
           IndexedStack(
-            index: navBarProvider.currentIndex,
+            index: vm.currentIndex,
             children: screens,
           ),
           Positioned(
             bottom: 20,
             left: 20,
             right: 20,
-            child: FloatingNavBar(),
+            child: const FloatingNavBar(),
           ),
         ],
       ),
@@ -43,9 +47,29 @@ class SabailHome extends StatelessWidget {
 class FloatingNavBar extends StatelessWidget {
   const FloatingNavBar({Key? key}) : super(key: key);
 
+  Widget _navItem(BuildContext context, int index, String asset, String label) {
+    final vm = context.watch<HomeViewModel>();
+    final selected = vm.currentIndex == index;
+    final color = selected ? Colors.purple.shade700 : Colors.grey;
+
+    return Expanded(
+      child: InkWell(
+        onTap: () => vm.selectTab(index),
+        borderRadius: BorderRadius.circular(30),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(asset, width: 26, height: 23, color: color),
+            const SizedBox(height: 4),
+            Text(label, style: TextStyle(fontSize: 11, color: color)),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final navBarProvider = Provider.of<NavBarProvider>(context);
     return Material(
       elevation: 8,
       borderRadius: BorderRadius.circular(30),
@@ -64,46 +88,12 @@ class FloatingNavBar extends StatelessWidget {
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavItem(context, 0, "assets/icons/moon.svg", "Главная"),
-            _buildNavItem(context, 1, "assets/icons/mosque.svg", "Время молитв"),
-            _buildNavItem(context, 2, "assets/icons/quran.svg", "Аль Коран"),
-            _buildNavItem(context, 3, "assets/icons/profile.svg", "Профиль"),
+            _navItem(context, 0, 'assets/icons/moon.svg', 'Главная'),
+            _navItem(context, 1, 'assets/icons/mosque.svg', 'Время молитв'),
+            _navItem(context, 2, 'assets/icons/quran.svg', 'Аль Коран'),
+            _navItem(context, 3, 'assets/icons/profile.svg', 'Профиль'),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(
-      BuildContext context, int index, String icon, String label) {
-    final navBarProvider = Provider.of<NavBarProvider>(context);
-    final bool isSelected = navBarProvider.currentIndex == index;
-    final color = isSelected ? Colors.purple.shade700 : Colors.grey;
-    return Expanded(
-      child: InkWell(
-        onTap: () => navBarProvider.changeIndex(index),
-        borderRadius: BorderRadius.circular(30),
-        child: Container(
-          height: double.infinity,
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                icon,
-                width: 26,
-                height: 23,
-                color: color,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(fontSize: 11, color: color),
-              ),
-            ],
-          ),
         ),
       ),
     );

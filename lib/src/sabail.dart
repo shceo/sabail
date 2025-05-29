@@ -1,45 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:sabail/src/data/locale/db.dart'; // <- AppDatabase
-import 'package:sabail/src/provider/nav_bar_provider.dart';
-import 'package:sabail/src/provider/time_provider.dart';
-import 'package:sabail/src/provider/user_city.dart'; // <- CityProvider(db)
-import 'package:sabail/src/provider/tabmodel_provider.dart';
-import 'package:sabail/src/provider/prayerpage_provider.dart'; // <- HijriDateModel?
-import 'package:sabail/src/provider/image_picker_provider.dart'; // <- ImageNotifier(db)
-import 'package:sabail/src/provider/surah_cache_provider.dart';
-import 'package:sabail/src/ui/routes/app_navigator.dart';
+// 1) Подключаем инициализацию и сам GetIt
+import 'package:sabail/src/presentation/app/injector.dart';
+import 'package:sabail/src/data/locale/db.dart';
+import 'package:sabail/src/presentation/app/router.dart';
+import 'package:sabail/src/presentation/features/home/view/home.dart';
+import 'package:sabail/src/presentation/features/home/view/home_screen.dart';
+import 'package:sabail/src/presentation/features/home/view_model/home_vm.dart';
+import 'package:sabail/src/ui/pages/screens/splash_screen.dart';
+
+// 2) Наши роуты
 
 class Sabail extends StatelessWidget {
   const Sabail({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => NavBarProvider()),
-        ChangeNotifierProvider(create: (_) => TimeProvider()),
-
-        // ТУТ ПЕРЕДАЁМ БД в CityProvider
-        ChangeNotifierProvider(
-          create: (context) => CityProvider(context.read<AppDatabase>()),
-        ),
-
-        ChangeNotifierProvider(create: (_) => TabBarModel()),
-        ChangeNotifierProvider(create: (_) => HijriDateModel()),
-
-        // И ТУТ — в ImageNotifier
-        ChangeNotifierProvider(
-          create: (context) => ImageNotifier(context.read<AppDatabase>()),
-        ),
-
-        ChangeNotifierProvider(create: (_) => SurahCacheProvider()),
-      ],
-      child: MaterialApp.router(
+    // sl уже инициализирован в main() перед runApp()
+    return Provider.value(
+      // если тебе нужна "сырая" БД в каких-то низкоуровневых задачах
+      value: sl<AppDatabase>(),
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        routerConfig: AppNavigator.router,
         theme: ThemeData(useMaterial3: true),
+        initialRoute: Routes.splash,
+        routes: {
+          // SplashScreen — без VM
+          Routes.splash: (_) => const SplashScreen(),
+
+          // Home
+          Routes.home: (_) => ChangeNotifierProvider<HomeViewModel>(
+                create: (_) => sl<HomeViewModel>(),
+                child:
+                    const SabailHome(), // вот здесь возвращаем контейнер с табами
+              ),
+
+          // Quran
+          // Routes.quran: (_) => ChangeNotifierProvider(
+          //       create: (_) => sl<QuranViewModel>(),
+          //       child: const QuranPage(),
+          //     ),
+
+          // Prayer Times
+          // Routes.prayer: (_) => ChangeNotifierProvider(
+          //       create: (_) => sl<PrayerViewModel>(),
+          //       child: const PrayerTimesPage(),
+          //     ),
+
+          // Profile
+          // Routes.profile: (_) => ChangeNotifierProvider(
+          //       create: (_) => sl<ProfileViewModel>(),
+          //       child: const ProfilePage(),
+          //     ),
+        },
       ),
     );
   }

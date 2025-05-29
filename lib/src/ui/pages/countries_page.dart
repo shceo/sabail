@@ -1,8 +1,11 @@
+// lib/src/presentation/features/home/view/cities_and_countries_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:sabail/src/provider/user_city.dart';
+
+import 'package:sabail/src/data/locale/db.dart';
+import 'package:sabail/src/presentation/app/injector.dart';
 import 'package:sabail/src/presentation/app/app_colors.dart';
 
 class CitiesAndCountriesPage extends StatefulWidget {
@@ -17,14 +20,8 @@ class _CitiesAndCountriesPageState extends State<CitiesAndCountriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Здесь будем получать провайдера с ребилдом при изменениях
-    final cityProvider = context.watch<CityProvider>();
-    // Все города (загруженные из БД)
-    final allCities = cityProvider.cityNames;
-    // Отфильтрованный по _searchQuery
-    final filteredCities = _searchQuery.isEmpty
-        ? allCities
-        : cityProvider.getFilteredCityNames(_searchQuery);
+    // Получаем инстанс базы из GetIt
+    final db = sl<AppDatabase>();
 
     return Scaffold(
       appBar: AppBar(
@@ -47,16 +44,19 @@ class _CitiesAndCountriesPageState extends State<CitiesAndCountriesPage> {
               ),
               onChanged: (query) {
                 setState(() {
-                  _searchQuery = query;
+                  _searchQuery = query.toLowerCase();
                 });
               },
             ),
           ),
 
+          // Список городов
           Expanded(
-            child: allCities.isEmpty
-                // Ещё не подгрузились из БД — показываем спиннер
-                ? Center(
+            child: FutureBuilder<List<String>>(
+              future: db.getAllCities(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -65,22 +65,39 @@ class _CitiesAndCountriesPageState extends State<CitiesAndCountriesPage> {
                         const Text('Загружаюсь...'),
                       ],
                     ),
-                  )
-                // Сами города уже есть — рисуем ListView
-                : ListView.builder(
-                    itemCount: filteredCities.length,
-                    itemBuilder: (context, index) {
-                      final city = filteredCities[index];
-                      return ListTile(
-                        title: Text(city),
-                        onTap: () {
-                          // Сохраняем выбор и выходим
-                          cityProvider.updateSelectedCity(city);
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  ),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Ошибка: ${snapshot.error}'),
+                  );
+                }
+
+                // У нас есть список всех городов
+                final allCities = snapshot.data!;
+                // Фильтруем по запросу
+                final filtered = _searchQuery.isEmpty
+                    ? allCities
+                    : allCities
+                        .where((c) => c.toLowerCase().contains(_searchQuery))
+                        .toList();
+
+                if (filtered.isEmpty) {
+                  return const Center(child: Text('Город не найден'));
+                }
+
+                return ListView.builder(
+                  itemCount: filtered.length,
+                  itemBuilder: (_, index) {
+                    final city = filtered[index];
+                    return ListTile(
+                      title: Text(city),
+                      onTap: () => Navigator.pop(context, city),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
