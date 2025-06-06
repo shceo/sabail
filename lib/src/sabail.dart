@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // 1) Подключаем инициализацию и сам GetIt
 import 'package:sabail/src/presentation/app/injector.dart';
@@ -7,9 +7,9 @@ import 'package:sabail/src/data/locale/db.dart';
 import 'package:sabail/src/presentation/app/router.dart';
 import 'package:sabail/src/presentation/features/home/view/home.dart';
 import 'package:sabail/src/presentation/features/home/view/home_screen.dart';
-import 'package:sabail/src/presentation/features/home/view_model/home_vm.dart';
+import 'package:sabail/src/presentation/features/home/cubit/home_cubit.dart';
 import 'package:sabail/src/presentation/features/splash/view/splash_screen.dart';
-import 'package:sabail/src/presentation/features/splash/view_model/splash_view_model.dart';
+import 'package:sabail/src/presentation/features/splash/cubit/splash_cubit.dart';
 
 // 2) Наши роуты
 
@@ -19,7 +19,7 @@ class Sabail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // sl уже инициализирован в main() перед runApp()
-    return Provider.value(
+    return RepositoryProvider.value(
       // если тебе нужна "сырая" БД в каких-то низкоуровневых задачах
       value: sl<AppDatabase>(),
       child: MaterialApp(
@@ -28,17 +28,17 @@ class Sabail extends StatelessWidget {
         initialRoute: Routes.splash,
         routes: {
           // SplashScreen with ViewModel
-          Routes.splash: (_) => ChangeNotifierProvider(
-                create: (_) => sl<SplashViewModel>()..init(),
-                child: const SplashScreen(),
-              ),
+          Routes.splash: (_) => BlocProvider(
+            create: (_) => sl<SplashCubit>()..init(),
+            child: const SplashScreen(),
+          ),
 
           // Home
-          Routes.home: (_) => ChangeNotifierProvider<HomeViewModel>(
-                create: (_) => sl<HomeViewModel>(),
-                child:
-                    const SabailHome(), // вот здесь возвращаем контейнер с табами
-              ),
+          Routes.home: (_) => BlocProvider<HomeCubit>(
+            create: (_) => sl<HomeCubit>(),
+            child:
+                const SabailHome(), // вот здесь возвращаем контейнер с табами
+          ),
 
           // Quran
           // Routes.quran: (_) => ChangeNotifierProvider(
