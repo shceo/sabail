@@ -8,7 +8,8 @@ import 'package:sabail/src/presentation/app/router.dart';
 import 'package:sabail/src/presentation/features/home/view/home.dart';
 import 'package:sabail/src/presentation/features/home/view/home_screen.dart';
 import 'package:sabail/src/presentation/features/home/view_model/home_vm.dart';
-import 'package:sabail/src/ui/pages/screens/splash_screen.dart';
+import 'package:sabail/src/presentation/features/splash/view/splash_screen.dart';
+import 'package:sabail/src/presentation/features/splash/view_model/splash_view_model.dart';
 
 // 2) Наши роуты
 
@@ -26,8 +27,11 @@ class Sabail extends StatelessWidget {
         theme: ThemeData(useMaterial3: true),
         initialRoute: Routes.splash,
         routes: {
-          // SplashScreen — без VM
-          Routes.splash: (_) => const SplashScreen(),
+          // SplashScreen with ViewModel
+          Routes.splash: (_) => ChangeNotifierProvider(
+                create: (_) => sl<SplashViewModel>()..init(),
+                child: const SplashScreen(),
+              ),
 
           // Home
           Routes.home: (_) => ChangeNotifierProvider<HomeViewModel>(

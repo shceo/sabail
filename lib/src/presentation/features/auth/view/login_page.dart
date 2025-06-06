@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sabail/src/domain/blocs/authorization_bloc/authentication_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:sabail/src/sabail.dart';
+import '../view_model/auth_view_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
-  
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController  = TextEditingController();
-  final TextEditingController emailController     = TextEditingController();
-  final TextEditingController passwordController  = TextEditingController();
-  
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   void dispose() {
     firstNameController.dispose();
@@ -26,49 +24,16 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.dispose();
     super.dispose();
   }
-  
-  Future<void> _registerUser(String email, String password, String firstName, String lastName) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      
-      // Обновляем профиль пользователя с именем и фамилией
-      await userCredential.user?.updateDisplayName('$firstName $lastName');
-      
-      showToast('Регистрация успешна');
-      
-      if (!mounted) return;
-      // Откладываем навигацию до завершения текущего цикла построения виджетов
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Sabail()),
-        );
-      });
-    } catch (e) {
-      showToast('Ошибка регистрации: $e');
-    }
-  }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Авторизация и Регистрация')),
-      body: BlocProvider(
-        create: (context) => AuthenticationBloc(),
-        child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
-            if (state is SignedState) {
-              showToast('Успешный вход');
-              Navigator.pop(context);
-            } else if (state is RegistrationState) {
-              showToast('Регистрация успешна');
-            } else if (state is AuthErrorState) {
-              showToast(state.message);
-            }
-          },
-          builder: (context, state) {
-            return Padding(
+    return ChangeNotifierProvider(
+      create: (_) => AuthViewModel(),
+      child: Consumer<AuthViewModel>(
+        builder: (context, vm, child) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Авторизация и Регистрация')),
+            body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 child: Column(
@@ -115,16 +80,27 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    if (vm.errorMessage != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          vm.errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
                     ElevatedButton(
-                      onPressed: () {
-                        if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-                          showToast('Заполните все поля');
-                        } else {
-                          _registerUser(
-                            emailController.text,
-                            passwordController.text,
-                            firstNameController.text,
-                            lastNameController.text,
+                      onPressed: () async {
+                        await vm.register(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          firstName: firstNameController.text,
+                          lastName: lastNameController.text,
+                        );
+                        if (vm.errorMessage == null && context.mounted) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Sabail()),
                           );
                         }
                       },
@@ -146,7 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ),
                           );
                         },
                         child: const Text(
@@ -158,9 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -168,12 +146,13 @@ class _LoginPageState extends State<LoginPage> {
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  
-  final TextEditingController emailController    = TextEditingController();
+
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
+    final vm = Provider.of<AuthViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: const Text('Вход')),
       body: Padding(
@@ -203,28 +182,15 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-                  showToast('Заполните все поля');
-                  return;
-                }
-                try {
-                  final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: emailController.text, password: passwordController.text);
-                  if (user != null) {
-                    showToast('Успешный вход');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Sabail()),
-                    );
-                  }
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'user-not-found') {
-                    showToast('Пользователь не найден');
-                  } else if (e.code == 'wrong-password') {
-                    showToast('Неверный пароль');
-                  } else {
-                    showToast(e.message ?? 'Ошибка входа');
-                  }
+                await vm.signIn(
+                  email: emailController.text,
+                  password: passwordController.text,
+                );
+                if (vm.errorMessage == null && context.mounted) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Sabail()),
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -239,22 +205,17 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+            if (vm.errorMessage != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  vm.errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
-}
-
-/// Обновлённая функция показа тоста, отложенная до следующего кадра.
-void showToast(String message) {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-    );
-  });
 }
