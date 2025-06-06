@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../../app/router.dart';
+import 'package:sabail/src/presentation/app/router.dart';
+
 import '../view_model/splash_view_model.dart';
 
 class SplashScreen extends StatelessWidget {
