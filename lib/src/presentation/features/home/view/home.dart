@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:sabail/src/presentation/features/home/view_model/home_vm.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sabail/src/presentation/features/home/cubit/home_cubit.dart';
 import 'package:sabail/src/presentation/features/prayer_times/view/prayer_times.dart';
 import 'package:sabail/src/presentation/features/profile/view/profile.dart';
 import 'package:sabail/src/presentation/features/quran/view/quran_page.dart';
 
-
 import '../view/home_screen.dart';
+
 class SabailHome extends StatelessWidget {
   const SabailHome({Key? key}) : super(key: key);
 
@@ -22,16 +22,14 @@ class SabailHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<HomeViewModel>();
+    final cubit = context.watch<HomeCubit>();
+    final state = cubit.state;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          IndexedStack(
-            index: vm.currentIndex,
-            children: screens,
-          ),
+          IndexedStack(index: state.currentIndex, children: screens),
           Positioned(
             bottom: 20,
             left: 20,
@@ -48,13 +46,14 @@ class FloatingNavBar extends StatelessWidget {
   const FloatingNavBar({Key? key}) : super(key: key);
 
   Widget _navItem(BuildContext context, int index, String asset, String label) {
-    final vm = context.watch<HomeViewModel>();
-    final selected = vm.currentIndex == index;
+    final cubit = context.watch<HomeCubit>();
+    final state = cubit.state;
+    final selected = state.currentIndex == index;
     final color = selected ? Colors.purple.shade700 : Colors.grey;
 
     return Expanded(
       child: InkWell(
-        onTap: () => vm.selectTab(index),
+        onTap: () => cubit.selectTab(index),
         borderRadius: BorderRadius.circular(30),
         child: Column(
           mainAxisSize: MainAxisSize.min,

@@ -3,13 +3,13 @@ import 'package:sabail/src/data/locale/city_dao.dart';
 import 'package:sabail/src/data/locale/db.dart';
 import 'package:sabail/src/data/repositories/city_repository_impl.dart';
 import 'package:sabail/src/domain/api/api.dart';
-import 'package:sabail/src/presentation/features/splash/view_model/splash_view_model.dart';
+import 'package:sabail/src/presentation/features/splash/cubit/splash_cubit.dart';
 import 'package:sabail/src/domain/repositories/city_repository.dart';
 import 'package:sabail/src/domain/usecases/get_city_usecase.dart';
-import 'package:sabail/src/presentation/features/home/view_model/home_vm.dart';
-import 'package:sabail/src/presentation/features/prayer_times/view_model/prayer_vm.dart';
-import 'package:sabail/src/presentation/features/profile/view_model/profile_vm.dart';
-import 'package:sabail/src/presentation/features/auth/view_model/auth_view_model.dart';
+import 'package:sabail/src/presentation/features/home/cubit/home_cubit.dart';
+import 'package:sabail/src/presentation/features/prayer_times/cubit/prayer_cubit.dart';
+import 'package:sabail/src/presentation/features/profile/cubit/profile_cubit.dart';
+import 'package:sabail/src/presentation/features/auth/cubit/auth_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -30,23 +30,32 @@ Future<void> init() async {
     () => GetCityUseCase(sl<CityRepository>()),
   );
 
-  // 5) ViewModels
-  sl.registerFactory<ProfileViewModel>(
-    () => ProfileViewModel(getCity: sl<GetCityUseCase>()),
+  // 5) Cubits
+  sl.registerFactory<ProfileCubit>(
+    () => ProfileCubit(getCity: sl<GetCityUseCase>()),
   );
 
   // 6) Splash
-  sl.registerFactory<SplashViewModel>(() => SplashViewModel());
+  sl.registerFactory<SplashCubit>(() => SplashCubit());
 
   sl.registerLazySingleton<HijriApi>(() => HijriApi());
   sl.registerLazySingleton<PrayerTimes>(() => PrayerTimes());
-  sl.registerFactory<HomeViewModel>(() => HomeViewModel(
-        hijriApi: sl<HijriApi>(),
-        prayerApi: sl<PrayerTimes>(),
-        cityRepo: sl<CityRepository>(),
-      ));
+  sl.registerFactory<HomeCubit>(
+    () => HomeCubit(
+      hijriApi: sl<HijriApi>(),
+      prayerApi: sl<PrayerTimes>(),
+      cityRepo: sl<CityRepository>(),
+    ),
+  );
 
-  sl.registerFactory<AuthViewModel>(() => AuthViewModel());
+  sl.registerFactory<AuthCubit>(() => AuthCubit());
+
+  sl.registerFactory<PrayerCubit>(
+    () => PrayerCubit(
+      prayerApi: sl<PrayerTimes>(),
+      cityRepo: sl<CityRepository>(),
+    ),
+  );
 
   // sl.registerLazySingleton<PrayerTimes>(() => PrayerTimes());
   // sl.registerFactory<PrayerViewModel>(

@@ -2,10 +2,10 @@
 
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sabail/src/presentation/features/prayer_times/view_model/prayer_vm.dart';
+import 'package:sabail/src/presentation/features/prayer_times/cubit/prayer_cubit.dart';
 
 import '../../../app/app_colors.dart';
 
@@ -15,7 +15,8 @@ class PrayerTimesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<PrayerViewModel>();
+    final cubit = context.watch<PrayerCubit>();
+    final vm = cubit.state;
     final now = DateTime.now();
     final dayOfWeek = _getDayOfWeek(now.weekday);
     final dateLabel = '${now.day} ${_getMonthName(now.month)}';
@@ -36,34 +37,32 @@ class PrayerTimesPage extends StatelessWidget {
         ),
       ),
       body: vm.isLoading
-          ? Center(
-              child: SpinKitCircle(color: SabailColors.lightpurple),
-            )
+          ? Center(child: SpinKitCircle(color: SabailColors.lightpurple))
           : vm.errorMessage != null
-              ? Center(child: Text(vm.errorMessage!))
-              : RefreshIndicator(
-                  onRefresh: vm.loadAllData,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        _PrayerTimesSection(vm: vm),
-                        const SizedBox(height: 20),
-                        _SunDiagramSection(
-                          sunrise: vm.sunrise!,
-                          sunset: vm.sunset!,
-                        ),
-                      ],
+          ? Center(child: Text(vm.errorMessage!))
+          : RefreshIndicator(
+              onRefresh: vm.loadAllData,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    _PrayerTimesSection(vm: vm),
+                    const SizedBox(height: 20),
+                    _SunDiagramSection(
+                      sunrise: vm.sunrise!,
+                      sunset: vm.sunset!,
                     ),
-                  ),
+                  ],
                 ),
+              ),
+            ),
     );
   }
 }
 
 class _PrayerTimesSection extends StatelessWidget {
-  final PrayerViewModel vm;
+  final PrayerState vm;
   const _PrayerTimesSection({required this.vm});
 
   @override
@@ -114,9 +113,11 @@ class _PrayerTimesSection extends StatelessWidget {
 class _SunDiagramSection extends StatelessWidget {
   final DateTime sunrise;
   final DateTime sunset;
-  const _SunDiagramSection(
-      {Key? key, required this.sunrise, required this.sunset})
-      : super(key: key);
+  const _SunDiagramSection({
+    Key? key,
+    required this.sunrise,
+    required this.sunset,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -186,17 +187,25 @@ class _PrayerRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Icon(iconData,
-              color: Theme.of(context).colorScheme.primary, size: 28),
+          Icon(
+            iconData,
+            color: Theme.of(context).colorScheme.primary,
+            size: 28,
+          ),
           const SizedBox(width: 15),
           Expanded(
-            child: Text(prayerName,
-                style: textStyle?.copyWith(fontWeight: FontWeight.bold)),
+            child: Text(
+              prayerName,
+              style: textStyle?.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
           Text(prayerTime, style: textStyle),
           const SizedBox(width: 10),
-          Icon(bellIcon,
-              size: 20, color: Theme.of(context).colorScheme.primary),
+          Icon(
+            bellIcon,
+            size: 20,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ],
       ),
     );
@@ -208,7 +217,7 @@ class _SunPathDiagram extends StatelessWidget {
   final DateTime sunset;
 
   const _SunPathDiagram({Key? key, required this.sunrise, required this.sunset})
-      : super(key: key);
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -259,8 +268,10 @@ class _SunPathPainter extends CustomPainter {
       startAng = nextAng + gapAng;
     }
     final sunAng = math.pi + passedSweep;
-    final sunPos = Offset(center.dx + radius * math.cos(sunAng),
-        center.dy + radius * math.sin(sunAng));
+    final sunPos = Offset(
+      center.dx + radius * math.cos(sunAng),
+      center.dy + radius * math.sin(sunAng),
+    );
     canvas.drawCircle(sunPos, 10, Paint()..color = Colors.yellow);
   }
 
@@ -276,7 +287,7 @@ String _getDayOfWeek(int wd) {
     'Четверг',
     'Пятница',
     'Суббота',
-    'Воскресенье'
+    'Воскресенье',
   ];
   return days[wd - 1];
 }
@@ -294,7 +305,7 @@ String _getMonthName(int m) {
     'Сентября',
     'Октября',
     'Ноября',
-    'Декабря'
+    'Декабря',
   ];
   return months[m - 1];
 }

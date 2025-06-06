@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:sabail/src/provider/image_picker_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sabail/src/cubit/image_cubit.dart';
+import 'package:sabail/src/data/locale/db.dart';
 import 'package:sabail/src/presentation/app/app_colors.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -11,22 +12,19 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Профиль',
-          style: TextStyle(fontSize: 25),
-        ),
+        title: const Text('Профиль', style: TextStyle(fontSize: 25)),
         centerTitle: true,
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
-            child: Icon(
-              FlutterIslamicIcons.mosque,
-              size: 30,
-            ),
+            child: Icon(FlutterIslamicIcons.mosque, size: 30),
           ),
         ],
       ),
-      body: const UserProfileBody(),
+      body: BlocProvider(
+        create: (_) => ImageCubit(context.read<AppDatabase>()),
+        child: const UserProfileBody(),
+      ),
     );
   }
 }
@@ -42,23 +40,25 @@ class UserProfileBody extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () async {
-              Provider.of<ImageNotifier>(context, listen: false).getImage();
+              context.read<ImageCubit>().getImage();
             },
             child: Stack(
               children: [
                 Align(
                   alignment: Alignment.topCenter,
-                  child: Consumer<ImageNotifier>(
-                    builder: (context, imageNotifier, child) {
+                  child: BlocBuilder<ImageCubit, ImageState>(
+                    builder: (context, state) {
                       return Container(
                         width: 150.0,
                         height: 150.0,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: imageNotifier.image == null
-                                ? const AssetImage('assets/images/islamic_profile_placeholder.png')
-                                : FileImage(imageNotifier.image!) as ImageProvider,
+                            image: state.image == null
+                                ? const AssetImage(
+                                    'assets/images/islamic_profile_placeholder.png',
+                                  )
+                                : FileImage(state.image!) as ImageProvider,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -96,7 +96,10 @@ class UserProfileBody extends StatelessWidget {
     );
   }
 
-  Widget _buildIslamicTextField({required String hintText, required IconData icon}) {
+  Widget _buildIslamicTextField({
+    required String hintText,
+    required IconData icon,
+  }) {
     return TextField(
       cursorColor: Colors.blue,
       style: const TextStyle(color: Colors.white),

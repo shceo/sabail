@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sabail/src/sabail.dart';
-import '../view_model/auth_view_model.dart';
+import '../cubit/auth_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -27,10 +27,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthViewModel(),
-      child: Consumer<AuthViewModel>(
-        builder: (context, vm, child) {
+    return BlocProvider(
+      create: (_) => AuthCubit(),
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          final vm = context.read<AuthCubit>();
           return Scaffold(
             appBar: AppBar(title: const Text('Авторизация и Регистрация')),
             body: Padding(
@@ -80,11 +81,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    if (vm.errorMessage != null)
+                    if (state.errorMessage != null)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
-                          vm.errorMessage!,
+                          state.errorMessage!,
                           style: const TextStyle(color: Colors.red),
                         ),
                       ),
@@ -96,11 +97,12 @@ class _LoginPageState extends State<LoginPage> {
                           firstName: firstNameController.text,
                           lastName: lastNameController.text,
                         );
-                        if (vm.errorMessage == null && context.mounted) {
+                        if (state.errorMessage == null && context.mounted) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Sabail()),
+                              builder: (context) => const Sabail(),
+                            ),
                           );
                         }
                       },
@@ -152,7 +154,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<AuthViewModel>(context, listen: false);
+    final vm = context.read<AuthCubit>();
     return Scaffold(
       appBar: AppBar(title: const Text('Вход')),
       body: Padding(
@@ -186,7 +188,8 @@ class LoginScreen extends StatelessWidget {
                   email: emailController.text,
                   password: passwordController.text,
                 );
-                if (vm.errorMessage == null && context.mounted) {
+                final state = context.read<AuthCubit>().state;
+                if (state.errorMessage == null && context.mounted) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const Sabail()),
@@ -200,16 +203,13 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
-              child: const Text(
-                'Войти',
-                style: TextStyle(color: Colors.white),
-              ),
+              child: const Text('Войти', style: TextStyle(color: Colors.white)),
             ),
-            if (vm.errorMessage != null)
+            if (state.errorMessage != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  vm.errorMessage!,
+                  state.errorMessage!,
                   style: const TextStyle(color: Colors.red),
                 ),
               ),

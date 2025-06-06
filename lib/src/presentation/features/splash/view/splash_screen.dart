@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../app/router.dart';
-import '../view_model/splash_view_model.dart';
+import '../cubit/splash_cubit.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<SplashViewModel>();
+    final vm = context.watch<SplashCubit>().state;
 
     if (vm.loaded) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
