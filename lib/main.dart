@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:sabail/firebase_options.dart';
 import 'package:sabail/src/presentation/app/injector.dart';
-import 'package:sabail/src/domain/blocs/splash_bloc/splash_screen_bloc.dart';
+import 'package:sabail/src/presentation/features/splash/view_model/splash_view_model.dart';
 import 'package:sabail/src/sabail.dart';
 
 Future<void> main() async {
@@ -29,13 +29,9 @@ Future<void> main() async {
     ]);
 
     runApp(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider<SplashBloc>(
-            create: (_) => sl<SplashBloc>()..add(AppStarted()),
-          ),
-        ],
-        child: const Sabail(),  // здесь ваш корневой виджет Sabail
+      ChangeNotifierProvider(
+        create: (_) => sl<SplashViewModel>()..init(),
+        child: const Sabail(),
       ),
     );
   }, (error, stack) {
