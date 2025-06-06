@@ -13,8 +13,8 @@ class AuthState {
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth _auth;
   AuthCubit({FirebaseAuth? auth})
-    : _auth = auth ?? FirebaseAuth.instance,
-      super(const AuthState());
+      : _auth = auth ?? FirebaseAuth.instance,
+        super(const AuthState());
 
   Future<void> register({
     required String email,

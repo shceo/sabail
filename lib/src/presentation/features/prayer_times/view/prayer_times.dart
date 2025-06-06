@@ -41,7 +41,7 @@ class PrayerTimesPage extends StatelessWidget {
           : vm.errorMessage != null
           ? Center(child: Text(vm.errorMessage!))
           : RefreshIndicator(
-              onRefresh: vm.loadAllData,
+              onRefresh: () => cubit.loadAllData(),
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(16),

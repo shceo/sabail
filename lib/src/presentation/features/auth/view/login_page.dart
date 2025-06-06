@@ -155,6 +155,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.read<AuthCubit>();
+    final state = context.watch<AuthCubit>().state;
     return Scaffold(
       appBar: AppBar(title: const Text('Вход')),
       body: Padding(
