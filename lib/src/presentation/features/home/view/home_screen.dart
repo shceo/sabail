@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sabail/src/presentation/app/app_colors.dart';
-import 'package:sabail/src/presentation/features/home/view_model/home_vm.dart' show HomeViewModel;
+import 'package:sabail/src/presentation/features/home/cubit/home_cubit.dart';
 import 'package:sabail/src/ui/pages/countries_page.dart';
 
 import '../view/widgets/mainpage_widgets.dart';
@@ -19,7 +19,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<HomeViewModel>();
+    final cubit = context.watch<HomeCubit>();
+    final vm = cubit.state;
 
     // пока не загрузилась hijriDate
     if (vm.hijriDate.isEmpty) {
@@ -50,8 +51,11 @@ class BodySab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<HomeViewModel>();
-    final cityLabel = vm.selectedCity.isEmpty ? 'Выберите город' : vm.selectedCity;
+    final cubit = context.watch<HomeCubit>();
+    final vm = cubit.state;
+    final cityLabel = vm.selectedCity.isEmpty
+        ? 'Выберите город'
+        : vm.selectedCity;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,71 +71,75 @@ class BodySab extends StatelessWidget {
             child: Container(
               height: MediaQuery.of(context).size.height * 0.35,
               color: SabailColors.lightpurple.withOpacity(0.7),
-              child: LayoutBuilder(builder: (ctx, bc) {
-                final w = bc.maxWidth;
-                final h = bc.maxHeight;
-                return Stack(
-                  children: [
-                    // фоновые иконки...
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: w * 0.05,
-                        top: h * 0.15,
-                        right: w * 0.05,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextButton(
-                            onPressed: () async {
-                              final selected = await Navigator.push<String>(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const CitiesAndCountriesPage(),
-                                ),
-                              );
-                              if (selected != null) {
-                                await vm.selectCity(selected);
-                              }
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                  size: w * 0.05,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  cityLabel,
-                                  style: TextStyle(
-                                    fontSize: w * 0.045,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontFamily: GoogleFonts.oswald().fontFamily,
+              child: LayoutBuilder(
+                builder: (ctx, bc) {
+                  final w = bc.maxWidth;
+                  final h = bc.maxHeight;
+                  return Stack(
+                    children: [
+                      // фоновые иконки...
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: w * 0.05,
+                          top: h * 0.15,
+                          right: w * 0.05,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextButton(
+                              onPressed: () async {
+                                final selected = await Navigator.push<String>(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const CitiesAndCountriesPage(),
                                   ),
-                                ),
-                              ],
+                                );
+                                if (selected != null) {
+                                  await cubit.selectCity(selected);
+                                }
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Colors.white,
+                                    size: w * 0.05,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    cityLabel,
+                                    style: TextStyle(
+                                      fontSize: w * 0.045,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontFamily:
+                                          GoogleFonts.oswald().fontFamily,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Text(
-                            vm.hijriDate,
-                            style: TextStyle(
-                              fontSize: w * 0.05,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontFamily: GoogleFonts.oswald().fontFamily,
+                            Text(
+                              vm.hijriDate,
+                              style: TextStyle(
+                                fontSize: w * 0.05,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: GoogleFonts.oswald().fontFamily,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: h * 0.08),
-                          CurrentTimeWidget(time: vm.currentTime),
-                        ],
+                            SizedBox(height: h * 0.08),
+                            CurrentTimeWidget(time: vm.currentTime),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              }),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
