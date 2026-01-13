@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sabail/src/core/di/locator.dart';
 import 'package:sabail/src/core/widgets/glass_container.dart';
+import 'package:sabail/src/core/widgets/shimmer_box.dart';
 import 'package:sabail/src/features/prayer_times/data/prayer_times_repository.dart';
+import 'package:sabail/src/features/prayer_times/presentation/viewmodels/prayer_location_store.dart';
 import 'package:sabail/src/features/prayer_times/presentation/viewmodels/prayer_times_viewmodel.dart';
+import 'package:sabail/src/core/services/city_service.dart';
+import 'package:sabail/src/core/services/location_service.dart';
+import 'package:sabail/src/core/notifications/notification_service.dart';
 
 class PrayerTimesScreen extends StatefulWidget {
   static const String routeName = '/prayer_times';
-  const PrayerTimesScreen({Key? key}) : super(key: key);
+  const PrayerTimesScreen({super.key});
 
   @override
   State<PrayerTimesScreen> createState() => _PrayerTimesScreenState();
@@ -18,8 +23,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   void initState() {
     super.initState();
-    viewModel = PrayerTimesViewModel(locator<PrayerTimesRepository>())
-      ..loadForDate(DateTime.now());
+    viewModel = PrayerTimesViewModel(
+      repository: locator<PrayerTimesRepository>(),
+      cityService: locator<CityService>(),
+      locationService: locator<LocationService>(),
+      notificationService: locator<NotificationService>(),
+      locationStore: locator<PrayerLocationStore>(),
+    )..init();
   }
 
   @override
@@ -45,35 +55,6 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             child: AnimatedBuilder(
               animation: viewModel,
               builder: (context, _) {
-                if (viewModel.error != null) {
-                  return Center(
-                    child: GlassContainer(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.error_outline,
-                              color: Colors.white, size: 32),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Не удалось загрузить время\n${viewModel.error}',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          const SizedBox(height: 8),
-                          TextButton(
-                            onPressed: () =>
-                                viewModel.loadForDate(DateTime.now()),
-                            child: const Text(
-                              'Повторить',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-
                 return ListView(
                   children: [
                     Row(
@@ -92,7 +73,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                             ),
                             SizedBox(height: 6),
                             Text(
-                              'Сегодня',
+                              'AlAdhan API + оффлайн кеш',
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 14,
@@ -102,22 +83,155 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.refresh, color: Colors.white),
-                          onPressed: () =>
-                              viewModel.loadForDate(DateTime.now()),
+                          onPressed: () => viewModel.loadForCity(),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 16),
+                    _LocationCard(viewModel: viewModel),
                     const SizedBox(height: 16),
                     _NextPrayerCard(viewModel: viewModel),
                     const SizedBox(height: 16),
                     _ScheduleCard(viewModel: viewModel),
                     const SizedBox(height: 16),
                     _InfoCard(),
+                    if (viewModel.error != null) ...[
+                      const SizedBox(height: 12),
+                      _ErrorCard(error: viewModel.error!),
+                    ]
                   ],
                 );
               },
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LocationCard extends StatelessWidget {
+  final PrayerTimesViewModel viewModel;
+  const _LocationCard({required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    final isLoading = viewModel.isLoadingCities;
+    return GlassContainer(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.location_on_outlined,
+                    color: Colors.white),
+              ),
+              const SizedBox(width: 10),
+              const Expanded(
+                child: Text(
+                  'Город и страна',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              TextButton(
+                onPressed: isLoading ? null : viewModel.useCurrentLocation,
+                child: const Text(
+                  'Моя геолокация',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          isLoading
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    ShimmerBox(height: 44),
+                    SizedBox(height: 12),
+                    ShimmerBox(height: 44),
+                  ],
+                )
+              : Column(
+                  children: [
+                    _Dropdown(
+                      label: 'Страна',
+                      value: viewModel.country,
+                      options: viewModel.countries,
+                      onChanged: (value) async {
+                        if (value != null) {
+                          await viewModel.loadCities(value);
+                          await viewModel.loadForCity();
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    _Dropdown(
+                      label: 'Город',
+                      value: viewModel.city,
+                      options: viewModel.cities,
+                      onChanged: (value) {
+                        if (value != null) {
+                          viewModel.selectCity(value);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Dropdown extends StatelessWidget {
+  final String label;
+  final String value;
+  final List<String> options;
+  final ValueChanged<String?> onChanged;
+  const _Dropdown({
+    required this.label,
+    required this.value,
+    required this.options,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white24),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: options.contains(value) ? value : null,
+          hint: Text(
+            label,
+            style: const TextStyle(color: Colors.white70),
+          ),
+          dropdownColor: const Color(0xFF0F5D46),
+          iconEnabledColor: Colors.white,
+          style: const TextStyle(color: Colors.white),
+          items: options
+              .map(
+                (e) => DropdownMenuItem(
+                  value: e,
+                  child: Text(e),
+                ),
+              )
+              .toList(),
+          onChanged: onChanged,
         ),
       ),
     );
@@ -130,8 +244,10 @@ class _NextPrayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = viewModel.nextPrayerLabel() ?? 'Все молитвы прочитаны';
+    final label =
+        viewModel.nextPrayerLabel() ?? 'Все молитвы за день завершены';
     final timeLeft = viewModel.timeUntilNextPrayer();
+    final isLoading = viewModel.isLoading || viewModel.day == null;
 
     return GlassContainer(
       borderRadius: BorderRadius.circular(24),
@@ -143,43 +259,52 @@ class _NextPrayerCard extends StatelessWidget {
             height: 62,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withOpacity(0.16),
+              color: Colors.white.withValues(alpha: 0.16),
             ),
             child: const Icon(Icons.mosque, color: Colors.white, size: 28),
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Следующая молитва',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
+            child: isLoading
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      ShimmerBox(height: 18, width: 120),
+                      SizedBox(height: 8),
+                      ShimmerBox(height: 16, width: 180),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Следующая молитва',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        label,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      if (timeLeft != null) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          'Через $timeLeft',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  label,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (timeLeft != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    'Через $timeLeft',
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 13,
-                    ),
-                  ),
-                ],
-              ],
-            ),
           ),
           const Icon(Icons.arrow_forward, color: Colors.white),
         ],
@@ -194,38 +319,36 @@ class _ScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (viewModel.isLoading || viewModel.day == null) {
-      return GlassContainer(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            SizedBox(
-              height: 22,
-              width: 22,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.2,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(width: 12),
-            Text(
-              'Обновляем расписание...',
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        ),
-      );
-    }
+    final isLoading = viewModel.isLoading || viewModel.day == null;
 
-    return GlassContainer(
-      child: Column(
+    Widget content;
+    if (isLoading) {
+      content = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          ShimmerBox(height: 18, width: 100),
+          SizedBox(height: 12),
+          ShimmerBox(height: 16, width: 220),
+          SizedBox(height: 10),
+          ShimmerBox(height: 16, width: 240),
+          SizedBox(height: 10),
+          ShimmerBox(height: 16, width: 200),
+          SizedBox(height: 10),
+          ShimmerBox(height: 16, width: 230),
+          SizedBox(height: 10),
+          ShimmerBox(height: 16, width: 180),
+        ],
+      );
+    } else {
+      final date = viewModel.day!.date;
+      content = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Расписание',
+                'Расписание на сегодня',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -233,7 +356,7 @@ class _ScheduleCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '${viewModel.day!.date.day.toString().padLeft(2, '0')}.${viewModel.day!.date.month.toString().padLeft(2, '0')}',
+                '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}',
                 style: const TextStyle(color: Colors.white70),
               ),
             ],
@@ -265,8 +388,10 @@ class _ScheduleCard extends StatelessWidget {
             icon: Icons.brightness_3_outlined,
           ),
         ],
-      ),
-    );
+      );
+    }
+
+    return GlassContainer(child: content);
   }
 }
 
@@ -319,12 +444,38 @@ class _InfoCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: const [
-          Icon(Icons.location_on_outlined, color: Colors.white70),
+          Icon(Icons.volume_up, color: Colors.white70),
           SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Автообновление по вашей локации и кеш в оффлайне.',
+              'Уведомления с азаном активируются для всех молитв. Можно менять город вручную или через геолокацию.',
               style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ErrorCard extends StatelessWidget {
+  final String error;
+  const _ErrorCard({required this.error});
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassContainer(
+      tint: Colors.red,
+      opacity: 0.18,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.error_outline, color: Colors.white),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              error,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ],

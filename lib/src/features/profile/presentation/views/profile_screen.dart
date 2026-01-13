@@ -5,7 +5,7 @@ import 'package:sabail/src/features/profile/presentation/viewmodels/profile_view
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -259,8 +259,8 @@ class _SwitchRow extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: Colors.white,
-            activeTrackColor: Colors.white24,
+            thumbColor: WidgetStatePropertyAll(Colors.white),
+            trackColor: WidgetStatePropertyAll(Colors.white24),
           ),
         ],
       ),

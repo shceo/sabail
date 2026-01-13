@@ -60,7 +60,7 @@ class _AppState extends State<App> {
               showUnselectedLabels: true,
               items: const [
                 BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.home),
+                  icon: FaIcon(FontAwesomeIcons.house),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(

@@ -5,7 +5,7 @@ import 'package:sabail/src/features/quran/presentation/viewmodels/quran_viewmode
 
 class QuranScreen extends StatefulWidget {
   static const String routeName = '/quran';
-  const QuranScreen({Key? key}) : super(key: key);
+  const QuranScreen({super.key});
 
   @override
   State<QuranScreen> createState() => _QuranScreenState();
@@ -86,7 +86,7 @@ class _QuranScreenState extends State<QuranScreen> {
                     ),
                     const SizedBox(height: 12),
                     _GlassTile(
-                      icon: FontAwesomeIcons.sparkles,
+                      icon: FontAwesomeIcons.wandSparkles,
                       title: 'Ду’а дня',
                       subtitle: 'Подборка будет приходить сюда',
                       trailing: 'Скоро',

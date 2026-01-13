@@ -17,14 +17,14 @@ class Ayahs extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get surahId => integer().references(Surahs, #id)();
   IntColumn get number => integer()();
-  TextColumn get text => text()();
+  TextColumn get ayahText => text()();
 }
 
 class Hadiths extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get book => text()();
   TextColumn get chapter => text().nullable()();
-  TextColumn get text => text()();
+  TextColumn get hadithText => text()();
 }
 
 class TasbihSessions extends Table {
@@ -62,7 +62,7 @@ class Donations extends Table {
   ],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase._(QueryExecutor e) : super(e);
+  AppDatabase._(super.e);
 
   factory AppDatabase.open() {
     return AppDatabase._(

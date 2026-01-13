@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:sabail/src/app.dart';
 import 'package:sabail/src/core/di/locator.dart';
+import 'package:sabail/src/core/notifications/notification_service.dart';
 
 /// Простая модель для прогресса инициализации
 class Progress {
@@ -174,6 +175,7 @@ Future<void> _migrateDatabase() async {
 
 Future<void> _initDependencies() async {
   await setupLocator();
+  await locator<NotificationService>().init();
 }
 
 Future<void> _initFirebase() async {

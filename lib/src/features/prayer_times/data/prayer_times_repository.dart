@@ -13,16 +13,41 @@ class PrayerTimesRepository {
     required this.service,
   });
 
-  Future<PrayerDay> getForDate(DateTime date) async {
-    final normalized = DateTime(date.year, date.month, date.day);
+  Future<PrayerDay> getForCity({
+    required String city,
+    required String country,
+  }) async {
+    final today = DateTime.now();
+    final normalized = DateTime(today.year, today.month, today.day);
     final cached = await db.getPrayerTimesByDate(normalized);
-    if (cached != null) {
-      return _mapFromDb(cached);
+    try {
+      final remote = await service.fetchByCity(city: city, country: country);
+      await _replace(remote);
+      return remote;
+    } catch (_) {
+      if (cached != null) return _mapFromDb(cached);
+      rethrow;
     }
+  }
 
-    final remote = await service.fetchFor(normalized);
-    await _save(remote);
-    return remote;
+  Future<PrayerDay> getForCoords({
+    required double latitude,
+    required double longitude,
+  }) async {
+    final today = DateTime.now();
+    final normalized = DateTime(today.year, today.month, today.day);
+    final cached = await db.getPrayerTimesByDate(normalized);
+    try {
+      final remote = await service.fetchByCoords(
+        latitude: latitude,
+        longitude: longitude,
+      );
+      await _replace(remote);
+      return remote;
+    } catch (_) {
+      if (cached != null) return _mapFromDb(cached);
+      rethrow;
+    }
   }
 
   Future<void> _save(PrayerDay day) {
@@ -36,6 +61,11 @@ class PrayerTimesRepository {
         isha: Value(day.ishaMinutes),
       ),
     );
+  }
+
+  Future<void> _replace(PrayerDay day) async {
+    await db.delete(db.prayerTimes).go();
+    await _save(day);
   }
 
   PrayerDay _mapFromDb(PrayerTime row) {

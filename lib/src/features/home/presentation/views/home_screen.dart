@@ -3,10 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sabail/src/core/widgets/glass_container.dart';
+import 'package:sabail/src/core/di/locator.dart';
+import 'package:sabail/src/features/prayer_times/presentation/viewmodels/prayer_location_store.dart';
+import 'package:sabail/src/features/prayer_times/presentation/views/prayer_time.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,33 +88,43 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white24,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_on_outlined,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    'Sylhet',
-                                    style: TextStyle(
+                        GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(PrayerTimesScreen.routeName),
+                          child: AnimatedBuilder(
+                            animation: locator<PrayerLocationStore>(),
+                            builder: (context, _) {
+                              final store = locator<PrayerLocationStore>();
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white24,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on_outlined,
                                       color: Colors.white,
-                                      fontSize: 14,
+                                      size: 16,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      store.city,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                           ],
                         ),
                       ),
@@ -205,10 +218,10 @@ class HomeScreen extends StatelessWidget {
                                 icon: FontAwesomeIcons.book,
                                 label: 'Al Hadith',
                               ),
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.heartbeat,
-                                label: 'Asma Ul Husna',
-                              ),
+                          _FeatureItem(
+                            icon: FontAwesomeIcons.heartPulse,
+                            label: 'Asma Ul Husna',
+                          ),
                               _FeatureItem(icon: Icons.repeat, label: 'Tasbih'),
                               _FeatureItem(
                                 icon: FontAwesomeIcons.compass,

@@ -35,6 +35,13 @@ dependencies:
   persistent_bottom_nav_bar_custom: ^6.0.0
   bloc: ^9.0.0
   flutter_bloc: ^9.1.1
+  http: ^1.2.1
+  geolocator: ^10.1.0
+  geocoding: ^2.2.1
+  shimmer: ^3.0.0
+  flutter_local_notifications: ^17.2.1
+  flutter_native_timezone: ^2.0.0
+  timezone: ^0.9.2
   get_it: ^7.6.7
   
 
@@ -67,6 +74,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
