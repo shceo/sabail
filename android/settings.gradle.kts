@@ -23,13 +23,3 @@ plugins {
 }
 
 include(":app")
-
-gradle.beforeProject {
-    if (name == "flutter_native_timezone") {
-        pluginManager.withPlugin("com.android.library") {
-            extensions.configure<com.android.build.gradle.LibraryExtension> {
-                namespace = "com.whelksoft.flutter_native_timezone"
-            }
-        }
-    }
-}
