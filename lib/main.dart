@@ -1,9 +1,11 @@
 // File: lib/main.dart
 
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:sabail/src/app.dart';
+import 'package:sabail/src/core/di/locator.dart';
 
 /// Простая модель для прогресса инициализации
 class Progress {
@@ -12,30 +14,26 @@ class Progress {
   const Progress(this.percent, this.message);
 }
 
-void main() {
+Future<void> main() async {
   runZonedGuarded(() async {
-    // 1) Откладываем первый кадр до конца инициализации
-    final binding = WidgetsFlutterBinding
-        .ensureInitialized()..deferFirstFrame();
+    final binding = WidgetsFlutterBinding.ensureInitialized()
+      ..deferFirstFrame();
 
-    // 2) Создаём notifier для передачи прогресса в UI
     final initializationProgress = ValueNotifier<Progress>(
-      const Progress(0, 'Начало инициализации'),
+      const Progress(0, 'Запуск Sabail...'),
     );
 
-    // 3) Запускаем приложение
     runApp(_ProgressApp(initializationProgress));
 
-    // 4) После первого build разрешаем показ первого кадра
     SchedulerBinding.instance.addPostFrameCallback((_) {
       binding.allowFirstFrame();
     });
 
-    // 5) Последовательная инициализация шаг за шагом
     final steps = <String, Future<void> Function()>{
-      'Инициализация базы данных': _migrateDatabase,
-      'Инициализация Firebase': _initFirebase,
-      'Загрузка настроек': _loadSettings,
+      'Migration DB': _migrateDatabase,
+      'DI setup': _initDependencies,
+      'Firebase init': _initFirebase,
+      'Load settings': _loadSettings,
     };
 
     int stepIndex = 0;
@@ -43,21 +41,17 @@ void main() {
     for (final entry in steps.entries) {
       stepIndex++;
       final percent = ((stepIndex / totalSteps) * 100).round();
-      initializationProgress.value =
-          Progress(percent, entry.key);
+      initializationProgress.value = Progress(percent, entry.key);
       await entry.value();
     }
 
-    // Финальный процент и небольшая задержка
     initializationProgress.value = const Progress(100, 'Готово');
     await Future.delayed(const Duration(milliseconds: 500));
   }, (error, stack) {
-    // В случае серьёзной ошибки можно перекинуть на экран критической ошибки
     runApp(_ErrorApp(error: error.toString()));
   });
 }
 
-// Корневой виджет, слушает прогресс и переключается на App()
 class _ProgressApp extends StatelessWidget {
   final ValueNotifier<Progress> notifier;
   const _ProgressApp(this.notifier);
@@ -68,7 +62,7 @@ class _ProgressApp extends StatelessWidget {
       valueListenable: notifier,
       builder: (context, progress, _) {
         return MaterialApp(
-          title: 'Saba’il',
+          title: 'Sabail',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
@@ -83,7 +77,6 @@ class _ProgressApp extends StatelessWidget {
   }
 }
 
-/// Экран Splash с индикатором прогресса
 class _SplashProgress extends StatelessWidget {
   final Progress progress;
   const _SplashProgress({required this.progress});
@@ -110,7 +103,7 @@ class _SplashProgress extends StatelessWidget {
                 Icon(Icons.brightness_7, size: 72, color: Colors.white),
                 SizedBox(height: 16),
                 Text(
-                  "Saba’il",
+                  "Sabail",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 32,
@@ -119,7 +112,7 @@ class _SplashProgress extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  "Ваш путеводитель среди тьмы",
+                  "Все инструменты в одном месте",
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
               ],
@@ -151,7 +144,6 @@ class _SplashProgress extends StatelessWidget {
   }
 }
 
-/// Экран ошибки, если что-то пошло не так
 class _ErrorApp extends StatelessWidget {
   final String error;
   const _ErrorApp({required this.error});
@@ -165,7 +157,7 @@ class _ErrorApp extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Text(
-              'Не удалось инициализировать приложение:\n$error',
+              'Что-то пошло не так при запуске:\n$error',
               style: const TextStyle(color: Colors.red, fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -176,9 +168,12 @@ class _ErrorApp extends StatelessWidget {
   }
 }
 
-// Замените эти методы на реальную логику инициализации:
 Future<void> _migrateDatabase() async {
   await Future.delayed(const Duration(seconds: 1));
+}
+
+Future<void> _initDependencies() async {
+  await setupLocator();
 }
 
 Future<void> _initFirebase() async {

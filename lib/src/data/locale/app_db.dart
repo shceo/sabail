@@ -1,110 +1,122 @@
-// import 'dart:io';
-// import 'package:drift/drift.dart';
-// import 'package:drift/native.dart';
-// import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
-// part 'app_database.g.dart';
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
+import 'package:path_provider/path_provider.dart';
 
-// // Таблицы приложения
-// class Surahs extends Table {
-//   IntColumn get id => integer().autoIncrement()();
-//   TextColumn get name => text()();
-//   TextColumn get arabicText => text()();
-//   TextColumn get translation => text().nullable()();
-// }
+part 'app_db.g.dart';
 
-// class Ayahs extends Table {
-//   IntColumn get id => integer().autoIncrement()();
-//   IntColumn get surahId => integer().references(Surahs, #id)();
-//   IntColumn get number => integer()();
-//   TextColumn get text => text()();
-// }
+class Surahs extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
+  TextColumn get arabicText => text()();
+  TextColumn get translation => text().nullable()();
+}
 
-// class Hadiths extends Table {
-//   IntColumn get id => integer().autoIncrement()();
-//   TextColumn get book => text()();
-//   TextColumn get chapter => text().nullable()();
-//   TextColumn get text => text()();
-// }
+class Ayahs extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get surahId => integer().references(Surahs, #id)();
+  IntColumn get number => integer()();
+  TextColumn get text => text()();
+}
 
-// class TasbihSessions extends Table {
-//   IntColumn get id => integer().autoIncrement()();
-//   TextColumn get name => text().nullable()();
-//   IntColumn get count => integer().withDefault(const Constant(0))();
-// }
+class Hadiths extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get book => text()();
+  TextColumn get chapter => text().nullable()();
+  TextColumn get text => text()();
+}
 
-// class PrayerTimes extends Table {
-//   IntColumn get id => integer().autoIncrement()();
-//   DateTimeColumn get date => dateTime()();
-//   IntColumn get fajr => integer()();
-//   IntColumn get dhuhr => integer()();
-//   IntColumn get asr => integer()();
-//   IntColumn get maghrib => integer()();
-//   IntColumn get isha => integer()();
-// }
+class TasbihSessions extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text().nullable()();
+  IntColumn get count => integer().withDefault(const Constant(0))();
+}
 
-// class Donations extends Table {
-//   IntColumn get id => integer().autoIncrement()();
-//   RealColumn get amount => real()();
-//   DateTimeColumn get date => dateTime().clientDefault(() => DateTime.now())();
-//   TextColumn get charityName => text()();
-// }
+class PrayerTimes extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  DateTimeColumn get date => dateTime()();
+  IntColumn get fajr => integer()();
+  IntColumn get dhuhr => integer()();
+  IntColumn get asr => integer()();
+  IntColumn get maghrib => integer()();
+  IntColumn get isha => integer()();
+}
 
-// @DriftDatabase(
-//   tables: [
-//     Surahs,
-//     Ayahs,
-//     Hadiths,
-//     TasbihSessions,
-//     PrayerTimes,
-//     Donations,
-//   ],
-// )
-// class AppDatabase extends _$AppDatabase {
-//   AppDatabase._(QueryExecutor e) : super(e);
+class Donations extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  RealColumn get amount => real()();
+  DateTimeColumn get date =>
+      dateTime().clientDefault(() => DateTime.now())();
+  TextColumn get charityName => text()();
+}
 
-//   /// Инициализатор, открывающий файл в каталоге приложения
-//   factory AppDatabase.open() {
-//     final dbFolder = getApplicationDocumentsDirectory();
-//     return AppDatabase._(
-//       LazyDatabase(() async {
-//         final dir = await dbFolder;
-//         final file = File('${dir.path}/app_database.sqlite');
-//         return NativeDatabase(file);
-//       }),
-//     );
-//   }
+@DriftDatabase(
+  tables: [
+    Surahs,
+    Ayahs,
+    Hadiths,
+    TasbihSessions,
+    PrayerTimes,
+    Donations,
+  ],
+)
+class AppDatabase extends _$AppDatabase {
+  AppDatabase._(QueryExecutor e) : super(e);
 
-//   @override
-//   int get schemaVersion => 1;
+  factory AppDatabase.open() {
+    return AppDatabase._(
+      LazyDatabase(() async {
+        final dir = await getApplicationDocumentsDirectory();
+        final file = File('${dir.path}/app_database.sqlite');
+        return NativeDatabase(file);
+      }),
+    );
+  }
 
-//   @override
-//   MigrationStrategy get migration => MigrationStrategy(
-//         onCreate: (m) async {
-//           await m.createAll();
-//         },
-//         onUpgrade: (m, from, to) async {
-//           // TODO: реализовать миграции при изменении схемы
-//         },
-//       );
+  @override
+  int get schemaVersion => 1;
 
-//   // Примеры запросов
-//   Future<List<Surah>> getAllSurahs() => select(surahs).get();
-//   Future<int> insertSurah(Insertable<Surah> surah) => into(surahs).insert(surah);
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) async => m.createAll(),
+        onUpgrade: (m, from, to) async {},
+      );
 
-//   Stream<List<Ayah>> watchAyahsBySurah(int surahId) {
-//     return (select(ayahs)..where((tbl) => tbl.surahId.equals(surahId))).watch();
-//   }
+  Future<List<Surah>> getAllSurahs() => select(surahs).get();
+  Future<int> insertSurah(Insertable<Surah> surah) =>
+      into(surahs).insert(surah);
 
-//   Future<int> insertHadith(Insertable<Hadith> hadith) => into(hadiths).insert(hadith);
-//   Future<List<Hadith>> getRecentHadiths() => (select(hadiths)..orderBy([(t) => OrderingTerm.desc(t.id)])).get();
+  Stream<List<Ayah>> watchAyahsBySurah(int surahId) {
+    return (select(ayahs)..where((tbl) => tbl.surahId.equals(surahId)))
+        .watch();
+  }
 
-//   Future<int> startTasbihSession(String? name) => into(tasbihSessions).insert(TasbihSessionsCompanion(name: Value(name)));
-//   Future<int> updateTasbihCount(int id, int count) => (update(tasbihSessions)..where((t) => t.id.equals(id))).write(TasbihSessionsCompanion(count: Value(count)));
+  Future<int> insertHadith(Insertable<Hadith> hadith) =>
+      into(hadiths).insert(hadith);
+  Future<List<Hadith>> getRecentHadiths() =>
+      (select(hadiths)..orderBy([(t) => OrderingTerm.desc(t.id)])).get();
 
-//   Future<int> insertPrayerTimes(Insertable<PrayerTime> pt) => into(prayerTimes).insert(pt);
-//   Future<List<PrayerTime>> getPrayerTimesByDate(DateTime date) => (select(prayerTimes)..where((t) => t.date.equals(date))).get();
+  Future<int> startTasbihSession(String? name) =>
+      into(tasbihSessions).insert(
+        TasbihSessionsCompanion(name: Value(name)),
+      );
 
-//   Future<int> insertDonation(Insertable<Donation> donation) => into(donations).insert(donation);
-//   Future<List<Donation>> getAllDonations() => select(donations).get();
-// }
+  Future<int> updateTasbihCount(int id, int count) =>
+      (update(tasbihSessions)..where((t) => t.id.equals(id))).write(
+        TasbihSessionsCompanion(count: Value(count)),
+      );
+
+  Future<int> insertPrayerTimes(Insertable<PrayerTime> pt) =>
+      into(prayerTimes).insert(pt, mode: InsertMode.insertOrReplace);
+
+  Future<PrayerTime?> getPrayerTimesByDate(DateTime date) {
+    final day = DateTime(date.year, date.month, date.day);
+    return (select(prayerTimes)..where((t) => t.date.equals(day)))
+        .getSingleOrNull();
+  }
+
+  Future<int> insertDonation(Insertable<Donation> donation) =>
+      into(donations).insert(donation);
+  Future<List<Donation>> getAllDonations() => select(donations).get();
+}

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sabail/src/core/routes/app_router.dart';
 import 'package:sabail/src/features/home/presentation/views/home_screen.dart';
 import 'package:sabail/src/features/prayer_times/presentation/views/prayer_time.dart';
 import 'package:sabail/src/features/profile/presentation/views/profile_screen.dart';
@@ -40,6 +41,8 @@ class _AppState extends State<App> {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
+      routes: AppRouter.routes,
+      onGenerateRoute: AppRouter.onGenerateRoute,
       home: Scaffold(
         extendBody: true,
         body: _screens[_selectedIndex],
