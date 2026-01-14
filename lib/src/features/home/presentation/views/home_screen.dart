@@ -1,11 +1,11 @@
-// File: lib/src/features/home/presentation/views/home_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sabail/src/core/widgets/glass_container.dart';
 import 'package:sabail/src/core/di/locator.dart';
+import 'package:sabail/src/core/widgets/glass_container.dart';
+import 'package:sabail/src/features/home/presentation/views/feature_detail_screen.dart';
 import 'package:sabail/src/features/prayer_times/presentation/viewmodels/prayer_location_store.dart';
 import 'package:sabail/src/features/prayer_times/presentation/views/prayer_time.dart';
+import 'package:sabail/src/features/quran/presentation/views/quran_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
@@ -13,7 +13,77 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final features = [
+      _HomeFeature(
+        icon: FontAwesomeIcons.handPointUp,
+        label: 'Kalma',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('kalma'),
+        ),
+      ),
+      _HomeFeature(
+        icon: FontAwesomeIcons.bookQuran,
+        label: 'Al Quran',
+        onTap: () => Navigator.of(context).pushNamed(QuranScreen.routeName),
+      ),
+      _HomeFeature(
+        icon: FontAwesomeIcons.book,
+        label: 'Al Hadith',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('hadith'),
+        ),
+      ),
+      _HomeFeature(
+        icon: FontAwesomeIcons.heartPulse,
+        label: 'Asma Ul Husna',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('asma'),
+        ),
+      ),
+      _HomeFeature(
+        icon: Icons.repeat,
+        label: 'Tasbih',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('tasbih'),
+        ),
+      ),
+      _HomeFeature(
+        icon: FontAwesomeIcons.compass,
+        label: 'Qibla Compass',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('qibla'),
+        ),
+      ),
+      _HomeFeature(
+        icon: FontAwesomeIcons.moon,
+        label: 'Siyam Timing',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('siyam'),
+        ),
+      ),
+      _HomeFeature(
+        icon: FontAwesomeIcons.handsPraying,
+        label: 'Dua for Everyday',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('dua'),
+        ),
+      ),
+      _HomeFeature(
+        icon: FontAwesomeIcons.kaaba,
+        label: 'Hajj & Umrah',
+        onTap: () => Navigator.of(context).pushNamed(
+          FeatureDetailScreen.routeName,
+          arguments: const FeatureDetailArgs('hajj'),
+        ),
+      ),
+    ];
 
     return Scaffold(
       body: Container(
@@ -80,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  'Bismillah, чувствуйте себя как дома',
+                                  'Bismillah ir-Rahman ir-Rahim',
                                   style: TextStyle(
                                     color: Colors.white70,
                                     fontSize: 13,
@@ -88,43 +158,43 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                        GestureDetector(
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(PrayerTimesScreen.routeName),
-                          child: AnimatedBuilder(
-                            animation: locator<PrayerLocationStore>(),
-                            builder: (context, _) {
-                              final store = locator<PrayerLocationStore>();
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white24,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.location_on_outlined,
-                                      color: Colors.white,
-                                      size: 16,
+                            GestureDetector(
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed(PrayerTimesScreen.routeName),
+                              child: AnimatedBuilder(
+                                animation: locator<PrayerLocationStore>(),
+                                builder: (context, _) {
+                                  final store = locator<PrayerLocationStore>();
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 6,
                                     ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      store.city,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white24,
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.location_on_outlined,
+                                          color: Colors.white,
+                                          size: 16,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          store.city,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -196,49 +266,28 @@ class HomeScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: GlassContainer(
-                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 18,
+                        horizontal: 16,
+                      ),
                       borderRadius: BorderRadius.circular(20),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Wrap(
-                            spacing: (w - 32 - 4 * 80) / 2,
-                            runSpacing: 12,
-                            alignment: WrapAlignment.center,
-                            children: const [
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.handPointUp,
-                                label: 'Kalma',
-                              ),
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.bookQuran,
-                                label: 'Al Quran',
-                              ),
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.book,
-                                label: 'Al Hadith',
-                              ),
-                          _FeatureItem(
-                            icon: FontAwesomeIcons.heartPulse,
-                            label: 'Asma Ul Husna',
-                          ),
-                              _FeatureItem(icon: Icons.repeat, label: 'Tasbih'),
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.compass,
-                                label: 'Qibla Compass',
-                              ),
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.moon,
-                                label: 'Siyam Timing',
-                              ),
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.handsPraying,
-                                label: 'Dua for everyday',
-                              ),
-                              _FeatureItem(
-                                icon: FontAwesomeIcons.kaaba,
-                                label: 'Hajj & Umrah',
-                              ),
+                          GridView.count(
+                            crossAxisCount: 3,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            childAspectRatio: 0.88,
+                            children: [
+                              for (final feature in features)
+                                _FeatureItem(
+                                  icon: feature.icon,
+                                  label: feature.label,
+                                  onTap: feature.onTap,
+                                ),
                             ],
                           ),
                           const SizedBox(height: 16),
@@ -305,31 +354,54 @@ class _PrayerTimeItem extends StatelessWidget {
 class _FeatureItem extends StatelessWidget {
   final IconData icon;
   final String label;
-  const _FeatureItem({required this.icon, required this.label});
+  final VoidCallback onTap;
+
+  const _FeatureItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 80,
-      child: Column(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE8FAF1),
-              borderRadius: BorderRadius.circular(16),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE8FAF1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(icon, color: const Color(0xFF2FC07F), size: 24),
             ),
-            child: Icon(icon, color: const Color(0xFF2FC07F), size: 24),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12, color: Colors.black87),
-          ),
-        ],
+            const SizedBox(height: 6),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 12, color: Colors.black87),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+class _HomeFeature {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _HomeFeature({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 }

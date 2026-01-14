@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sabail/src/core/widgets/glass_container.dart';
 import 'package:sabail/src/features/quran/presentation/viewmodels/quran_viewmodel.dart';
+import 'package:sabail/src/features/quran/presentation/views/quran_tool_screen.dart';
 
 class QuranScreen extends StatefulWidget {
   static const String routeName = '/quran';
@@ -35,16 +36,23 @@ class _QuranScreenState extends State<QuranScreen> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          'Коран',
+                      children: [
+                        const Text(
+                          'Quran',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Icon(Icons.info_outline, color: Colors.white),
+                        IconButton(
+                          icon:
+                              const Icon(Icons.info_outline, color: Colors.white),
+                          onPressed: () => Navigator.of(context).pushNamed(
+                            QuranToolScreen.routeName,
+                            arguments: const QuranToolArgs('about'),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 18),
@@ -55,7 +63,7 @@ class _QuranScreenState extends State<QuranScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'API интеграция в пути',
+                            'Quran data and translations',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -64,7 +72,8 @@ class _QuranScreenState extends State<QuranScreen> {
                           ),
                           SizedBox(height: 8),
                           Text(
-                            'Мы подключаем свежий источник аятов. Пока тут можно посмотреть избранное и планы чтения.',
+                            'Offline cache keeps your recent surahs, '
+                            'bookmarks, and daily ayah ready to read.',
                             style: TextStyle(color: Colors.white70),
                           ),
                         ],
@@ -73,23 +82,35 @@ class _QuranScreenState extends State<QuranScreen> {
                     const SizedBox(height: 16),
                     _GlassTile(
                       icon: FontAwesomeIcons.solidBookmark,
-                      title: 'Последнее чтение',
-                      subtitle: 'Сура Аль-Бакара • аяты 1-10',
-                      trailing: 'Продолжить',
+                      title: 'Bookmarks',
+                      subtitle: 'Saved ayahs and notes',
+                      trailing: 'Open',
+                      onTap: () => Navigator.of(context).pushNamed(
+                        QuranToolScreen.routeName,
+                        arguments: const QuranToolArgs('bookmarks'),
+                      ),
                     ),
                     const SizedBox(height: 12),
                     _GlassTile(
                       icon: FontAwesomeIcons.clock,
-                      title: 'Напоминание о чтении',
-                      subtitle: 'Каждый день в 20:30',
-                      trailing: 'Настроить',
+                      title: 'Reading plan',
+                      subtitle: 'Stay on a daily schedule',
+                      trailing: 'View',
+                      onTap: () => Navigator.of(context).pushNamed(
+                        QuranToolScreen.routeName,
+                        arguments: const QuranToolArgs('plan'),
+                      ),
                     ),
                     const SizedBox(height: 12),
                     _GlassTile(
                       icon: FontAwesomeIcons.wandSparkles,
-                      title: 'Ду’а дня',
-                      subtitle: 'Подборка будет приходить сюда',
-                      trailing: 'Скоро',
+                      title: 'Daily ayah',
+                      subtitle: 'A short reflection every day',
+                      trailing: 'Start',
+                      onTap: () => Navigator.of(context).pushNamed(
+                        QuranToolScreen.routeName,
+                        arguments: const QuranToolArgs('daily'),
+                      ),
                     ),
                   ],
                 );
@@ -107,56 +128,65 @@ class _GlassTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final String trailing;
+  final VoidCallback onTap;
 
   const _GlassTile({
     required this.icon,
     required this.title,
     required this.subtitle,
     required this.trailing,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GlassContainer(
-      child: Row(
-        children: [
-          Container(
-            height: 42,
-            width: 42,
-            decoration: BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: FaIcon(icon, color: Colors.white, size: 18),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: onTap,
+          child: Row(
+            children: [
+              Container(
+                height: 42,
+                width: 42,
+                decoration: BoxDecoration(
+                  color: Colors.white12,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(color: Colors.white70, fontSize: 13),
+                child: Center(
+                  child: FaIcon(icon, color: Colors.white, size: 18),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(color: Colors.white70, fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                trailing,
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+            ],
           ),
-          Text(
-            trailing,
-            style: const TextStyle(color: Colors.white70, fontSize: 12),
-          ),
-        ],
+        ),
       ),
     );
   }

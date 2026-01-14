@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sabail/src/core/routes/app_router.dart';
+import 'package:sabail/src/core/widgets/liquid_nav_bar.dart';
 import 'package:sabail/src/features/home/presentation/views/home_screen.dart';
 import 'package:sabail/src/features/prayer_times/presentation/views/prayer_time.dart';
 import 'package:sabail/src/features/profile/presentation/views/profile_screen.dart';
@@ -23,6 +24,12 @@ class _AppState extends State<App> {
     PrayerTimesScreen(),
     QuranScreen(),
     ProfileScreen(),
+  ];
+  static const List<LiquidNavItem> _navItems = [
+    LiquidNavItem(icon: FontAwesomeIcons.house, label: 'Home'),
+    LiquidNavItem(icon: FontAwesomeIcons.mosque, label: 'Prayer'),
+    LiquidNavItem(icon: FontAwesomeIcons.bookQuran, label: 'Quran'),
+    LiquidNavItem(icon: FontAwesomeIcons.user, label: 'Profile'),
   ];
 
   void _onItemTapped(int index) {
@@ -46,37 +53,12 @@ class _AppState extends State<App> {
       home: Scaffold(
         extendBody: true,
         body: _screens[_selectedIndex],
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30.0),
-            child: BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: Colors.white,
-              selectedItemColor: Colors.teal,
-              unselectedItemColor: Colors.grey,
-              showUnselectedLabels: true,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.house),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.mosque),
-                  label: 'Prayer',
-                ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.bookQuran),
-                  label: 'Quran',
-                ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.user),
-                  label: 'Profile',
-                ),
-              ],
-            ),
+        bottomNavigationBar: SafeArea(
+          top: false,
+          child: LiquidNavBar(
+            currentIndex: _selectedIndex,
+            items: _navItems,
+            onTap: _onItemTapped,
           ),
         ),
       ),

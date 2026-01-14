@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sabail/src/core/widgets/glass_container.dart';
+import 'package:sabail/src/features/profile/presentation/views/donation_history_screen.dart';
+import 'package:sabail/src/features/profile/presentation/views/edit_profile_screen.dart';
+import 'package:sabail/src/features/profile/presentation/views/privacy_screen.dart';
 import 'package:sabail/src/features/profile/presentation/viewmodels/profile_viewmodel.dart';
+import 'package:sabail/src/features/settings/presentation/views/settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
@@ -35,16 +39,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          'Профиль',
+                      children: [
+                        const Text(
+                          'Profile',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Icon(Icons.more_horiz, color: Colors.white),
+                        IconButton(
+                          icon: const Icon(Icons.settings, color: Colors.white),
+                          onPressed: () => Navigator.of(context)
+                              .pushNamed(SettingsScreen.routeName),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -52,9 +60,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 16),
                     _StatsRow(viewModel: viewModel),
                     const SizedBox(height: 16),
-                    _SettingsCard(viewModel: viewModel),
+                    _SettingsShortcutCard(
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(SettingsScreen.routeName),
+                    ),
                     const SizedBox(height: 16),
-                    _ActionsCard(),
+                    _ActionsCard(
+                      onEditProfile: () => Navigator.of(context)
+                          .pushNamed(EditProfileScreen.routeName),
+                      onDonationHistory: () => Navigator.of(context)
+                          .pushNamed(DonationHistoryScreen.routeName),
+                      onPrivacy: () => Navigator.of(context)
+                          .pushNamed(PrivacyScreen.routeName),
+                    ),
                   ],
                 );
               },
@@ -124,12 +142,12 @@ class _HeaderCard extends StatelessWidget {
           Column(
             children: [
               const Text(
-                'Подряд',
+                'Streak',
                 style: TextStyle(color: Colors.white70, fontSize: 12),
               ),
               const SizedBox(height: 4),
               Text(
-                '${viewModel.streak} дн.',
+                '${viewModel.streak} days',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -158,7 +176,7 @@ class _StatsRow extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  'Пожертвования',
+                  'Donated',
                   style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
                 const SizedBox(height: 6),
@@ -181,7 +199,7 @@ class _StatsRow extends StatelessWidget {
             child: Column(
               children: const [
                 Text(
-                  'Награды',
+                  'Badges',
                   style: TextStyle(color: Colors.white70, fontSize: 13),
                 ),
                 SizedBox(height: 6),
@@ -191,7 +209,7 @@ class _StatsRow extends StatelessWidget {
                     Icon(Icons.star, color: Colors.white, size: 18),
                     SizedBox(width: 8),
                     Text(
-                      '3 активны',
+                      '3 completed',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -209,66 +227,33 @@ class _StatsRow extends StatelessWidget {
   }
 }
 
-class _SettingsCard extends StatelessWidget {
-  final ProfileViewModel viewModel;
-  const _SettingsCard({required this.viewModel});
+class _SettingsShortcutCard extends StatelessWidget {
+  final VoidCallback onTap;
+  const _SettingsShortcutCard({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GlassContainer(
-      child: Column(
-        children: [
-          _SwitchRow(
-            label: 'Уведомления',
-            value: viewModel.notificationsEnabled,
-            onChanged: viewModel.toggleNotifications,
-          ),
-          const Divider(color: Colors.white12, height: 1),
-          _SwitchRow(
-            label: 'Локация для намаза',
-            value: viewModel.locationEnabled,
-            onChanged: viewModel.toggleLocation,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SwitchRow extends StatelessWidget {
-  final String label;
-  final bool value;
-  final ValueChanged<bool> onChanged;
-  const _SwitchRow({
-    required this.label,
-    required this.value,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.white, fontSize: 15),
-          ),
-          const Spacer(),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            thumbColor: WidgetStatePropertyAll(Colors.white),
-            trackColor: WidgetStatePropertyAll(Colors.white24),
-          ),
-        ],
+      child: _ActionRow(
+        icon: Icons.tune,
+        label: 'Settings & Notifications',
+        onTap: onTap,
       ),
     );
   }
 }
 
 class _ActionsCard extends StatelessWidget {
+  final VoidCallback onEditProfile;
+  final VoidCallback onDonationHistory;
+  final VoidCallback onPrivacy;
+
+  const _ActionsCard({
+    required this.onEditProfile,
+    required this.onDonationHistory,
+    required this.onPrivacy,
+  });
+
   @override
   Widget build(BuildContext context) {
     return GlassContainer(
@@ -276,17 +261,20 @@ class _ActionsCard extends StatelessWidget {
         children: [
           _ActionRow(
             icon: FontAwesomeIcons.solidPenToSquare,
-            label: 'Редактировать профиль',
+            label: 'Edit profile',
+            onTap: onEditProfile,
           ),
           const Divider(color: Colors.white12, height: 1),
           _ActionRow(
             icon: FontAwesomeIcons.clockRotateLeft,
-            label: 'История пожертвований',
+            label: 'Donation history',
+            onTap: onDonationHistory,
           ),
           const Divider(color: Colors.white12, height: 1),
           _ActionRow(
             icon: FontAwesomeIcons.shieldHalved,
-            label: 'Конфиденциальность',
+            label: 'Privacy & security',
+            onTap: onPrivacy,
           ),
         ],
       ),
@@ -297,24 +285,37 @@ class _ActionsCard extends StatelessWidget {
 class _ActionRow extends StatelessWidget {
   final IconData icon;
   final String label;
-  const _ActionRow({required this.icon, required this.label});
+  final VoidCallback? onTap;
+
+  const _ActionRow({
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          FaIcon(icon, color: Colors.white70, size: 18),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(color: Colors.white, fontSize: 15),
-            ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            children: [
+              FaIcon(icon, color: Colors.white70, size: 18),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label,
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: Colors.white70),
+            ],
           ),
-          const Icon(Icons.chevron_right, color: Colors.white70),
-        ],
+        ),
       ),
     );
   }
