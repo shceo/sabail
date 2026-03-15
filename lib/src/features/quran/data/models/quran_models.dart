@@ -1,4 +1,4 @@
-/// Data models for Quran API (alquran.cloud)
+// Data models for Quran API (alquran.cloud)
 
 class SurahInfo {
   final int number;

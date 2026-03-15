@@ -403,7 +403,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       final surahNum = ayah.surahNumber ?? widget.surahNumber;
       // Add surah header if new surah starts
       if (surahNum != lastSurahNum && ayah.numberInSurah == 1) {
-        final name = SurahInfo.surahNamesRu[surahNum] ?? '';
         final arabicName = ayah.surahName ?? '';
         children.add(
           Container(

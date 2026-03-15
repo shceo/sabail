@@ -234,8 +234,6 @@ class _QuranScreenState extends State<QuranScreen>
       itemCount: _vm.surahs.length,
       itemBuilder: (context, index) {
         final surah = _vm.surahs[index];
-        // Determine which juz this surah starts in
-        final juzNumber = _getJuzForSurah(surah.number);
         final bool isFirstInJuz = _isFirstSurahInJuz(surah.number);
 
         return Column(
@@ -298,16 +296,6 @@ class _QuranScreenState extends State<QuranScreen>
         builder: (_) => SurahDetailScreen(surahNumber: surahNumber),
       ),
     );
-  }
-
-  // Helper: which juz does this surah start in
-  int _getJuzForSurah(int surahNumber) {
-    for (int i = JuzData.allJuz.length - 1; i >= 0; i--) {
-      if (JuzData.allJuz[i].surahRefs.first.surahNumber <= surahNumber) {
-        return JuzData.allJuz[i].number;
-      }
-    }
-    return 1;
   }
 
   bool _isFirstSurahInJuz(int surahNumber) {
