@@ -304,7 +304,7 @@ class _ActionRow extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             children: [
-              FaIcon(icon, color: Colors.white70, size: 18),
+              Icon(icon, color: Colors.white70, size: 18),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
