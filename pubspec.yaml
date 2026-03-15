@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   path_provider: ^2.1.5
   drift: ^2.26.1
+  sqlite3_flutter_libs: ^0.5.28
   font_awesome_flutter: ^10.8.0
   persistent_bottom_nav_bar: ^6.2.1
   persistent_bottom_nav_bar_custom: ^6.0.0
