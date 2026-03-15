@@ -159,6 +159,9 @@ class Ayah {
   final int numberInSurah;
   final int juz;
   final int page;
+  final int? hizbQuarter;
+  final int? surahNumber;
+  final String? surahName;
 
   const Ayah({
     required this.number,
@@ -166,15 +169,22 @@ class Ayah {
     required this.numberInSurah,
     required this.juz,
     required this.page,
+    this.hizbQuarter,
+    this.surahNumber,
+    this.surahName,
   });
 
   factory Ayah.fromJson(Map<String, dynamic> json) {
+    final surah = json['surah'] as Map<String, dynamic>?;
     return Ayah(
       number: json['number'] as int,
       text: json['text'] as String,
       numberInSurah: json['numberInSurah'] as int,
       juz: json['juz'] as int,
       page: json['page'] as int,
+      hizbQuarter: json['hizbQuarter'] as int?,
+      surahNumber: surah?['number'] as int?,
+      surahName: surah?['name'] as String?,
     );
   }
 }

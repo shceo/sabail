@@ -52,4 +52,16 @@ class QuranService {
     }
     throw Exception('Failed to load juz: ${response.statusCode}');
   }
+
+  /// Fetch a single Quran page (1-604) with Arabic text
+  Future<List<Ayah>> fetchPage(int pageNumber) async {
+    final response =
+        await http.get(Uri.parse('$_baseUrl/page/$pageNumber/quran-uthmani'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List<dynamic> ayahs = data['data']['ayahs'];
+      return ayahs.map((e) => Ayah.fromJson(e)).toList();
+    }
+    throw Exception('Failed to load page: ${response.statusCode}');
+  }
 }
