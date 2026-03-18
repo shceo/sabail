@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabail/src/core/notifications/notification_service.dart';
 import 'package:sabail/src/core/services/city_service.dart';
 import 'package:sabail/src/core/services/location_service.dart';
+import 'package:sabail/src/features/prayer_times/data/prayer_notification_sync_service.dart';
 import 'package:sabail/src/features/prayer_times/data/prayer_times_repository.dart';
 import 'package:sabail/src/features/prayer_times/domain/entities/prayer_day.dart';
 import 'package:sabail/src/features/prayer_times/presentation/viewmodels/prayer_location_store.dart';
@@ -11,6 +12,7 @@ class PrayerTimesViewModel extends ChangeNotifier {
   final CityService cityService;
   final LocationService locationService;
   final NotificationService notificationService;
+  final PrayerNotificationSyncService notificationSyncService;
   final PrayerLocationStore locationStore;
 
   bool isLoading = false;
@@ -28,9 +30,10 @@ class PrayerTimesViewModel extends ChangeNotifier {
     required this.cityService,
     required this.locationService,
     required this.notificationService,
+    required this.notificationSyncService,
     required this.locationStore,
-  })  : country = locationStore.country,
-        city = locationStore.city;
+  }) : country = locationStore.country,
+       city = locationStore.city;
 
   Future<void> init() async {
     await loadCountries();
@@ -73,8 +76,13 @@ class PrayerTimesViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       day = await repository.getForCity(city: city, country: country);
-      locationStore.setLocation(countryName: country, cityName: city);
-      await _scheduleAzan(day!);
+      await locationStore.setManualLocation(
+        countryName: country,
+        cityName: city,
+      );
+      await _syncNotifications(
+        () => notificationSyncService.syncForCity(city: city, country: country),
+      );
     } catch (e) {
       error = e.toString();
     } finally {
@@ -98,7 +106,7 @@ class PrayerTimesViewModel extends ChangeNotifier {
         await loadForCoords(position.latitude, position.longitude);
         await loadCities(country);
       } else {
-        throw Exception('Не удалось определить город/страну');
+        throw Exception('Could not resolve city/country from location');
       }
     } catch (e) {
       error = e.toString();
@@ -113,8 +121,18 @@ class PrayerTimesViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       day = await repository.getForCoords(latitude: lat, longitude: lng);
-      locationStore.setLocation(countryName: country, cityName: city);
-      await _scheduleAzan(day!);
+      await locationStore.setDeviceLocation(
+        countryName: country,
+        cityName: city,
+        latitudeValue: lat,
+        longitudeValue: lng,
+      );
+      await _syncNotifications(
+        () => notificationSyncService.syncForCoords(
+          latitude: lat,
+          longitude: lng,
+        ),
+      );
     } catch (e) {
       error = e.toString();
     } finally {
@@ -123,25 +141,20 @@ class PrayerTimesViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _scheduleAzan(PrayerDay day) async {
-    await notificationService.cancelAll();
-    final date = DateTime.now();
-    final times = [
-      ('Fajr', day.fajrMinutes),
-      ('Dhuhr', day.dhuhrMinutes),
-      ('Asr', day.asrMinutes),
-      ('Maghrib', day.maghribMinutes),
-      ('Isha', day.ishaMinutes),
-    ];
-    var id = 1;
-    for (final entry in times) {
-      await notificationService.scheduleDailyAzan(
-        id: id++,
-        date: date,
-        minutesFromMidnight: entry.$2,
-        title: entry.$1,
-      );
+  Future<void> _syncNotifications(Future<void> Function() action) async {
+    try {
+      await action();
+    } catch (e) {
+      error = _notificationErrorMessage(e);
     }
+  }
+
+  String _notificationErrorMessage(Object error) {
+    final message = error.toString();
+    if (message.startsWith('Bad state: ')) {
+      return message.substring('Bad state: '.length);
+    }
+    return 'Failed to schedule prayer notifications: $message';
   }
 
   TimeOfDay timeOf(String key) {
@@ -164,8 +177,8 @@ class PrayerTimesViewModel extends ChangeNotifier {
     if (duration == null) return null;
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
-    if (hours == 0) return '$minutes мин';
-    return '$hours ч ${minutes.toString().padLeft(2, '0')} мин';
+    if (hours == 0) return '$minutes РјРёРЅ';
+    return '$hours С‡ ${minutes.toString().padLeft(2, '0')} РјРёРЅ';
   }
 
   (String, Duration)? _timeToNextPrayer() {

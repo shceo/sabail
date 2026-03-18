@@ -3,6 +3,25 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+const _androidAzanChannelId = 'azan_channel_krasivyj_v2';
+const _androidAzanChannelName = 'Azan Notifications';
+const _androidAzanChannelDescription = 'Prayer reminders with azan audio';
+const _androidAzanSoundName = 'krasivyj_azan';
+
+class ScheduledPrayerNotification {
+  final int id;
+  final DateTime scheduledAt;
+  final String title;
+  final String body;
+
+  const ScheduledPrayerNotification({
+    required this.id,
+    required this.scheduledAt,
+    required this.title,
+    required this.body,
+  });
+}
+
 class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -13,8 +32,10 @@ class NotificationService {
     if (_initialized) return;
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInit = DarwinInitializationSettings();
-    const initSettings =
-        InitializationSettings(android: androidInit, iOS: iosInit);
+    const initSettings = InitializationSettings(
+      android: androidInit,
+      iOS: iosInit,
+    );
     await _plugin.initialize(initSettings);
 
     tz.initializeTimeZones();
@@ -29,63 +50,84 @@ class NotificationService {
     _initialized = true;
   }
 
+  Future<bool> ensurePermissions({bool requestIfNeeded = true}) async {
+    await init();
+
+    final android =
+        _plugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >();
+    if (android == null) {
+      return true;
+    }
+
+    var notificationsEnabled = await android.areNotificationsEnabled() ?? true;
+    if (!notificationsEnabled && requestIfNeeded) {
+      notificationsEnabled =
+          await android.requestNotificationsPermission() ?? false;
+    }
+    if (!notificationsEnabled) {
+      return false;
+    }
+
+    var exactNotificationsEnabled =
+        await android.canScheduleExactNotifications() ?? true;
+    if (!exactNotificationsEnabled && requestIfNeeded) {
+      exactNotificationsEnabled =
+          await android.requestExactAlarmsPermission() ?? false;
+    }
+
+    return exactNotificationsEnabled;
+  }
+
   Future<void> _ensureChannel() async {
     const androidChannel = AndroidNotificationChannel(
-      'azan_channel',
-      'Azan Notifications',
-      description: 'Уведомления с азаном в расписании намазов',
+      _androidAzanChannelId,
+      _androidAzanChannelName,
+      description: _androidAzanChannelDescription,
       importance: Importance.max,
-      sound: RawResourceAndroidNotificationSound('azan'),
+      sound: RawResourceAndroidNotificationSound(_androidAzanSoundName),
       playSound: true,
     );
     await _plugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(androidChannel);
   }
 
-  Future<void> scheduleDailyAzan({
-    required int id,
-    required DateTime date,
-    required int minutesFromMidnight,
-    required String title,
-  }) async {
+  Future<void> replacePrayerSchedule(
+    Iterable<ScheduledPrayerNotification> notifications,
+  ) async {
     await init();
-    final scheduled = tz.TZDateTime(
-      tz.local,
-      date.year,
-      date.month,
-      date.day,
-    ).add(Duration(minutes: minutesFromMidnight));
+    await _plugin.cancelAll();
 
-    final now = DateTime.now();
-    var runAt = scheduled;
-    if (runAt.isBefore(now)) {
-      runAt = runAt.add(const Duration(days: 1));
-    }
-
-    await _plugin.zonedSchedule(
-      id,
-      title,
-      'Время молитвы',
-      runAt,
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          'azan_channel',
-          'Azan Notifications',
-          channelDescription: 'Уведомления с азаном',
-          sound: const RawResourceAndroidNotificationSound('azan'),
-          playSound: true,
-          importance: Importance.max,
-          priority: Priority.max,
+    for (final notification in notifications) {
+      await _plugin.zonedSchedule(
+        notification.id,
+        notification.title,
+        notification.body,
+        tz.TZDateTime.from(notification.scheduledAt, tz.local),
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _androidAzanChannelId,
+            _androidAzanChannelName,
+            channelDescription: _androidAzanChannelDescription,
+            sound: const RawResourceAndroidNotificationSound(
+              _androidAzanSoundName,
+            ),
+            playSound: true,
+            importance: Importance.max,
+            priority: Priority.max,
+          ),
+          iOS: const DarwinNotificationDetails(sound: 'default'),
         ),
-        iOS: const DarwinNotificationDetails(sound: 'default'),
-      ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    }
   }
 
   Future<void> cancelAll() async {

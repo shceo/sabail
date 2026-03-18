@@ -7,6 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:sabail/src/app.dart';
 import 'package:sabail/src/core/di/locator.dart';
 import 'package:sabail/src/core/notifications/notification_service.dart';
+import 'package:sabail/src/features/prayer_times/data/prayer_notification_sync_service.dart';
 
 /// Простая модель для прогресса инициализации
 class Progress {
@@ -16,41 +17,44 @@ class Progress {
 }
 
 Future<void> main() async {
-  runZonedGuarded(() async {
-    final binding = WidgetsFlutterBinding.ensureInitialized()
-      ..deferFirstFrame();
+  runZonedGuarded(
+    () async {
+      final binding =
+          WidgetsFlutterBinding.ensureInitialized()..deferFirstFrame();
 
-    final initializationProgress = ValueNotifier<Progress>(
-      const Progress(0, 'Запуск Sabail...'),
-    );
+      final initializationProgress = ValueNotifier<Progress>(
+        const Progress(0, 'Запуск Sabail...'),
+      );
 
-    runApp(_ProgressApp(initializationProgress));
+      runApp(_ProgressApp(initializationProgress));
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      binding.allowFirstFrame();
-    });
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        binding.allowFirstFrame();
+      });
 
-    final steps = <String, Future<void> Function()>{
-      'Migration DB': _migrateDatabase,
-      'DI setup': _initDependencies,
-      'Firebase init': _initFirebase,
-      'Load settings': _loadSettings,
-    };
+      final steps = <String, Future<void> Function()>{
+        'Migration DB': _migrateDatabase,
+        'DI setup': _initDependencies,
+        'Firebase init': _initFirebase,
+        'Load settings': _loadSettings,
+      };
 
-    int stepIndex = 0;
-    final totalSteps = steps.length;
-    for (final entry in steps.entries) {
-      stepIndex++;
-      final percent = ((stepIndex / totalSteps) * 100).round();
-      initializationProgress.value = Progress(percent, entry.key);
-      await entry.value();
-    }
+      int stepIndex = 0;
+      final totalSteps = steps.length;
+      for (final entry in steps.entries) {
+        stepIndex++;
+        final percent = ((stepIndex / totalSteps) * 100).round();
+        initializationProgress.value = Progress(percent, entry.key);
+        await entry.value();
+      }
 
-    initializationProgress.value = const Progress(100, 'Готово');
-    await Future.delayed(const Duration(milliseconds: 500));
-  }, (error, stack) {
-    runApp(_ErrorApp(error: error.toString()));
-  });
+      initializationProgress.value = const Progress(100, 'Готово');
+      await Future.delayed(const Duration(milliseconds: 500));
+    },
+    (error, stack) {
+      runApp(_ErrorApp(error: error.toString()));
+    },
+  );
 }
 
 class _ProgressApp extends StatelessWidget {
@@ -69,9 +73,10 @@ class _ProgressApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
             useMaterial3: true,
           ),
-          home: progress.percent < 100
-              ? _SplashProgress(progress: progress)
-              : const App(),
+          home:
+              progress.percent < 100
+                  ? _SplashProgress(progress: progress)
+                  : const App(),
         );
       },
     );
@@ -91,10 +96,7 @@ class _SplashProgress extends StatelessWidget {
           Positioned.fill(
             child: Opacity(
               opacity: 0.2,
-              child: Image.asset(
-                'assets/images/splash.png',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset('assets/images/splash.png', fit: BoxFit.cover),
             ),
           ),
           Center(
@@ -176,6 +178,9 @@ Future<void> _migrateDatabase() async {
 Future<void> _initDependencies() async {
   await setupLocator();
   await locator<NotificationService>().init();
+  try {
+    await locator<PrayerNotificationSyncService>().syncSavedSchedule();
+  } catch (_) {}
 }
 
 Future<void> _initFirebase() async {

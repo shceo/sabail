@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sabail/src/core/di/locator.dart';
 import 'package:sabail/src/core/widgets/glass_container.dart';
 import 'package:sabail/src/core/widgets/shimmer_box.dart';
+import 'package:sabail/src/features/prayer_times/data/prayer_notification_sync_service.dart';
 import 'package:sabail/src/features/prayer_times/data/prayer_times_repository.dart';
 import 'package:sabail/src/features/prayer_times/presentation/viewmodels/prayer_location_store.dart';
 import 'package:sabail/src/features/prayer_times/presentation/viewmodels/prayer_times_viewmodel.dart';
@@ -28,6 +29,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       cityService: locator<CityService>(),
       locationService: locator<LocationService>(),
       notificationService: locator<NotificationService>(),
+      notificationSyncService: locator<PrayerNotificationSyncService>(),
       locationStore: locator<PrayerLocationStore>(),
     )..init();
   }
@@ -98,7 +100,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                     if (viewModel.error != null) ...[
                       const SizedBox(height: 12),
                       _ErrorCard(error: viewModel.error!),
-                    ]
+                    ],
                   ],
                 );
               },
@@ -125,14 +127,18 @@ class _LocationCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(Icons.location_on_outlined,
-                    color: Colors.white),
+                child: const Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(width: 10),
               const Expanded(
@@ -153,39 +159,39 @@ class _LocationCard extends StatelessWidget {
           const SizedBox(height: 12),
           isLoading
               ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    ShimmerBox(height: 44),
-                    SizedBox(height: 12),
-                    ShimmerBox(height: 44),
-                  ],
-                )
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  ShimmerBox(height: 44),
+                  SizedBox(height: 12),
+                  ShimmerBox(height: 44),
+                ],
+              )
               : Column(
-                  children: [
-                    _Dropdown(
-                      label: 'Страна',
-                      value: viewModel.country,
-                      options: viewModel.countries,
-                      onChanged: (value) async {
-                        if (value != null) {
-                          await viewModel.loadCities(value);
-                          await viewModel.loadForCity();
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    _Dropdown(
-                      label: 'Город',
-                      value: viewModel.city,
-                      options: viewModel.cities,
-                      onChanged: (value) {
-                        if (value != null) {
-                          viewModel.selectCity(value);
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                children: [
+                  _Dropdown(
+                    label: 'Страна',
+                    value: viewModel.country,
+                    options: viewModel.countries,
+                    onChanged: (value) async {
+                      if (value != null) {
+                        await viewModel.loadCities(value);
+                        await viewModel.loadForCity();
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  _Dropdown(
+                    label: 'Город',
+                    value: viewModel.city,
+                    options: viewModel.cities,
+                    onChanged: (value) {
+                      if (value != null) {
+                        viewModel.selectCity(value);
+                      }
+                    },
+                  ),
+                ],
+              ),
         ],
       ),
     );
@@ -216,21 +222,14 @@ class _Dropdown extends StatelessWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: options.contains(value) ? value : null,
-          hint: Text(
-            label,
-            style: const TextStyle(color: Colors.white70),
-          ),
+          hint: Text(label, style: const TextStyle(color: Colors.white70)),
           dropdownColor: const Color(0xFF0F5D46),
           iconEnabledColor: Colors.white,
           style: const TextStyle(color: Colors.white),
-          items: options
-              .map(
-                (e) => DropdownMenuItem(
-                  value: e,
-                  child: Text(e),
-                ),
-              )
-              .toList(),
+          items:
+              options
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
           onChanged: onChanged,
         ),
       ),
@@ -265,46 +264,44 @@ class _NextPrayerCard extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: isLoading
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      ShimmerBox(height: 18, width: 120),
-                      SizedBox(height: 8),
-                      ShimmerBox(height: 16, width: 180),
-                    ],
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Следующая молитва',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
+            child:
+                isLoading
+                    ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        ShimmerBox(height: 18, width: 120),
+                        SizedBox(height: 8),
+                        ShimmerBox(height: 16, width: 180),
+                      ],
+                    )
+                    : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Следующая молитва',
+                          style: TextStyle(color: Colors.white70, fontSize: 14),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        label,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      if (timeLeft != null) ...[
                         const SizedBox(height: 4),
                         Text(
-                          'Через $timeLeft',
+                          label,
                           style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 13,
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        if (timeLeft != null) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            'Через $timeLeft',
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
+                    ),
           ),
           const Icon(Icons.arrow_forward, color: Colors.white),
         ],
@@ -417,10 +414,7 @@ class _PrayerRow extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 15),
             ),
           ),
           Text(
@@ -473,10 +467,7 @@ class _ErrorCard extends StatelessWidget {
           const Icon(Icons.error_outline, color: Colors.white),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              error,
-              style: const TextStyle(color: Colors.white),
-            ),
+            child: Text(error, style: const TextStyle(color: Colors.white)),
           ),
         ],
       ),
