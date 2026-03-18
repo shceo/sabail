@@ -1,12 +1,13 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-const _androidAzanChannelId = 'azan_channel_krasivyj_v2';
-const _androidAzanChannelName = 'Azan Notifications';
-const _androidAzanChannelDescription = 'Prayer reminders with azan audio';
-const _androidAzanSoundName = 'krasivyj_azan';
+const _nativeNotificationChannel = MethodChannel(
+  'com.example.sabail/native_notifications',
+);
 
 class ScheduledPrayerNotification {
   final int id;
@@ -28,8 +29,18 @@ class NotificationService {
 
   bool _initialized = false;
 
+  bool get _usesNativeAndroid =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+
   Future<void> init() async {
     if (_initialized) return;
+
+    if (_usesNativeAndroid) {
+      await _nativeNotificationChannel.invokeMethod<void>('initialize');
+      _initialized = true;
+      return;
+    }
+
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInit = DarwinInitializationSettings();
     const initSettings = InitializationSettings(
@@ -46,12 +57,19 @@ class NotificationService {
       tz.setLocalLocation(tz.UTC);
     }
 
-    await _ensureChannel();
     _initialized = true;
   }
 
   Future<bool> ensurePermissions({bool requestIfNeeded = true}) async {
     await init();
+
+    if (_usesNativeAndroid) {
+      return await _nativeNotificationChannel.invokeMethod<bool>(
+            'ensurePermissions',
+            <String, dynamic>{'requestIfNeeded': requestIfNeeded},
+          ) ??
+          false;
+    }
 
     final android =
         _plugin
@@ -81,26 +99,32 @@ class NotificationService {
     return exactNotificationsEnabled;
   }
 
-  Future<void> _ensureChannel() async {
-    const androidChannel = AndroidNotificationChannel(
-      _androidAzanChannelId,
-      _androidAzanChannelName,
-      description: _androidAzanChannelDescription,
-      importance: Importance.max,
-      sound: RawResourceAndroidNotificationSound(_androidAzanSoundName),
-      playSound: true,
-    );
-    await _plugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.createNotificationChannel(androidChannel);
-  }
-
   Future<void> replacePrayerSchedule(
     Iterable<ScheduledPrayerNotification> notifications,
   ) async {
     await init();
+
+    if (_usesNativeAndroid) {
+      await _nativeNotificationChannel.invokeMethod<void>(
+        'replacePrayerSchedule',
+        <String, dynamic>{
+          'notifications':
+              notifications
+                  .map(
+                    (notification) => <String, dynamic>{
+                      'id': notification.id,
+                      'triggerAtMillis':
+                          notification.scheduledAt.millisecondsSinceEpoch,
+                      'title': notification.title,
+                      'body': notification.body,
+                    },
+                  )
+                  .toList(),
+        },
+      );
+      return;
+    }
+
     await _plugin.cancelAll();
 
     for (final notification in notifications) {
@@ -109,19 +133,13 @@ class NotificationService {
         notification.title,
         notification.body,
         tz.TZDateTime.from(notification.scheduledAt, tz.local),
-        NotificationDetails(
+        const NotificationDetails(
           android: AndroidNotificationDetails(
-            _androidAzanChannelId,
-            _androidAzanChannelName,
-            channelDescription: _androidAzanChannelDescription,
-            sound: const RawResourceAndroidNotificationSound(
-              _androidAzanSoundName,
-            ),
-            playSound: true,
-            importance: Importance.max,
-            priority: Priority.max,
+            'azan_channel_flutter_fallback',
+            'Azan Notifications',
+            channelDescription: 'Prayer reminders with azan audio',
           ),
-          iOS: const DarwinNotificationDetails(sound: 'default'),
+          iOS: DarwinNotificationDetails(sound: 'default'),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
@@ -131,6 +149,13 @@ class NotificationService {
   }
 
   Future<void> cancelAll() async {
+    await init();
+
+    if (_usesNativeAndroid) {
+      await _nativeNotificationChannel.invokeMethod<void>('cancelAll');
+      return;
+    }
+
     await _plugin.cancelAll();
   }
 }

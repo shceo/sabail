@@ -36,10 +36,10 @@
             android:name="flutterEmbedding"
             android:value="2" />
         <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+            android:name=".notifications.AzanNotificationReceiver"
             android:exported="false" />
         <receiver
-            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+            android:name=".notifications.AzanBootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
