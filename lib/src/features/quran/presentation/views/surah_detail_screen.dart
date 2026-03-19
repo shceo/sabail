@@ -80,7 +80,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = 'Ошибка загрузки';
+        _error = _loadErrorMessage(e);
       });
     }
   }
@@ -537,6 +537,18 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
         ],
       ),
     );
+  }
+
+  String _loadErrorMessage(Object error) {
+    final normalized = error.toString().toLowerCase();
+    if (normalized.contains('failed host lookup') ||
+        normalized.contains('socketexception') ||
+        normalized.contains('clientexception') ||
+        normalized.contains('connection closed') ||
+        normalized.contains('timed out')) {
+      return 'Проверь подключение к интернету и попробуй снова.';
+    }
+    return 'Не удалось загрузить данные.';
   }
 }
 

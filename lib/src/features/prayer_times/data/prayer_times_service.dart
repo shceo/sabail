@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:sabail/src/features/prayer_times/domain/entities/prayer_day.dart';
 
 class PrayerTimesService {
+  static const Duration _requestTimeout = Duration(seconds: 10);
+
   final http.Client client;
 
   PrayerTimesService({http.Client? client}) : client = client ?? http.Client();
@@ -108,7 +111,7 @@ class PrayerTimesService {
   }
 
   Future<PrayerDay> _request(Uri uri) async {
-    final res = await client.get(uri);
+    final res = await client.get(uri).timeout(_requestTimeout);
     if (res.statusCode != 200) {
       throw Exception('API request failed (${res.statusCode})');
     }
@@ -118,7 +121,7 @@ class PrayerTimesService {
   }
 
   Future<List<PrayerDay>> _requestCalendar(Uri uri) async {
-    final res = await client.get(uri);
+    final res = await client.get(uri).timeout(_requestTimeout);
     if (res.statusCode != 200) {
       throw Exception('Failed to load prayer calendar (${res.statusCode})');
     }

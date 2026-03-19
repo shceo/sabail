@@ -44,9 +44,14 @@ class PrayerTimesViewModel extends ChangeNotifier {
   Future<void> loadCountries() async {
     isLoadingCities = true;
     notifyListeners();
-    countries = await cityService.fetchCountries();
-    isLoadingCities = false;
-    notifyListeners();
+    try {
+      countries = await cityService.fetchCountries();
+    } catch (_) {
+      countries = const [];
+    } finally {
+      isLoadingCities = false;
+      notifyListeners();
+    }
   }
 
   Future<void> loadCities(String countryName) async {
@@ -84,7 +89,10 @@ class PrayerTimesViewModel extends ChangeNotifier {
         () => notificationSyncService.syncForCity(city: city, country: country),
       );
     } catch (e) {
-      error = e.toString();
+      error = _loadErrorMessage(
+        e,
+        fallback: 'Не удалось загрузить время молитв.',
+      );
     } finally {
       isLoading = false;
       notifyListeners();
@@ -109,7 +117,10 @@ class PrayerTimesViewModel extends ChangeNotifier {
         throw Exception('Could not resolve city/country from location');
       }
     } catch (e) {
-      error = e.toString();
+      error = _loadErrorMessage(
+        e,
+        fallback: 'Не удалось определить местоположение.',
+      );
     } finally {
       isLoading = false;
       notifyListeners();
@@ -134,7 +145,10 @@ class PrayerTimesViewModel extends ChangeNotifier {
         ),
       );
     } catch (e) {
-      error = e.toString();
+      error = _loadErrorMessage(
+        e,
+        fallback: 'Не удалось загрузить время молитв.',
+      );
     } finally {
       isLoading = false;
       notifyListeners();
@@ -155,6 +169,29 @@ class PrayerTimesViewModel extends ChangeNotifier {
       return message.substring('Bad state: '.length);
     }
     return 'Failed to schedule prayer notifications: $message';
+  }
+
+  String _loadErrorMessage(Object error, {required String fallback}) {
+    final message = error.toString();
+    final normalized = message.toLowerCase();
+
+    if (message.startsWith('Bad state: ')) {
+      return message.substring('Bad state: '.length);
+    }
+    if (message.startsWith('Exception: ')) {
+      return message.substring('Exception: '.length);
+    }
+    if (normalized.contains('failed host lookup') ||
+        normalized.contains('socketexception') ||
+        normalized.contains('clientexception') ||
+        normalized.contains('connection closed') ||
+        normalized.contains('timed out')) {
+      return 'Проверь подключение к интернету и попробуй снова.';
+    }
+    if (normalized.contains('could not resolve city/country from location')) {
+      return 'Не удалось определить город и страну по геолокации.';
+    }
+    return fallback;
   }
 
   TimeOfDay timeOf(String key) {

@@ -8,7 +8,7 @@ class QuranViewModel extends ChangeNotifier {
   List<SurahInfo> surahs = [];
   bool isLoading = false;
   String? error;
-  int selectedTab = 0; // 0=Суры, 1=Джуз, 2=Закладки
+  int selectedTab = 0; // 0=surahs, 1=juz, 2=bookmarks
 
   Future<void> loadSurahs() async {
     if (surahs.isNotEmpty) return;
@@ -22,7 +22,7 @@ class QuranViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       isLoading = false;
-      error = 'Не удалось загрузить данные';
+      error = _loadErrorMessage(e);
       notifyListeners();
     }
   }
@@ -30,5 +30,17 @@ class QuranViewModel extends ChangeNotifier {
   void setTab(int index) {
     selectedTab = index;
     notifyListeners();
+  }
+
+  String _loadErrorMessage(Object error) {
+    final normalized = error.toString().toLowerCase();
+    if (normalized.contains('failed host lookup') ||
+        normalized.contains('socketexception') ||
+        normalized.contains('clientexception') ||
+        normalized.contains('connection closed') ||
+        normalized.contains('timed out')) {
+      return 'Проверь подключение к интернету и попробуй снова.';
+    }
+    return 'Не удалось загрузить данные.';
   }
 }
